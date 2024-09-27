@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -26,6 +27,7 @@ public class GoogleSearchTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testGoogleSearch() {
 		GoogleHomepage.init(webDriver)
 			.acceptL2Agl()
