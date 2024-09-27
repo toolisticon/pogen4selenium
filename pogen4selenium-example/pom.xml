@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>pogen4selenium-example</artifactId>
+    <packaging>jar</packaging>
+
+    <parent>
+        <groupId>io.toolisticon.pogen4selenium</groupId>
+        <artifactId>pogen4selenium</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <name>pogen4selenium-example</name>
+
+    <dependencyManagement>
+
+        <dependencies>
+
+            <dependency>
+                <groupId>io.toolisticon.pogen4selenium</groupId>
+                <artifactId>example</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>io.toolisticon.pogen4selenium</groupId>
+            <artifactId>pogen4selenium-api</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        
+        <dependency>
+        	   <groupId>org.seleniumhq.selenium</groupId>
+			   <artifactId>selenium-java</artifactId>
+			   <scope>compile</scope>
+        </dependency>
+        <dependency>
+        	   <groupId>org.seleniumhq.selenium</groupId>
+			   <artifactId>selenium-api</artifactId>
+			   <scope>compile</scope>
+        </dependency>
+
+    </dependencies>
+
+
+    <build>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration combine.self="append">
+                        <verbose>true</verbose>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>io.toolisticon.pogen4selenium</groupId>
+                                <artifactId>pogen4selenium-processor</artifactId>
+                                <version>${project.version}</version>
+                            </path>
+                            <path>
+                                    
+				        	   <groupId>org.seleniumhq.selenium</groupId>
+							   <artifactId>selenium-java</artifactId>
+							   <version>${selenium.version}</version>
+			
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+            </plugins>
+
+        </pluginManagement>
+
+        <plugins>
+
+            <!-- revoke enforcer limitations for example -->
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.0.0,)</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>${java.version}</version>
+                                </requireJavaVersion>
+                                <bannedDependencies>
+                                    <searchTransitive>false</searchTransitive>
+                                    <includes>
+                                        <include>*</include>
+                                    </includes>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+
+    </build>
+
+
+</project>
