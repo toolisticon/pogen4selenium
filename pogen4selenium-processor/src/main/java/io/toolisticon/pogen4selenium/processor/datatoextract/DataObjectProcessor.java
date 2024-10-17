@@ -1,4 +1,4 @@
-package io.toolisticon.pogen4selenium.processor;
+package io.toolisticon.pogen4selenium.processor.datatoextract;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,8 +23,8 @@ import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.aptk.tools.generators.SimpleJavaWriter;
 import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
-import io.toolisticon.pogen4selenium.api.PageObject;
-import io.toolisticon.pogen4selenium.api.PageObjectParent;
+import io.toolisticon.pogen4selenium.api.DataObject;
+import io.toolisticon.pogen4selenium.runtime.DataObjectParentImpl;
 import io.toolisticon.spiap.api.SpiService;
 
 /**
@@ -34,10 +34,10 @@ import io.toolisticon.spiap.api.SpiService;
  */
 
 @SpiService(Processor.class)
-@DeclareCompilerMessageCodePrefix("PageObject")
-public class PageObjectProcessor extends AbstractAnnotationProcessor {
+@DeclareCompilerMessageCodePrefix("DataObject")
+public class DataObjectProcessor extends AbstractAnnotationProcessor {
 
-    private final static Set<String> SUPPORTED_ANNOTATIONS = createSupportedAnnotationSet(PageObject.class);
+    private final static Set<String> SUPPORTED_ANNOTATIONS = createSupportedAnnotationSet(DataObject.class);
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
@@ -49,10 +49,10 @@ public class PageObjectProcessor extends AbstractAnnotationProcessor {
 
         if (!roundEnv.processingOver()) {
             // process Services annotation
-            for (Element element : roundEnv.getElementsAnnotatedWith(PageObject.class)) {
+            for (Element element : roundEnv.getElementsAnnotatedWith(DataObject.class)) {
 
                 TypeElementWrapper wrappedTypeElement = TypeElementWrapper.wrap((TypeElement) element);
-                PageObjectWrapper annotation = PageObjectWrapper.wrap(wrappedTypeElement.unwrap());
+                DataObjectWrapper annotation = DataObjectWrapper.wrap(wrappedTypeElement.unwrap());
 
                 if (validateUsage(wrappedTypeElement, annotation)) {
                     processAnnotation(wrappedTypeElement, annotation);
@@ -69,17 +69,13 @@ public class PageObjectProcessor extends AbstractAnnotationProcessor {
 
     }
 
-    void processAnnotation(TypeElementWrapper wrappedTypeElement, PageObjectWrapper annotation) {
-
-        // ----------------------------------------------------------
-        // TODO: replace the following code by your business logic
-        // ----------------------------------------------------------
+    void processAnnotation(TypeElementWrapper wrappedTypeElement, DataObjectWrapper annotation) {
 
         createClass(wrappedTypeElement, annotation);
 
     }
 
-    boolean validateUsage(TypeElementWrapper wrappedTypeElement, PageObjectWrapper annotation) {
+    boolean validateUsage(TypeElementWrapper wrappedTypeElement, DataObjectWrapper annotation) {
 
     	boolean result = true;
     	
@@ -89,13 +85,13 @@ public class PageObjectProcessor extends AbstractAnnotationProcessor {
 			.validateAndIssueMessages();
     	
     	// now validate Elements
-    	for (PageObjectElementWrapper pageObjectElementWrapper : annotation.value()) {
+    	for (ExtractDataValueWrapper dataStorageElementWrapper : annotation.value()) {
     		
-    		result = result & FluentElementValidator.createFluentElementValidator(pageObjectElementWrapper._annotatedElement())
-    				.applyValidator(AptkCoreMatchers.BY_MODIFIER).hasAllOf(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC)
-    				.is(AptkCoreMatchers.IS_FIELD)
-    				.applyValidator(AptkCoreMatchers.BY_REGEX_NAME).hasOneOf(".*_ID")
-    				.applyValidator(AptkCoreMatchers.BY_RAW_TYPE).hasOneOf(String.class)
+    		result = result & FluentElementValidator.createFluentElementValidator(dataStorageElementWrapper._annotatedElement())
+    				.applyValidator(AptkCoreMatchers.BY_MODIFIER).hasNoneOf(Modifier.STATIC, Modifier.DEFAULT)
+    				.is(AptkCoreMatchers.IS_METHOD)
+    				.applyValidator(AptkCoreMatchers.HAS_NO_PARAMETERS)
+    				.applyValidator(AptkCoreMatchers.BY_RETURN_TYPE).hasOneOf(String.class)
     				.validateAndIssueMessages();
     		
     	}
@@ -115,7 +111,7 @@ public class PageObjectProcessor extends AbstractAnnotationProcessor {
      * @param annotation The PageObject annotation
      */
     @DeclareCompilerMessage(code = "ERROR_001", enumValueName = "ERROR_COULD_NOT_CREATE_CLASS", message = "Could not create class ${0} : ${1}")
-    private void createClass(TypeElementWrapper wrappedTypeElement, PageObjectWrapper annotation) {
+    private void createClass(TypeElementWrapper wrappedTypeElement, DataObjectWrapper annotation) {
 
 
         // Now create class
@@ -132,7 +128,7 @@ public class PageObjectProcessor extends AbstractAnnotationProcessor {
         		// filter out all PageObjectParent methods
         		.filter(e -> !(ElementWrapper.toTypeElement(
         					e.getEnclosingElement().get()
-        				).getQualifiedName().equals(PageObjectParent.class.getCanonicalName()))
+        				).getQualifiedName().equals(DataObjectParentImpl.class.getCanonicalName()))
     			)
         		.map(MethodsToImplementHelper::new)
 	    		.collect(Collectors.toSet());
@@ -147,17 +143,17 @@ public class PageObjectProcessor extends AbstractAnnotationProcessor {
         model.put("imports", imports);
         model.put("toImplementHelper", toImplementHelper);
         model.put("packageName", packageName);
-        model.put("pageObject", annotation);
+        model.put("dataToExtract", annotation);
         model.put("methodsToImplement",methodsToImplement);
         
         // create the class
         String filePath = packageName + "." + toImplementHelper.getImplementationClassName();
         try {
             SimpleJavaWriter javaWriter = FilerUtils.createSourceFile(filePath, wrappedTypeElement.unwrap());
-            javaWriter.writeTemplate("/PageObject.tpl", model);
+            javaWriter.writeTemplate("/DataToExtract.tpl", model);
             javaWriter.close();
         } catch (IOException e) {
-            wrappedTypeElement.compilerMessage().asError().write(PageObjectProcessorCompilerMessages.ERROR_COULD_NOT_CREATE_CLASS, filePath, e.getMessage());
+            wrappedTypeElement.compilerMessage().asError().write(DataObjectProcessorCompilerMessages.ERROR_COULD_NOT_CREATE_CLASS, filePath, e.getMessage());
         }
     }
 

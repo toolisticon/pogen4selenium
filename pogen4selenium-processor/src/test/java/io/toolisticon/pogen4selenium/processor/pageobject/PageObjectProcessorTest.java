@@ -1,4 +1,4 @@
-package io.toolisticon.pogen4selenium.processor;
+package io.toolisticon.pogen4selenium.processor.pageobject;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -9,6 +9,7 @@ import io.toolisticon.aptk.common.ToolingProvider;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.cute.Cute;
 import io.toolisticon.cute.CuteApi;
+import io.toolisticon.pogen4selenium.processor.pageobject.PageObjectProcessor;
 
 
 /**
@@ -37,7 +38,7 @@ public class PageObjectProcessorTest {
     public void test_valid_usage() {
 
         compileTestBuilder
-                .andSourceFiles("testcases/TestcaseValidUsage.java")
+                .andSourceFiles("testcases/pageobject/TestcaseValidUsage.java")
                 .whenCompiled()
                 .thenExpectThat()
                 .compilationSucceeds()
@@ -50,7 +51,7 @@ public class PageObjectProcessorTest {
     public void test_readAnnotatedValue() {
     	Cute.unitTest()
     	.when()
-    	.passInElement().fromSourceFile("testcases/TestcaseValidUsage.java")
+    	.passInElement().fromSourceFile("testcases/pageobject/TestcaseValidUsage.java")
     	.intoUnitTest((procEnv,element) ->{
     		
     		try {

@@ -1,0 +1,50 @@
+	        	<html>
+	        		
+	        		<script type>
+	        			function incrementCounter(){
+	        				var element = document.getElementById('counter');
+	        				var counter = parseInt(element.textContent);
+	        				
+	        				element.textContent = counter+1;
+	        				
+	        			}
+	        		</script>        		
+	        		        		        		        		
+	        		<body>
+	        			<h1>POGEN4SELENIUM TEST PAGE</h1>
+	        			
+	        			
+	        			<fieldset>
+		        			<legend>Write and Read to/from input field</legend>	
+	        				<label for="input_field">Input field</label> : 
+	        				<input type="text" id="input_field">
+		        		</fieldset>
+		        				
+		        				
+		        		<fieldset name="counter">
+		        			<legend>Click Element and Read single value</legend>
+	        			    <input type="button" value="Increase counter" onclick="incrementCounter()"/> : <span id="counter">1</span>
+		        		</fieldset>	
+		        		    
+	        			<fieldset>
+	        				<legend>Data Extraction</legend>
+		        			<table name="tabledataextraction">
+		        				<tr class="head">
+		        				  <th>NAME</th>
+		        				  <th>AGE</th>
+		        				  <th>LINK</th>
+		        				</tr>
+		        				<tr class="data">
+		        					<td>Max</td>
+		        					<td>9</td>
+		        					<td><a href="https://de.wikipedia.org/wiki/Max_und_Moritz">Max und Moritz Wikipedia</a>
+		        				</tr>
+		        				<tr class="data">
+		        					<td>Moritz</td>
+		        					<td>10</td>
+		        					<td><a href="https://de.wikipedia.org/wiki/Wilhelm_Busch">Wilhelm Busch Wikipedia</a>
+		        				</tr>
+		        			</table>
+	        			</fieldset>
+	        		</body>		
+	        	</html>
