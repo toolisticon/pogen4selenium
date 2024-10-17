@@ -139,11 +139,7 @@
 						<skip>${toolisticon.deployment.skip}</skip>
 					</configuration>
 				</plugin>
-				<plugin>
-					<groupId>com.spotify</groupId>
-					<artifactId>dockerfile-maven</artifactId>
-					<version>${maven-docker-plugin.version}</version>
-				</plugin>
+
 				<!-- enforcer -->
 				<plugin>
 					<artifactId>maven-enforcer-plugin</artifactId>
