@@ -1,4 +1,4 @@
-package io.toolisticon.pogen4selenium.processor;
+package io.toolisticon.pogen4selenium.processor.datatoextract;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -50,7 +50,6 @@ public class ToImplementHelper {
 		result.add(PageObjectParent.class.getCanonicalName());
 		result.add(PageObjectParentImpl.class.getCanonicalName());
 		result.add(this.element.getQualifiedName());
-		result.add(element.getInterfaces().get(0).getQualifiedName());
 		return result;
 	}
 	

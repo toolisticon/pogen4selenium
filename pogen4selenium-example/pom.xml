@@ -9,7 +9,7 @@
     <parent>
         <groupId>io.toolisticon.pogen4selenium</groupId>
         <artifactId>pogen4selenium</artifactId>
-        <version>0.0.1</version>
+        <version>0.1.0</version>
     </parent>
 
     <name>pogen4selenium-example</name>
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>io.toolisticon.pogen4selenium</groupId>
             <artifactId>pogen4selenium-api</artifactId>
-            <version>0.0.1</version>
+            <version>0.1.0</version>
         </dependency>
         
         <dependency>
@@ -46,6 +46,20 @@
 			   <artifactId>selenium-api</artifactId>
 			   <scope>compile</scope>
         </dependency>
+
+		<dependency>
+		    <groupId>org.eclipse.jetty</groupId>
+		    <artifactId>jetty-server</artifactId>
+		    <version>9.4.3.v20170317</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.eclipse.jetty</groupId>
+		    <artifactId>jetty-servlet</artifactId>
+		    <version>9.4.3.v20170317</version>
+		    <scope>test</scope>
+		</dependency>
 
     </dependencies>
 

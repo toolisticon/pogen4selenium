@@ -1,4 +1,4 @@
-package io.toolisticon.pogen4selenium.processor;
+package io.toolisticon.pogen4selenium.processor.pageobject;
 
 import java.lang.annotation.Annotation;
 import java.time.Duration;
@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.interactions.Actions;
 
+import io.toolisticon.aptk.tools.wrapper.ExecutableElementWrapper;
 import io.toolisticon.pogen4selenium.api.ActionClick;
 import io.toolisticon.pogen4selenium.api.ActionMoveToAndClick;
 import io.toolisticon.pogen4selenium.api.ActionWrite;
-
-import io.toolisticon.aptk.tools.wrapper.ExecutableElementWrapper;
+import io.toolisticon.pogen4selenium.api.ExtractData;
 
 public class MethodsToImplementHelper {
 	
@@ -59,6 +59,12 @@ public class MethodsToImplementHelper {
 				: Optional.empty();
 	}
 	
+	public Optional<ExtractDataWrapper> getExtractData() {
+		return Optional.ofNullable(ExtractDataWrapper.wrap(this.executableElementWrapper.unwrap()));
+	}
+	
+	
+	
 	public String getNextImplClassName() {
 		return this.executableElementWrapper.getReturnType().getSimpleName() + "Impl";
 	}
@@ -73,7 +79,25 @@ public class MethodsToImplementHelper {
 	
 	public record ElementsToWrite( String elementVarName,String toWriteParameterName) {};
 	
+	
+	public boolean validate() {
 		
+		// default implementations must be ignored at validation
+		if (executableElementWrapper.isDefault()) {
+			return true;
+		}
+		
+		boolean validationResult = true;
+		
+		// validate methods related with data extraction
+		if(ExtractDataWrapper.isAnnotated(executableElementWrapper.unwrap())) {
+			validationResult = validationResult & ExtractDataWrapper.wrap(executableElementWrapper.unwrap()).validate();
+		}
+		
+		return validationResult;
+		
+	}
+	
 
 
 }

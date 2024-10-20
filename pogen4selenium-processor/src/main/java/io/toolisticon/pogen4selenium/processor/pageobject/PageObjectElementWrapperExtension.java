@@ -1,4 +1,4 @@
-package io.toolisticon.pogen4selenium.processor;
+package io.toolisticon.pogen4selenium.processor.pageobject;
 
 import javax.lang.model.element.VariableElement;
 

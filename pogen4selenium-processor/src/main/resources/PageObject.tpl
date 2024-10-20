@@ -3,6 +3,9 @@ package ${ packageName };
 !{for import : imports}
 import ${import};
 !{/for}
+import java.util.stream.Collectors;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -61,8 +64,17 @@ public class ${ toImplementHelper.implementationClassName } ${toImplementHelper.
 		// Move to Element and click
 		new Actions(getDriver()).moveToElement(${method.getElementToMoveToAndClick.get}Element).pause(300).click().build().perform();		
 !{/if}
-
+!{if method.getExtractData.isPresent}
+!{if method.getExtractData.get.isList}
+		return getDriver().findElements(By.${method.getExtractData.get.by.correspondingByMethodName}("${method.getExtractData.get.value}")).stream().map( ${method.getExtractData.get.extractedDataImplName}::new).collect(Collectors.toList());
+!{elseif method.getExtractData.get.isString}
+		return 
+!{else}
+		return new ${method.getExtractData.get.extractedDataImplName}(getDriver().findElement(By.${method.getExtractData.get.by.correspondingByMethodName}("${method.getExtractData.get.value}")));
+!{/if}
+!{else}
 		return new ${method.getNextImplClassName}(getDriver()).pause(Duration.ofMillis(${method.afterPause}L));
+!{/if}
 	}
 !{/for}	
 
