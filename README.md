@@ -33,12 +33,12 @@ The api lib must be bound as a dependency - for example in maven:
 ```xml
 <dependencies>
 
-    <dependency>
-        <groupId>io.toolisticon.pogen4selenium</groupId>
-        <artifactId>pogen4selenium-api</artifactId>
-        <version>0.1.0</version>
-        <scope>provided</scope>
-    </dependency>
+	<dependency>
+	    <groupId>io.toolisticon.pogen4selenium</groupId>
+	    <artifactId>pogen4selenium-api</artifactId>
+	    <version>0.1.0</version>
+	    <scope>provided</scope>
+	</dependency>
  
 </dependencies>
 ```
@@ -175,21 +175,21 @@ public class TestPageTest {
 		TestPagePageObject.init(webDriver)
 		.doAssertions(e -> {
 				
-				// Do assertions here
-				List<TestPageTableEntry> results = e.getTableEntries();
-				
-				MatcherAssert.assertThat(results, Matchers.hasSize(2));
-				
-				MatcherAssert.assertThat(results.getFirst().name(), Matchers.is("Max"));
-				MatcherAssert.assertThat(results.getFirst().age(), Matchers.is("9"));
-				MatcherAssert.assertThat(results.getFirst().link(), Matchers.is("https://de.wikipedia.org/wiki/Max_und_Moritz"));
-				MatcherAssert.assertThat(results.getFirst().linkText(), Matchers.is("Max und Moritz Wikipedia"));
-				
-				
-				MatcherAssert.assertThat(results.get(1).name(), Matchers.is("Moritz"));
-				MatcherAssert.assertThat(results.get(1).age(), Matchers.is("10"));
-				MatcherAssert.assertThat(results.get(1).link(), Matchers.is("https://de.wikipedia.org/wiki/Wilhelm_Busch"));
-				MatcherAssert.assertThat(results.get(1).linkText(), Matchers.is("Wilhelm Busch Wikipedia"));
+			// Do assertions here
+			List<TestPageTableEntry> results = e.getTableEntries();
+			
+			MatcherAssert.assertThat(results, Matchers.hasSize(2));
+			
+			MatcherAssert.assertThat(results.getFirst().name(), Matchers.is("Max"));
+			MatcherAssert.assertThat(results.getFirst().age(), Matchers.is("9"));
+			MatcherAssert.assertThat(results.getFirst().link(), Matchers.is("https://de.wikipedia.org/wiki/Max_und_Moritz"));
+			MatcherAssert.assertThat(results.getFirst().linkText(), Matchers.is("Max und Moritz Wikipedia"));
+			
+			
+			MatcherAssert.assertThat(results.get(1).name(), Matchers.is("Moritz"));
+			MatcherAssert.assertThat(results.get(1).age(), Matchers.is("10"));
+			MatcherAssert.assertThat(results.get(1).link(), Matchers.is("https://de.wikipedia.org/wiki/Wilhelm_Busch"));
+			MatcherAssert.assertThat(results.get(1).linkText(), Matchers.is("Wilhelm Busch Wikipedia"));
 				
 
 			});
@@ -200,34 +200,35 @@ public class TestPageTest {
 		TestPagePageObject.init(webDriver)
 		.doAssertions(e -> {
 				
-				// Do assertions here
-				TestPageTableEntry result = e.getFirstTableEntry();
-				
-				
-				MatcherAssert.assertThat(result.name(), Matchers.is("Max"));
-				MatcherAssert.assertThat(result.age(), Matchers.is("9"));
-				MatcherAssert.assertThat(result.link(), Matchers.is("https://de.wikipedia.org/wiki/Max_und_Moritz"));
-				MatcherAssert.assertThat(result.linkText(), Matchers.is("Max und Moritz Wikipedia"));
-				
-		
+			// Do assertions here
+			TestPageTableEntry result = e.getFirstTableEntry();
+			
+			
+			MatcherAssert.assertThat(result.name(), Matchers.is("Max"));
+			MatcherAssert.assertThat(result.age(), Matchers.is("9"));
+			MatcherAssert.assertThat(result.link(), Matchers.is("https://de.wikipedia.org/wiki/Max_und_Moritz"));
+			MatcherAssert.assertThat(result.linkText(), Matchers.is("Max und Moritz Wikipedia"));
+			
+	
 
-			});
+		});
 	}
 	
 	@Test
 	public void incrementCounterTest() {
 		TestPagePageObject.init(webDriver)
-		.doAssertions(e -> {
-				MatcherAssert.assertThat(e.getCounter(), Matchers.is("1"));
-			}).clickCounterIncrementButton()
-		.doAssertions(e -> {
-			MatcherAssert.assertThat(e.getCounter(), Matchers.is("2"));
-		})
-		.clickCounterIncrementButton()
-		.clickCounterIncrementButton()
-		.doAssertions(e -> {
-			MatcherAssert.assertThat(e.getCounter(), Matchers.is("4"));
-		});
+			.doAssertions(e -> {
+					MatcherAssert.assertThat(e.getCounter(), Matchers.is("1"));
+				})
+			.clickCounterIncrementButton()
+			.doAssertions(e -> {
+				MatcherAssert.assertThat(e.getCounter(), Matchers.is("2"));
+			})
+			.clickCounterIncrementButton()
+			.clickCounterIncrementButton()
+			.doAssertions(e -> {
+				MatcherAssert.assertThat(e.getCounter(), Matchers.is("4"));
+			});
 	}
 	
 	

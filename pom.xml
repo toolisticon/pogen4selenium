@@ -258,7 +258,7 @@
                 <plugin>
                     <groupId>com.amashchenko.maven.plugin</groupId>
                     <artifactId>gitflow-maven-plugin</artifactId>
-                    <version>${maven-git${gitflow-maven-plugin.version}</version>
+                    <version>${gitflow-maven-plugin.version}</version>
                     <configuration>
                         <gitFlowConfig>
                             <productionBranch>master</productionBranch>
