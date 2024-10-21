@@ -43,10 +43,10 @@ public class TestPageTest {
 				
 				MatcherAssert.assertThat(results, Matchers.hasSize(2));
 				
-				MatcherAssert.assertThat(results.getFirst().name(), Matchers.is("Max"));
-				MatcherAssert.assertThat(results.getFirst().age(), Matchers.is("9"));
-				MatcherAssert.assertThat(results.getFirst().link(), Matchers.is("https://de.wikipedia.org/wiki/Max_und_Moritz"));
-				MatcherAssert.assertThat(results.getFirst().linkText(), Matchers.is("Max und Moritz Wikipedia"));
+				MatcherAssert.assertThat(results.get(0).name(), Matchers.is("Max"));
+				MatcherAssert.assertThat(results.get(0).age(), Matchers.is("9"));
+				MatcherAssert.assertThat(results.get(0).link(), Matchers.is("https://de.wikipedia.org/wiki/Max_und_Moritz"));
+				MatcherAssert.assertThat(results.get(0).linkText(), Matchers.is("Max und Moritz Wikipedia"));
 				
 				
 				MatcherAssert.assertThat(results.get(1).name(), Matchers.is("Moritz"));

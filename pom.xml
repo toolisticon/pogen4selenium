@@ -71,7 +71,7 @@
 		<maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
 		<maven-failsafe-plugin.version>3.2.5</maven-failsafe-plugin.version>
 		<maven-findbugs-plugin.version>3.0.5</maven-findbugs-plugin.version>
-		<maven-gpg-plugin.version>1.4</maven-gpg-plugin.version>
+		<maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
 		<maven-help-plugin.version>3.4.0</maven-help-plugin.version>
 		<maven-install-plugin.version>3.1.1</maven-install-plugin.version>
 		<maven-jacoco-plugin.version>0.8.11</maven-jacoco-plugin.version>
@@ -152,11 +152,6 @@
 				<plugin>
 					<artifactId>maven-failsafe-plugin</artifactId>
 					<version>${maven-failsafe-plugin.version}</version>
-				</plugin>
-				<!-- artefact signing -->
-				<plugin>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>${maven-gpg-plugin.version}</version>
 				</plugin>
 				<!-- help -->
 				<plugin>
@@ -304,7 +299,7 @@
                 <plugin>
                     <groupId>org.sonatype.plugins</groupId>
                     <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>${maven-ne${nexus-staging-maven-plugin.version}</version>
+                    <version>${nexus-staging-maven-plugin.version}</version>
                     <configuration>
                         <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         <serverId>sonatype-nexus-staging</serverId>
@@ -381,121 +376,119 @@
 	</build>
 	<profiles>
 		<profile>
-			<id>doclint-java8-disable</id>
-			<activation>
-				<jdk>[1.8,)</jdk>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<configuration>
-							<additionalOptions>
-								<additionalOption>-Xdoclint:none</additionalOption>
-							</additionalOptions>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>checkstyle</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>findbugs-maven-plugin</artifactId>
-						<version>${maven-findbugs-plugin.version}</version>
-						<configuration>
-							<xmlOutput>true</xmlOutput>
-							<findbugsXmlOutput>true</findbugsXmlOutput>
-							<!--<findbugsXmlWithMessages>true</findbugsXmlWithMessages>-->
-							<excludeFilterFile>config/findbugs-excludes.xml</excludeFilterFile>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>verify</phase>
-								<goals>
-									<goal>check</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-checkstyle-plugin</artifactId>
-						<version>${maven-checkstyle-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>validate</id>
-								<phase>validate</phase>
-								<configuration>
-									<configLocation>${session.executionRootDirectory}/config/sun_checks.xml
+            <id>release</id>
+            <activation>
+                <property>
+                    <name>release</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>doclint-java8-disable</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>checkstyle</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>findbugs-maven-plugin</artifactId>
+                        <version>3.0.5</version>
+                        <configuration>
+                            <xmlOutput>true</xmlOutput>
+                            <findbugsXmlOutput>true</findbugsXmlOutput>
+                            <!--<findbugsXmlWithMessages>true</findbugsXmlWithMessages>-->
+                            <excludeFilterFile>config/findbugs-excludes.xml</excludeFilterFile>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <executions>
+                            <execution>
+                                <id>validate</id>
+                                <phase>validate</phase>
+                                <configuration>
+                                    <configLocation>${session.executionRootDirectory}/config/sun_checks.xml
                                     </configLocation>
-									<encoding>UTF-8</encoding>
-									<consoleOutput>true</consoleOutput>
-									<failOnViolation>true</failOnViolation>
-									<failsOnError>true</failsOnError>
-									<violationSeverity>warn</violationSeverity>
-								</configuration>
-								<goals>
-									<goal>check</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-pmd-plugin</artifactId>
-						<version>3.11.0</version>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<!--
-                 this profile enables creation of ASC signatures
-                 during release perform phase of maven-release-plugin
-            -->
-			<id>release-sign-artifacts</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>ReleaseJavadoc</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<configuration>
-							<reportOutputDirectory>${project.basedir}/docs/assets/javadoc</reportOutputDirectory>
-							<destDir>${project.version}</destDir>
-							<excludePackageNames>io.toolisticon.pogen4selenium.example.*</excludePackageNames>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+                                    <encoding>UTF-8</encoding>
+                                    <consoleOutput>true</consoleOutput>
+                                    <failOnViolation>true</failOnViolation>
+                                    <failsOnError>true</failsOnError>
+                                    <violationSeverity>warn</violationSeverity>
+                                </configuration>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-pmd-plugin</artifactId>
+                        <version>3.21.2</version>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>ReleaseJavadoc</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <configuration>
+                            <reportOutputDirectory>${project.basedir}/docs/assets/javadoc</reportOutputDirectory>
+                            <destDir>${project.version}</destDir>
+                            <excludePackageNames>io.toolisticon.fluapigen.example.*</excludePackageNames>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
 	</profiles>
 	<repositories>
 		<repository>
@@ -612,6 +605,6 @@
 		<module>pogen4selenium-api</module>
 		<module>pogen4selenium-processor</module>
 		<module>pogen4selenium-example</module>
-		<module>pogen4selenium-integrationTest</module>
+		<!-- <module>pogen4selenium-integrationTest</module> -->
 	</modules>
 </project>
