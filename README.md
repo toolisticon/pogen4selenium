@@ -240,6 +240,28 @@ public class TestPageTest {
 
 ```
 
+#### Methods provided by fluent api
+
+There are some default methods provided by the fluent api:
+
+##### verify
+By using the verify methods it's possible to do check state of elements, i.e. if elements are present or clickable. Expected state is configured in PageObjectElement annotation. If not set explicitely all elements are expected to be present byx default.
+
+##### doAssertions
+It's possible to inline assertions done via your favourite testing tools. 
+By providing this method it's not necessary to hassle with local variables anymore.
+
+##### execute
+The execute method allows you to do test steps dynamically, like reading data from the web page and doing things based on the extracted data.
+It can also be used to switch to another page object type. This can be useful if input data is expected to be validated and should stay on the same page and show an error message.  
+
+
+## Best practices
+
+There are a few things you should consider as best practices
+
+- Naming convention: Please use specific prefixes for you page object methods. This can be 'do' for all actions and 'get' for reading data.
+- Page objects should define just the happy path. Special cases like failing validations can be handled in the unit tests via the execute method(you can map to another page object type in it).   
 
 ## Example
 
