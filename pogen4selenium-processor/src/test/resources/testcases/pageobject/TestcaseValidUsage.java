@@ -3,6 +3,8 @@ package io.toolisticon.pogen4selenium.processor.tests;
 import io.toolisticon.cute.PassIn;
 import io.toolisticon.pogen4selenium.api.ActionClick;
 import io.toolisticon.pogen4selenium.api.ActionWrite;
+import io.toolisticon.pogen4selenium.api.By;
+import io.toolisticon.pogen4selenium.api.ExtractDataValue;
 import io.toolisticon.pogen4selenium.api.PageObject;
 import io.toolisticon.pogen4selenium.api.PageObjectElement;
 import io.toolisticon.pogen4selenium.api.PageObjectParent;
@@ -25,6 +27,9 @@ public class TestcaseValidUsage {
 		
 		LoginPage writeUserName(@ActionWrite(USERNAME_ID) String username);
 		LoginPage writePassword(@ActionWrite(PASSWORD_ID) String password);
+		
+		@ExtractDataValue(by=By.XPATH, value="/div", kind=ExtractDataValue.Kind.ATTRIBUTE, name="href")
+		String getLinkHref();
 		
 		@ActionClick(SUBMIT_BUTTON_ID)
 		LoginPage clickSubmitButton();

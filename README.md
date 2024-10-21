@@ -93,6 +93,7 @@ public interface TestPagePageObject extends PageObjectParent<TestPagePageObject>
 	static final String COUNTER_INCREMENT_BUTTON_ID = "counterIncrementButton";
 	
 	@ActionMoveToAndClick(COUNTER_INCREMENT_BUTTON_ID)
+	@Pause(value = 500L)
 	TestPagePageObject clickCounterIncrementButton();
 	
 	
@@ -102,10 +103,13 @@ public interface TestPagePageObject extends PageObjectParent<TestPagePageObject>
 	@ExtractData(by = io.toolisticon.pogen4selenium.api.By.XPATH, value = DATA_EXTRACTION_FROM_TABLE_XPATH)
 	TestPageTableEntry getFirstTableEntry();
 	
-	default String getCounter() {
+	@ExtractDataValue(by = By.XPATH, value="//fieldset[@name='counter']/span[@id='counter']")
+	String getCounter();
+	
+	// you can always provide your own methods and logic
+	default String providedGetCounter() {
 		return getDriver().findElement(org.openqa.selenium.By.xpath("//fieldset[@name='counter']/span[@id='counter']")).getText();
 	}
-	
 	
 	// Custom entry point for starting your tests
 	public static TestPagePageObject init(WebDriver driver) {
