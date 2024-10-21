@@ -2,7 +2,9 @@ package io.toolisticon.pogen4selenium.api;
 
 public enum By {
 	ID("id"),
-	XPATH("xpath");
+	XPATH("xpath"),
+	/** ELEMENT MUST ONLY BE USED TO EXTRACT DATA IN PAGE OBJECTS */
+	ELEMENT("");
 	
 	private final String correspondingByMethodName;
 	

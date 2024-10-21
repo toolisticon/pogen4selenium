@@ -29,11 +29,21 @@ public @interface ExtractDataValue {
 	String name() default "";
 	
 	enum Kind{
-		TEXT,
-		ATTRIBUTE,
-		CSS_VALUE,
-		TAG_NAME,
-		ACCESSIBLE_NAME;
+		TEXT("getText"),
+		ATTRIBUTE("getAttribute"),
+		CSS_VALUE("getCssValue"),
+		TAG_NAME("getTagName"),
+		ACCESSIBLE_NAME("getAccessibleName");
+		
+		private final String elementMethodName; 
+		
+		private Kind(String elementMethodName) {
+			this.elementMethodName = elementMethodName;
+		}
+		
+		public String getElementMethodName() {
+			return this.elementMethodName;
+		}
 	}
 	
 }

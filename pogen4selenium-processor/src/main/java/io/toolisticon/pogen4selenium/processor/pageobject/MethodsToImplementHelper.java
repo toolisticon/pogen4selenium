@@ -63,6 +63,9 @@ public class MethodsToImplementHelper {
 		return Optional.ofNullable(ExtractDataWrapper.wrap(this.executableElementWrapper.unwrap()));
 	}
 	
+	public Optional<ExtractDataValueWrapper> getExtractDataValue() {
+		return Optional.ofNullable(ExtractDataValueWrapper.wrap(this.executableElementWrapper.unwrap()));
+	}
 	
 	
 	public String getNextImplClassName() {

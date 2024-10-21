@@ -96,5 +96,17 @@ public class TestPageTest {
 			;
 	}
 	
+	@Test
+	public void writeToAndReadFromInputField() {
+		
+		TestPagePageObject.init(webDriver)
+		.writeToInputField("TEST!!!")
+		.pause(Duration.ofMillis(200L))
+		.doAssertions(e -> {
+			MatcherAssert.assertThat(e.readInputFieldValue(), Matchers.is("TEST!!!"));
+		});
+		
+	}
+	
 	
 }
