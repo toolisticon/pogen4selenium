@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExtractData {
-	By by() default By.XPATH;
+	_By by() default _By.XPATH;
 	String value();
 }

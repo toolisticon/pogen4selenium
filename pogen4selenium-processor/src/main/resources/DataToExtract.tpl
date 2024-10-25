@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import io.toolisticon.pogen4selenium.api.By;
+import io.toolisticon.pogen4selenium.api._By;
 import io.toolisticon.pogen4selenium.api.ExtractDataValue;
 import io.toolisticon.pogen4selenium.runtime.DataObjectParentImpl;
 
@@ -28,7 +28,7 @@ public class ${ toImplementHelper.implementationClassName }  extends DataObjectP
 !{for dataToExtractValue : dataToExtract.value}
 	@Override
 	public String ${dataToExtractValue.methodName}(){
-		return getValue(By.${dataToExtractValue.by}, "${dataToExtractValue.value}", ExtractDataValue.Kind.${dataToExtractValue.kind}, "${dataToExtractValue.name}");
+		return getValue(_By.${dataToExtractValue.by}, "${dataToExtractValue.value}", ExtractDataValue.Kind.${dataToExtractValue.kind}, "${dataToExtractValue.name}");
 	}
 !{/for}	
 

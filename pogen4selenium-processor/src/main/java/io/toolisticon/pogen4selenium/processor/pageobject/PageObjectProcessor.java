@@ -75,14 +75,23 @@ public class PageObjectProcessor extends AbstractAnnotationProcessor {
 
     }
 
+    @DeclareCompilerMessage(code = "ERROR_011", enumValueName = "ERROR_COULD_INTERFACE_MUST_NOT_HAVE_TYPEPARAMETERS", message = "Interface '${0}' annotated with '${1}' must not have type parameters. Please use an interface that extends this interface to resolve type parameters to concrete types")
     boolean validateUsage(TypeElementWrapper wrappedTypeElement, PageObjectWrapper annotation) {
 
     	boolean result = true;
     	
     	// First make sure that the annotation is placed on interface and interface extends PageObjectParent
-    	result = result & wrappedTypeElement.validateWithFluentElementValidator().is(AptkCoreMatchers.IS_INTERFACE)
-			//.applyValidator(AptkCoreMatchers.IS_ASSIGNABLE_TO).hasOneOf(PageObjectParent.class)
-			.validateAndIssueMessages();
+    	result = result 
+    			& wrappedTypeElement.validateWithFluentElementValidator()
+    				.is(AptkCoreMatchers.IS_INTERFACE)
+    				.validateAndIssueMessages();
+    	
+    	if (wrappedTypeElement.hasTypeParameters()) {
+    		wrappedTypeElement.compilerMessage().asError().write(PageObjectProcessorCompilerMessages.ERROR_COULD_INTERFACE_MUST_NOT_HAVE_TYPEPARAMETERS, wrappedTypeElement.getSimpleName(), PageObject.class.getSimpleName());
+    		result = false;
+    	}
+    	
+    			
     	
     	// now validate Elements
     	for (PageObjectElementWrapper pageObjectElementWrapper : annotation.value()) {

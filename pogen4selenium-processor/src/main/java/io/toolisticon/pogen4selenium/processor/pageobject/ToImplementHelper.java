@@ -19,10 +19,12 @@ public class ToImplementHelper {
 	}
 	
 	public String getExtendsString() {
-		
+		return PageObjectParentImpl.class.getSimpleName() + "<" + this.element.getQualifiedName() + ">";
+		/*-
 		return !hasTypeParameters() ? 
 				element.getInterfaces().get(0).getSimpleName() + "Impl <" + this.element.getQualifiedName() + ">"
 						: element.getInterfaces().get(0).getSimpleName() + "Impl <PAGEOBJECT>";
+		*/
 	}
 	
 	public String  getInterfaceTypeVarString() {

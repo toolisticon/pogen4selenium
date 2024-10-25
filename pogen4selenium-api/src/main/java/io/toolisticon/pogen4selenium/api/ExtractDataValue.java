@@ -18,11 +18,13 @@ import java.lang.annotation.Target;
 @Target(METHOD)
 public @interface ExtractDataValue {
 
-	By by() default By.XPATH;
+	/** The locator type to use. */
+	_By by() default _By.XPATH;
 	
 	/** The locator string used together with locator configured in by. Be sure to use './/', if your relative xpath locator string starts with '//', otherwise the whole document will be scanned. */
 	String value();
 	
+	/** The kind of data to extract from element. */
 	Kind kind() default Kind.TEXT;
 	
 	/** attribute or property name. */
