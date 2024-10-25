@@ -10,11 +10,11 @@ import io.toolisticon.pogen4selenium.api.PageObjectElement;
 import io.toolisticon.pogen4selenium.api.PageObjectParent;
 
 
-public class TestcaseValidUsage {
+public class TestcaseInterfaceWithTypeVars {
 	
 	
 	@PageObject	
-	public interface LoginPage extends PageObjectParent<LoginPage>{ 
+	public interface LoginPage<T> extends PageObjectParent<LoginPage>{ 
 	
 		@PageObjectElement(elementVariableName=LoginPage.USERNAME_ID,  value="//input[@formcontrolname='username' and @type='text']" )
 		static final String USERNAME_ID = "username";

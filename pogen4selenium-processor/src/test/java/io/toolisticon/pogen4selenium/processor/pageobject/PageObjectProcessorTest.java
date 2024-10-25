@@ -46,6 +46,18 @@ public class PageObjectProcessorTest {
                 .executeTest();
     }
     
+    @Test
+    public void test_invalid_interfaceWithTypeParameter() {
+
+        compileTestBuilder
+                .andSourceFiles("testcases/pageobject/TestcaseInterfaceWithTypeVars.java")
+                .whenCompiled()
+                .thenExpectThat()
+                .compilationFails()
+                .andThat().compilerMessage().ofKindError().contains(PageObjectProcessorCompilerMessages.ERROR_COULD_INTERFACE_MUST_NOT_HAVE_TYPEPARAMETERS.getCode())
+                .executeTest();
+    }
+    
     /*-
     @Test
     public void test_readAnnotatedValue() {

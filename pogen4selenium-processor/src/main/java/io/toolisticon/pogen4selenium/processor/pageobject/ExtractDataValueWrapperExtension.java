@@ -1,7 +1,7 @@
 package io.toolisticon.pogen4selenium.processor.pageobject;
 
 import io.toolisticon.aptk.annotationwrapper.api.CustomCodeMethod;
-import io.toolisticon.pogen4selenium.api.By;
+import io.toolisticon.pogen4selenium.api._By;
 import io.toolisticon.pogen4selenium.api.ExtractDataValue;
 
 public class ExtractDataValueWrapperExtension {
@@ -10,7 +10,7 @@ public class ExtractDataValueWrapperExtension {
 	public static String getFinalMethodCall(ExtractDataValueWrapper extractDataValueWrapper) {
 		
 		String command = (
-					extractDataValueWrapper.by() == By.ELEMENT ? 
+					extractDataValueWrapper.by() == _By.ELEMENT ? 
 						extractDataValueWrapper.value() + "Element"
 						: "getDriver().findElement(By." + extractDataValueWrapper.by().getCorrespondingByMethodName() + "(\"" + extractDataValueWrapper.value() + "\"))"
 				)

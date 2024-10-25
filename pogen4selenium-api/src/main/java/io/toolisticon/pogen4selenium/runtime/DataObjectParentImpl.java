@@ -2,7 +2,7 @@ package io.toolisticon.pogen4selenium.runtime;
 
 import org.openqa.selenium.WebElement;
 
-import io.toolisticon.pogen4selenium.api.By;
+import io.toolisticon.pogen4selenium.api._By;
 import io.toolisticon.pogen4selenium.api.ExtractDataValue;
 
 public class DataObjectParentImpl {
@@ -17,7 +17,7 @@ public class DataObjectParentImpl {
 		return this.relativeParentWebElement;
 	}
 	
-	protected WebElement getValueWebElement(By by, String locatorString) {
+	protected WebElement getValueWebElement(_By by, String locatorString) {
 		
 		org.openqa.selenium.By relativeLocator = null;
 		switch(by) {
@@ -40,7 +40,7 @@ public class DataObjectParentImpl {
 		return null;
 	}
 	
-	protected String getValue(By by, String locatorString, ExtractDataValue.Kind kind, String name) {		
+	protected String getValue(_By by, String locatorString, ExtractDataValue.Kind kind, String name) {		
 		WebElement  valueWebElement = this.getValueWebElement(by, locatorString);
 		
 		if (valueWebElement != null) {

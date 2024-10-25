@@ -15,6 +15,7 @@ By doing that it drastically increases readability of page objects and reduces t
 # Features
 
 - generates page object class implementations based on annotated interfaces
+- page objects support inheritance - interfaces can extend multiple other interfaces and will inherit all of their elements and methods
 - generates extraction data class implementations base on annotated interfaces.
 - actions like clicking of elements or writing to input fields can be configured via annotations
 - the api enforces creation of a fluent api that improves writing of tests. Doing assertions or executing of custom code is also embedded into this fluent api
@@ -86,10 +87,17 @@ public interface TestPagePageObject extends PageObjectParent<TestPagePageObject>
 
 	static final String DATA_EXTRACTION_FROM_TABLE_XPATH = "//table//tr[contains(@class,'data')]";
 	
-	@PageObjectElement(elementVariableName=TestPagePageObject.INPUT_FIELD_ID, by = By.ID,  value="" )
+	@PageObjectElement(
+		elementVariableName = TestPagePageObject.INPUT_FIELD_ID, 
+		by = _By.ID,
+		value=""
+	)
 	static final String INPUT_FIELD_ID = "searchField";
 	
-	@PageObjectElement(elementVariableName=TestPagePageObject.COUNTER_INCREMENT_BUTTON_ID, by = By.XPATH,  value="//fieldset[@name='counter']/input[@type='button']" )
+	@PageObjectElement(
+		elementVariableName = TestPagePageObject.COUNTER_INCREMENT_BUTTON_ID,  		
+		value = "//fieldset[@name='counter']/input[@type='button']" 
+	)
 	static final String COUNTER_INCREMENT_BUTTON_ID = "counterIncrementButton";
 	
 	@ActionMoveToAndClick(COUNTER_INCREMENT_BUTTON_ID)
@@ -97,18 +105,18 @@ public interface TestPagePageObject extends PageObjectParent<TestPagePageObject>
 	TestPagePageObject clickCounterIncrementButton();
 	
 	
-	@ExtractData(by = io.toolisticon.pogen4selenium.api.By.XPATH, value = DATA_EXTRACTION_FROM_TABLE_XPATH)
+	@ExtractData(value = DATA_EXTRACTION_FROM_TABLE_XPATH)
 	List<TestPageTableEntry> getTableEntries();
 	
-	@ExtractData(by = io.toolisticon.pogen4selenium.api.By.XPATH, value = DATA_EXTRACTION_FROM_TABLE_XPATH)
+	@ExtractData(value = DATA_EXTRACTION_FROM_TABLE_XPATH)
 	TestPageTableEntry getFirstTableEntry();
 	
-	@ExtractDataValue(by = By.XPATH, value="//fieldset[@name='counter']/span[@id='counter']")
+	@ExtractDataValue(value = "//fieldset[@name='counter']/span[@id='counter']")
 	String getCounter();
 	
 	// you can always provide your own methods and logic
 	default String providedGetCounter() {
-		return getDriver().findElement(org.openqa.selenium.By.xpath("//fieldset[@name='counter']/span[@id='counter']")).getText();
+		return getDriver().findElement(By.xpath("//fieldset[@name='counter']/span[@id='counter']")).getText();
 	}
 	
 	// Custom entry point for starting your tests
@@ -132,16 +140,17 @@ Extracting table data for our small [example](pogen4selenium-example/src/test/re
 @DataObject
 public interface TestPageTableEntry {
 
-	@ExtractDataValue(by = By.XPATH, value = "./td[1]")
+	// will use XPATH locator by default if by attribute isn't set explicitly
+	@ExtractDataValue(by = _By.XPATH, value = "./td[1]")
 	String name();
 	
-	@ExtractDataValue(by = By.XPATH, value = "./td[2]")
+	@ExtractDataValue( value = "./td[2]")
 	String age();
 	
-	@ExtractDataValue(by = By.XPATH, value = "./td[3]/a",  kind = Kind.ATTRIBUTE, name = "href")
+	@ExtractDataValue( value = "./td[3]/a",  kind = Kind.ATTRIBUTE, name = "href")
 	String link();
 	
-	@ExtractDataValue(by = By.XPATH, value = "./td[3]/a", kind = Kind.TEXT)
+	@ExtractDataValue(, value = "./td[3]/a", kind = Kind.TEXT)
 	String linkText();
 	
 }
@@ -245,15 +254,19 @@ public class TestPageTest {
 There are some default methods provided by the fluent api:
 
 ##### verify
-By using the verify methods it's possible to do check state of elements, i.e. if elements are present or clickable. Expected state is configured in PageObjectElement annotation. If not set explicitely all elements are expected to be present byx default.
+By using the verify methods it's possible to do check state of elements, i.e. if elements are present or clickable. Expected state is configured in PageObjectElement annotation. If not set explicitly all elements are expected to be present by default.
 
 ##### doAssertions
-It's possible to inline assertions done via your favourite testing tools. 
+It's possible to inline assertions done via your favorite testing tools. 
 By providing this method it's not necessary to hassle with local variables anymore.
 
 ##### execute
 The execute method allows you to do test steps dynamically, like reading data from the web page and doing things based on the extracted data.
-It can also be used to switch to another page object type. This can be useful if input data is expected to be validated and should stay on the same page and show an error message.  
+It can also be used to switch to another page object type. This can be useful if input data is expected to be validated and should stay on the same page and show an error message.
+
+#### pause
+It's possible to enforce an explicit pause time by using this method
+ 
 
 
 ## Best practices
