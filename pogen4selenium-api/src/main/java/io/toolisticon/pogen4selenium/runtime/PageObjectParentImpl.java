@@ -1,5 +1,6 @@
 package io.toolisticon.pogen4selenium.runtime;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ import org.openqa.selenium.support.ui.Wait;
 
 import io.toolisticon.pogen4selenium.api.PageObjectParent;
 
+@SuppressWarnings("unchecked")
 public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<PAGEOBJECT>> implements PageObjectParent<PAGEOBJECT>{
 
 	protected WebDriver driver;
@@ -35,6 +37,7 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 		return this.driver;
 	}
 
+	
 	@Override
 	public PAGEOBJECT pause(Duration duration) {
 		new Actions(driver).pause(duration).perform();
@@ -60,8 +63,20 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 		
 		return (OPO) function.execute((PAGEOBJECT)this);
 	}
+		
+	@Override
+	public <APO extends PageObjectParent<APO>> APO changePageObjectType(Class<APO> targetPageObjectType) {
+		try {
+			return targetPageObjectType.getConstructor(WebDriver.class).newInstance(this.getDriver());
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+			throw new RuntimeException("Unable to instantate the passed page object class : " + targetPageObjectType.getCanonicalName(), e);
+		}
+		
+	}
 
-	
+
+
 	protected void waitUntilUrl(String urlRegex) {
 		Wait<WebDriver> wait =
     	        new FluentWait<>(driver)

@@ -36,6 +36,9 @@ public class ${ toImplementHelper.implementationClassName } ${toImplementHelper.
 	
 
 	public !{if !toImplementHelper.hasTypeParameters}${toImplementHelper.interfaceName}!{else}PAGEOBJECT!{/if} verify() {
+!{if pageObject.addUrlCheckToVerify}
+		waitUntilUrl("${pageObject.urlRegularExpressionToVerify}");
+!{/if}	
 !{for element : pageObject.value}!{if element.usedForVerify.name == 'PRESENT'}
 		waitForElementToBePresent(${element.locatorConstantName});
 !{elseif element.usedForVerify.name == 'CLICKABLE'}
