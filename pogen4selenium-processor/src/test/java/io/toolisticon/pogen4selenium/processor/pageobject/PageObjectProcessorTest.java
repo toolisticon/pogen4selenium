@@ -58,6 +58,17 @@ public class PageObjectProcessorTest {
                 .executeTest();
     }
     
+    @Test
+    public void test_valid_withUrlCheck() {
+
+        compileTestBuilder
+                .andSourceFiles("testcases/pageobject/TestcaseValidUsageWithUrlCheck.java")
+                .whenCompiled()
+                .thenExpectThat()
+                .compilationSucceeds()
+                .executeTest();
+    }
+    
     /*-
     @Test
     public void test_readAnnotatedValue() {

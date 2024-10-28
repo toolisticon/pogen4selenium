@@ -24,6 +24,12 @@ public class PageObjectWrapperExtension {
 		
 	}
 	
+	@CustomCodeMethod(PageObject.class)
+	public static boolean addUrlCheckToVerify(PageObjectWrapper pageObjectWrapper) {
+		
+		return !pageObjectWrapper.urlRegularExpressionToVerifyIsDefaultValue();
+		
+	}
 	
 	private static List<PageObjectElementWrapper> getPageObjectElementsRecursively(TypeElement element){
 		
