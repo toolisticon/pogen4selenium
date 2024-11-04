@@ -10,11 +10,15 @@ import java.util.stream.Collectors;
 
 import org.openqa.selenium.interactions.Actions;
 
+import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.wrapper.ExecutableElementWrapper;
+import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import io.toolisticon.pogen4selenium.api.ActionClick;
 import io.toolisticon.pogen4selenium.api.ActionMoveToAndClick;
 import io.toolisticon.pogen4selenium.api.ActionWrite;
 import io.toolisticon.pogen4selenium.api.ExtractData;
+import io.toolisticon.pogen4selenium.api.PageObject;
+import io.toolisticon.pogen4selenium.api.PageObjectParent;
 
 public class MethodsToImplementHelper {
 	
@@ -34,6 +38,16 @@ public class MethodsToImplementHelper {
 	public Set<String> getImports() {
 		Set<String> imports = new HashSet<>();
 		imports.addAll(this.executableElementWrapper.getImports());
+		
+		Optional<TypeElementWrapper> tew = this.executableElementWrapper.getReturnType().getTypeElement();
+		if( tew.isPresent() && tew.get().hasAnnotation(PageObject.class)) {
+			
+			// must also import the impl class for other Page Objects
+			imports.add(this.executableElementWrapper.getReturnType().getPackage() + "." + this.executableElementWrapper.getReturnType().getSimpleName() + "Impl");
+		
+		}
+		
+		
 		imports.add(Actions.class.getCanonicalName());
 		imports.add(Duration.class.getCanonicalName());
 		
