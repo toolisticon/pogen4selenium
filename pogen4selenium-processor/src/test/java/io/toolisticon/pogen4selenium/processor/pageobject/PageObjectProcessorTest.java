@@ -69,6 +69,18 @@ public class PageObjectProcessorTest {
                 .executeTest();
     }
     
+    
+    @Test
+    public void test_valid_withInterPackageReferences() {
+
+        compileTestBuilder
+                .andSourceFiles("testcases/pageobject/referenceBetweenPackages/ReferencingClass.java","testcases/pageobject/referenceBetweenPackages/ReferencedClass.java")
+                .whenCompiled()
+                .thenExpectThat()
+                .compilationSucceeds()
+                .executeTest();
+    }
+    
     /*-
     @Test
     public void test_readAnnotatedValue() {
