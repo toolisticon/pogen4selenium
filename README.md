@@ -15,14 +15,14 @@ By doing that it drastically increases readability of page objects and reduces t
 # Features
 
 - generates page object class implementations based on annotated interfaces
-- page objects support inheritance - interfaces can extend multiple other interfaces and will inherit all of their elements and methods
+- page objects support mixins - interfaces can extend multiple other interfaces and will inherit all of their elements and methods
 - generates extraction data class implementations base on annotated interfaces.
 - actions like clicking of elements or writing to input fields can be configured via annotations
 - the api enforces creation of a fluent api that improves writing of tests. Doing assertions or executing of custom code is also embedded into this fluent api
 
 # Restrictions
 
-The project is still in development, so it currently just supports a few Actions like clicking or writing to input fields. Other Actions will be added in the near future.
+The project is still in development, so it currently just supports a few Actions like clicking or writing to input fields. Other Actions will be added in the near future or can be easily integrated via an SPI.
 
 Please create an issue, if you need specific action to be implemented. Usually it will be included shortly after ;)
 
@@ -37,7 +37,7 @@ The api lib must be bound as a dependency - for example in maven:
 	<dependency>
 	    <groupId>io.toolisticon.pogen4selenium</groupId>
 	    <artifactId>pogen4selenium-api</artifactId>
-	    <version>0.1.0</version>
+	    <version>0.5.0</version>
 	    <scope>provided</scope>
 	</dependency>
  
@@ -70,9 +70,14 @@ Additionally, you need to declare the annotation processor path in your compiler
 ### Defining Page Objects
 The page object interfaces must be annotated with the *PageObject* annotation and must extend the *PageObjectParent* interface.
 
-It's possible to add String constants annotated with the *PageObjectElement* annotation for all web elements which are related with the page object. The constant values must be unique inside the interface and will be used in the generated class as variable names for the corresponding elements. The constant names must have "_ID" as suffix.
+There are basically two ways to reference elements.
+The first is to use element fields in the generated classes that will internally be initialized via Selniums PageFactory.
 
-Then it's possible to add methods to the interface to declare actions. Those methods must return another page object interface.
+To achieve that it's necessary to add String constants annotated with the *PageObjectElement* annotation for all web elements which are related with the page object. The constant values must be unique inside the interface and will be used in the generated class as variable names for the corresponding elements. The constant names must have "_ID" as suffix.
+
+The other way is to use By locators on the fly by configuring them directly in the action annotations.
+
+Those action annotations must be placed on PageObject interface methods or method parameters. Those methods must return another page object interface.
 
 It's also possible to add methods to extract data. Those methods must be annotated with the *ExtractData* annotation and must return an instance or List of a data extraction type (see next section)
 
@@ -87,36 +92,27 @@ public interface TestPagePageObject extends PageObjectParent<TestPagePageObject>
 
 	static final String DATA_EXTRACTION_FROM_TABLE_XPATH = "//table//tr[contains(@class,'data')]";
 	
-	@PageObjectElement(
-		elementVariableName = TestPagePageObject.INPUT_FIELD_ID, 
-		by = _By.ID,
-		value=""
-	)
-	static final String INPUT_FIELD_ID = "searchField";
+	TestPagePageObject writeToInputField(@ActionWrite(by=_By.ID, value="input_field") String value);
 	
-	@PageObjectElement(
-		elementVariableName = TestPagePageObject.COUNTER_INCREMENT_BUTTON_ID,  		
-		value = "//fieldset[@name='counter']/input[@type='button']" 
-	)
-	static final String COUNTER_INCREMENT_BUTTON_ID = "counterIncrementButton";
+	@ExtractDataValue(by=_By.ID, value = "input_field", kind=Kind.ATTRIBUTE, name="value")
+	String readInputFieldValue();
 	
-	@ActionMoveToAndClick(COUNTER_INCREMENT_BUTTON_ID)
+	@ActionMoveToAndClick(by=_By.XPATH, value = "//fieldset[@name='counter']/input[@type='button']")
 	@Pause(value = 500L)
-	TestPagePageObject clickCounterIncrementButton();
+	TestPagePageObject clickCounterIncrementButton();	
 	
-	
-	@ExtractData(value = DATA_EXTRACTION_FROM_TABLE_XPATH)
+	@ExtractData(by = io.toolisticon.pogen4selenium.api._By.XPATH, value = DATA_EXTRACTION_FROM_TABLE_XPATH)
 	List<TestPageTableEntry> getTableEntries();
 	
-	@ExtractData(value = DATA_EXTRACTION_FROM_TABLE_XPATH)
+	@ExtractData(by = io.toolisticon.pogen4selenium.api._By.XPATH, value = DATA_EXTRACTION_FROM_TABLE_XPATH)
 	TestPageTableEntry getFirstTableEntry();
 	
-	@ExtractDataValue(value = "//fieldset[@name='counter']/span[@id='counter']")
+	@ExtractDataValue(by = _By.XPATH, value="//fieldset[@name='counter']/span[@id='counter']")
 	String getCounter();
 	
 	// you can always provide your own methods and logic
 	default String providedGetCounter() {
-		return getDriver().findElement(By.xpath("//fieldset[@name='counter']/span[@id='counter']")).getText();
+		return getDriver().findElement(org.openqa.selenium.By.xpath("//fieldset[@name='counter']/span[@id='counter']")).getText();
 	}
 	
 	// Custom entry point for starting your tests
@@ -270,6 +266,41 @@ It's possible to enforce an explicit pause time by using this method
 ##### changePageObjectType
 Change the page objects type if expected behavior leaves the 'happy path' - for example if you expect to encounter a failing form validation or similar things.
  
+## Extensibility
+New action annotations can added by providing an action annotation annotated itself with the _Action_ meta annotation. Annotations must either be applicable to methods or method parameters.
+
+The corresponding code can be provided by implementing the _ActionHandler_ interface:
+
+```java
+/**
+ * Service provider interface to bind implementations for actions.
+ */
+@Spi
+public interface ActionHandler {
+
+	/**
+	 * The fully qualified name of the related annotation type.
+	 * @return the fqn of the supported annotation type
+	 */
+	String getSupportedActionAnnotationClassFqn();
+	
+	/**
+	 * Method that is called to generate the code necessary to fulfill the action.
+	 * @param element The annotated element
+	 * @return The code that must be added to the annotated method or an empty String(must not be null !!!)
+	 */
+	public String generateCode(Element element);
+	
+	/**
+	 * Gets all import needed by the generated code to be compiled and executed correctly
+	 * @param element the annotated element
+	 * @return a set containing all imports or an empty list (must not be null !!!)
+	 */
+	public Set<String> getImports(Element element);
+		
+}
+```
+
 
 
 ## Best practices
@@ -281,7 +312,10 @@ There are a few things you should consider as best practices
 
 ## Example
 
-Please check the our [example](pogen4selenium-example/)
+Please check the our example submodule: [example](pogen4selenium-example/)
+
+It contains a basic example page demonstrating the usage of all available actions and data extraction.
+A second example shows how to test the google search page.
     
 # Contributing
 
