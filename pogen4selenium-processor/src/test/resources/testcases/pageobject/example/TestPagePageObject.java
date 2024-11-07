@@ -26,6 +26,8 @@ public interface TestPagePageObject extends PageObjectParent<TestPagePageObject>
 	@PageObjectElement(elementVariableName=TestPagePageObject.COUNTER_INCREMENT_BUTTON_ID, by = _By.XPATH,  value="//fieldset[@name='counter']/input[@type='button']" )
 	static final String COUNTER_INCREMENT_BUTTON_ID = "counterIncrementButton";
 	
+	@PageObjectElement(elementVariableName=TestPagePageObject.DATA_EXTRACTION_FROM_TABLE_ID, by = _By.XPATH,  value=DATA_EXTRACTION_FROM_TABLE_XPATH )
+	static final String DATA_EXTRACTION_FROM_TABLE_ID= "dataExtractionFromTable";
 	
 	TestPagePageObject writeToInputField(@ActionWrite(INPUT_FIELD_ID) String value);
 	
@@ -41,6 +43,13 @@ public interface TestPagePageObject extends PageObjectParent<TestPagePageObject>
 	
 	@ExtractData(by = io.toolisticon.pogen4selenium.api._By.XPATH, value = DATA_EXTRACTION_FROM_TABLE_XPATH)
 	TestPageTableEntry getFirstTableEntry();
+	
+	@ExtractData(by = io.toolisticon.pogen4selenium.api._By.ELEMENT, value = DATA_EXTRACTION_FROM_TABLE_ID)
+	List<TestPageTableEntry> getTableEntriesFromElement();
+	
+	@ExtractData(by = io.toolisticon.pogen4selenium.api._By.ELEMENT, value = DATA_EXTRACTION_FROM_TABLE_ID)
+	TestPageTableEntry getFirstTableEntryFromElement();
+	
 	
 	@ExtractDataValue(by = _By.XPATH, value="//fieldset[@name='counter']/span[@id='counter']")
 	String getCounter();

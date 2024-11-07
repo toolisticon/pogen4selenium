@@ -42,7 +42,7 @@ public class ${ toImplementHelper.implementationClassName } ${toImplementHelper.
 !{for element : pageObject.value}!{if element.usedForVerify.name == 'PRESENT'}
 		waitForElementToBePresent(${element.locatorConstantName});
 !{elseif element.usedForVerify.name == 'CLICKABLE'}
-		waitForElementToBeClickable(${element.locatorConstantName});
+		waitForElementToBeInteractable(${element.locatorConstantName});
 !{/if}!{/for}	
 		return !{if toImplementHelper.hasTypeParameters}(PAGEOBJECT)!{/if} this;
 	}
@@ -53,28 +53,15 @@ public class ${ toImplementHelper.implementationClassName } ${toImplementHelper.
 	public ${method.methodSignature}{
 	
 		pause(Duration.ofMillis(${method.beforePause}L));
-	
-		// Elements to write to
-!{for toWrite : method.elementsToWriteStrings}
-		writeToElement(${toWrite.elementVarName}Element, ${toWrite.toWriteParameterName});
+
+!{for action : method.actions}
+		${action.generateCode}
 !{/for}
 	
-!{if method.getElementToClick.isPresent}
-		// Button to click
-		${method.getElementToClick.get}Element.click();
-!{/if}
-!{if method.getElementToMoveToAndClick.isPresent}
-		// Move to Element and click
-		new Actions(getDriver()).moveToElement(${method.getElementToMoveToAndClick.get}Element).pause(300).click().build().perform();		
-!{/if}
 !{if method.getExtractDataValue.isPresent}
 		return ${method.getExtractDataValue.get.getFinalMethodCall}
 !{elseif method.getExtractData.isPresent}
-!{if method.getExtractData.get.isList}
-		return getDriver().findElements(By.${method.getExtractData.get.by.correspondingByMethodName}("${method.getExtractData.get.value}")).stream().map( ${method.getExtractData.get.extractedDataImplName}::new).collect(Collectors.toList());
-!{else}
-		return new ${method.getExtractData.get.extractedDataImplName}(getDriver().findElement(By.${method.getExtractData.get.by.correspondingByMethodName}("${method.getExtractData.get.value}")));
-!{/if}
+		return ${method.getExtractData.get.getFinalMethodCall}
 !{else}
 		return new ${method.getNextImplClassName}(getDriver()).pause(Duration.ofMillis(${method.afterPause}L));
 !{/if}

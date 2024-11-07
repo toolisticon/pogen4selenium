@@ -12,6 +12,7 @@ import io.toolisticon.aptk.tools.wrapper.ExecutableElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import io.toolisticon.pogen4selenium.api.DataObject;
 import io.toolisticon.pogen4selenium.api.ExtractData;
+import io.toolisticon.pogen4selenium.api._By;
 
 public class ExtractDataWrapperExtension {
 	
@@ -42,6 +43,30 @@ public class ExtractDataWrapperExtension {
 			return returnTypeMirror.getWrappedComponentType();
 		} else {
 			return returnTypeMirror;
+		}
+		
+	}
+	
+	@CustomCodeMethod(ExtractData.class)
+	public static String getFinalMethodCall(ExtractDataWrapper dataToExtractWrapper) {
+		
+		if(dataToExtractWrapper.by() == _By.ELEMENT) {
+			
+			String singleValue = "new " + dataToExtractWrapper.getExtractedDataImplName() +"(" + dataToExtractWrapper.value() + "Element)";
+			if (isList(dataToExtractWrapper)) {
+				return "java.util.Arrays.asList(" + singleValue + ");";
+			} else {
+				return singleValue + ";";
+			}
+			
+		} else {
+			
+			if (isList(dataToExtractWrapper)) {
+				return "getDriver().findElements(By." + dataToExtractWrapper.by().getCorrespondingByMethodName() + "(\""+ dataToExtractWrapper.value() + "\")).stream().map(" + dataToExtractWrapper.getExtractedDataImplName() + "::new).collect(Collectors.toList());";
+			} else {
+				return "new " + dataToExtractWrapper.getExtractedDataImplName() +"(getDriver().findElement(By." + dataToExtractWrapper.by().getCorrespondingByMethodName() + "(\"" + dataToExtractWrapper.value() + "\")));";
+			}
+			
 		}
 		
 	}
