@@ -87,37 +87,49 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
     	wait.until(ExpectedConditions.urlMatches(urlRegex));
 	}
 	
-	protected void waitForElementToBeClickable(String xpath) {
+	
+	protected void waitForElementToBeInteractable(String xpath) {
+		waitForElementToBeInteractable(By.xpath(xpath));
+	}
+	
+	protected WebElement waitForElementToBeInteractable(By by) {
 		Wait<WebDriver> wait =
     	        new FluentWait<>(driver)
     	            .withTimeout(Duration.ofSeconds(15))
     	            .pollingEvery(Duration.ofMillis(300))
     	            .ignoring(ElementNotInteractableException.class);
     	
-    	wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
+    	return wait.until(ExpectedConditions.elementToBeClickable(by));
 	}
 	
-	protected void waitForElementToBeClickable(WebElement element) {
+	protected WebElement waitForElementToBeInteractable(WebElement element) {
+		if(element == null) {
+			return null;
+		}
+		
 		Wait<WebDriver> wait =
     	        new FluentWait<>(driver)
     	            .withTimeout(Duration.ofSeconds(15))
     	            .pollingEvery(Duration.ofMillis(300))
-    	            .ignoring(NullPointerException.class);
+    	            .ignoring(ElementNotInteractableException.class);
     	
-    	wait.until(ExpectedConditions.elementToBeClickable(element));
+    	return wait.until(ExpectedConditions.elementToBeClickable(element));
 	}
 	
 	protected void waitForElementToBePresent(String xpath) {
+		waitForElementToBePresent(By.xpath(xpath));
+	}
+	
+	protected WebElement waitForElementToBePresent(By by) {
 		Wait<WebDriver> wait =
     	        new FluentWait<>(driver)
     	            .withTimeout(Duration.ofSeconds(15))
     	            .pollingEvery(Duration.ofMillis(300))
     	            .ignoring(NoSuchElementException.class);
     	
-    	wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
+    	return wait.until(ExpectedConditions.presenceOfElementLocated(by));
+    	
 	}
-	
-	
 	
 	protected void waitForElementToBeAbsent(String xpath) {
 		Wait<WebDriver> wait =

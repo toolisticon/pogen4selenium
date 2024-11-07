@@ -9,6 +9,7 @@ import io.toolisticon.aptk.common.ToolingProvider;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.cute.Cute;
 import io.toolisticon.cute.CuteApi;
+import io.toolisticon.pogen4selenium.processor.datatoextract.DataObjectProcessor;
 import io.toolisticon.pogen4selenium.processor.pageobject.PageObjectProcessor;
 
 
@@ -75,6 +76,32 @@ public class PageObjectProcessorTest {
 
         compileTestBuilder
                 .andSourceFiles("testcases/pageobject/referenceBetweenPackages/ReferencingClass.java","testcases/pageobject/referenceBetweenPackages/ReferencedClass.java")
+                .whenCompiled()
+                .thenExpectThat()
+                .compilationSucceeds()
+                .executeTest();
+    }
+    
+    
+    @Test
+    public void test_valid_withLocatorInActions() {
+
+        compileTestBuilder
+                .andSourceFiles("testcases/pageobject/locatorInActions/TestcaseValidUsage.java")
+                .whenCompiled()
+                .thenExpectThat()
+                .compilationSucceeds()
+                .executeTest();
+    }
+    
+    @Test
+    public void test_valid_example() {
+
+    	Cute
+        .blackBoxTest()
+        .given()
+        .processors(PageObjectProcessor.class, DataObjectProcessor.class)
+                .andSourceFiles("testcases/pageobject/example/TestPagePageObject.java", "testcases/pageobject/example/TestPageTableEntry.java")
                 .whenCompiled()
                 .thenExpectThat()
                 .compilationSucceeds()

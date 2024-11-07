@@ -1,4 +1,4 @@
-package io.toolisticon.pogen4selenium.example;
+package io.toolisticon.pogen4selenium.example.withoutpagefactory;
 
 import java.time.Duration;
 import java.util.List;
@@ -10,6 +10,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+
+import io.toolisticon.pogen4selenium.example.JettyServer;
+import io.toolisticon.pogen4selenium.example.withoutpagefactory.TestPagePageObject;
+import io.toolisticon.pogen4selenium.example.withoutpagefactory.TestPageTableEntry;
 
 public class TestPageTest {
 
@@ -61,6 +65,26 @@ public class TestPageTest {
 	
 	@Test
 	public void extractFirstDatasetTest() {
+		TestPagePageObject.init(webDriver)
+		.doAssertions(e -> {
+				
+				// Do assertions here
+				TestPageTableEntry result = e.getFirstTableEntry();
+				
+				
+				MatcherAssert.assertThat(result.name(), Matchers.is("Max"));
+				MatcherAssert.assertThat(result.age(), Matchers.is("9"));
+				MatcherAssert.assertThat(result.link(), Matchers.is("https://de.wikipedia.org/wiki/Max_und_Moritz"));
+				MatcherAssert.assertThat(result.linkText(), Matchers.is("Max und Moritz Wikipedia"));
+				
+		
+
+			})
+			;
+	}
+	
+	@Test
+	public void extractFirstDatasetFromElementTest() {
 		TestPagePageObject.init(webDriver)
 		.doAssertions(e -> {
 				

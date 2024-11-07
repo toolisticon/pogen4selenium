@@ -1,6 +1,5 @@
 package io.toolisticon.pogen4selenium.processor.pageobject;
 
-import java.lang.annotation.Annotation;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.List;
@@ -8,17 +7,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
+
 import org.openqa.selenium.interactions.Actions;
 
-import io.toolisticon.aptk.tools.TypeMirrorWrapper;
+import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.ExecutableElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
-import io.toolisticon.pogen4selenium.api.ActionClick;
-import io.toolisticon.pogen4selenium.api.ActionMoveToAndClick;
-import io.toolisticon.pogen4selenium.api.ActionWrite;
-import io.toolisticon.pogen4selenium.api.ExtractData;
+import io.toolisticon.aptk.tools.wrapper.VariableElementWrapper;
+import io.toolisticon.pogen4selenium.api.Action;
 import io.toolisticon.pogen4selenium.api.PageObject;
-import io.toolisticon.pogen4selenium.api.PageObjectParent;
+import io.toolisticon.pogen4selenium.processor.pageobject.actions.ActionWrapper;
 
 public class MethodsToImplementHelper {
 	
@@ -54,23 +54,28 @@ public class MethodsToImplementHelper {
 		return imports;
 	}
 	
-	public List<ElementsToWrite> getElementsToWriteStrings() {
-		return this.executableElementWrapper.getParameters().stream()
-				.filter(e -> e.hasAnnotation((Class<? extends Annotation>) ActionWrite.class))
-				.map(e -> new ElementsToWrite(ActionWriteWrapper.wrap(e.unwrap()).value(), e.getSimpleName()))
+	public List<ActionWrapper> getActions() {
+		
+		// Must get annotations by Meta annotation Action
+		List<ActionWrapper> actions = getActionsForElement(this.executableElementWrapper);
+		
+		List<VariableElementWrapper> annotatedParameters = this.executableElementWrapper.getParameters();
+		
+		for (VariableElementWrapper annotatedParameter : annotatedParameters) {
+			actions.addAll(getActionsForElement(annotatedParameter));
+		}
+		
+		return actions;
+	}
+	
+	private static List<ActionWrapper> getActionsForElement(ElementWrapper<? extends Element> element) {
+		return element.getAnnotations().stream()
+				.filter(e -> e.asElement().hasAnnotation(Action.class))
+				.<ActionWrapper>map(e -> {
+					
+					return new ActionWrapper(TypeElementWrapper.wrap((TypeElement)(e.getAnnotationType().asElement())).getQualifiedName(), element.unwrap());
+				})
 				.collect(Collectors.toList());
-	}
-	
-	public Optional<String> getElementToClick() {
-		return this.executableElementWrapper.hasAnnotation(ActionClick.class) ? 
-				Optional.of(ActionClickWrapper.wrap(this.executableElementWrapper.unwrap()).value())
-				: Optional.empty();
-	}
-	
-	public Optional<String> getElementToMoveToAndClick() {
-		return this.executableElementWrapper.hasAnnotation(ActionMoveToAndClick.class) ? 
-				Optional.of(ActionMoveToAndClickWrapper.wrap(this.executableElementWrapper.unwrap()).value())
-				: Optional.empty();
 	}
 	
 	public Optional<ExtractDataWrapper> getExtractData() {
