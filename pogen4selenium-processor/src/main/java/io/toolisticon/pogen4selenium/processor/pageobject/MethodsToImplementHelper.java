@@ -45,11 +45,14 @@ public class MethodsToImplementHelper {
 			// must also import the impl class for other Page Objects
 			imports.add(this.executableElementWrapper.getReturnType().getPackage() + "." + this.executableElementWrapper.getReturnType().getSimpleName() + "Impl");
 		
-		}
-		
+		}		
 		
 		imports.add(Actions.class.getCanonicalName());
 		imports.add(Duration.class.getCanonicalName());
+		
+		// get the imports needed by all related actions
+		imports.addAll( getActions().stream().map(e -> e.getImports()).flatMap(Set::stream).collect(Collectors.toSet()) );
+		
 		
 		return imports;
 	}

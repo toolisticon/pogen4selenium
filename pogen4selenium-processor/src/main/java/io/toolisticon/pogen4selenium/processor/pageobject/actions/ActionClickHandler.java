@@ -6,10 +6,8 @@ import java.util.Set;
 import javax.lang.model.element.Element;
 
 import io.toolisticon.pogen4selenium.api.ActionClick;
-import io.toolisticon.pogen4selenium.api.ActionWrite;
 import io.toolisticon.pogen4selenium.api._By;
 import io.toolisticon.pogen4selenium.processor.pageobject.ActionClickWrapper;
-import io.toolisticon.pogen4selenium.processor.pageobject.ActionWriteWrapper;
 import io.toolisticon.spiap.api.SpiService;
 
 @SpiService(ActionHandler.class)
