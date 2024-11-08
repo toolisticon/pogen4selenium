@@ -1,18 +1,34 @@
 package io.toolisticon.pogen4selenium.runtime;
 
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 
 import io.toolisticon.pogen4selenium.api._By;
 import io.toolisticon.pogen4selenium.api.ExtractDataValue;
 
-public class DataObjectParentImpl {
+public class DataObjectParentImpl implements CommonByLocators{
 	
+	protected final WebDriver driver;
 	private final WebElement relativeParentWebElement;
 	
-	protected DataObjectParentImpl(WebElement relativeParentWebElement) {
+	protected DataObjectParentImpl(WebDriver driver, WebElement relativeParentWebElement) {
+		this.driver = driver;
 		this.relativeParentWebElement = relativeParentWebElement;
 	}
 
+	public WebDriver getDriver() {
+		return this.driver;
+	}
+	
 	protected WebElement getRelativeParentWebElement() {
 		return this.relativeParentWebElement;
 	}
@@ -67,6 +83,35 @@ public class DataObjectParentImpl {
 		}
 		
 		return null;
+	}
+	
+	
+	@Override
+	public WebElement waitForElementToBeInteractable(By by) {
+		Wait<WebDriver> wait =
+    	        new FluentWait<>(driver)
+    	            .withTimeout(Duration.ofSeconds(15))
+    	            .pollingEvery(Duration.ofMillis(300))
+    	            .ignoring(ElementNotInteractableException.class);
+    	
+    	return wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(relativeParentWebElement, by));
+	}
+	
+	
+	@Override
+	public WebElement waitForElementToBePresent(By by) {
+		Wait<WebDriver> wait =
+    	        new FluentWait<>(driver)
+    	            .withTimeout(Duration.ofSeconds(15))
+    	            .pollingEvery(Duration.ofMillis(300))
+    	            .ignoring(NoSuchElementException.class);
+    	
+    	return wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(relativeParentWebElement, by));
+    	
+	}
+	
+	public void pause(Duration duration) {
+		new Actions(driver).pause(duration).perform();
 	}
 	
 }

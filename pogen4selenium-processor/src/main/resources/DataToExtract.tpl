@@ -3,6 +3,9 @@ package ${ packageName };
 !{for import : imports}
 import ${import};
 !{/for}
+import java.time.Duration;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,8 +23,8 @@ public class ${ toImplementHelper.implementationClassName }  extends DataObjectP
 	/** 
 	 * Constructor
 	 */
-	public ${ toImplementHelper.implementationClassName } (WebElement relativeContentRoot) {
-		super(relativeContentRoot);    	
+	public ${ toImplementHelper.implementationClassName } (WebDriver driver, WebElement relativeContentRoot) {
+		super(driver, relativeContentRoot);    	
 	}
 		
 	// implement methods
@@ -29,6 +32,21 @@ public class ${ toImplementHelper.implementationClassName }  extends DataObjectP
 	@Override
 	public String ${dataToExtractValue.methodName}(){
 		return getValue(_By.${dataToExtractValue.by}, "${dataToExtractValue.value}", ExtractDataValue.Kind.${dataToExtractValue.kind}, "${dataToExtractValue.name}");
+	}
+!{/for}	
+
+!{for method : methodsToImplement}
+	@Override
+	public ${method.methodSignature}{
+	
+		pause(Duration.ofMillis(${method.beforePause}L));
+
+!{for action : method.actions}
+		${action.generateCode}
+!{/for}
+	
+		return new ${method.getNextImplClassName}(getDriver()).pause(Duration.ofMillis(${method.afterPause}L));
+
 	}
 !{/for}	
 

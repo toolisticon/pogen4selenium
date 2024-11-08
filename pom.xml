@@ -52,7 +52,7 @@
 		<cute.version>1.7.0</cute.version>
 		<spiap.version>0.11.0</spiap.version>
 		<aptk.version>0.26.0</aptk.version>
-		<selenium.version>4.24.0</selenium.version>
+		<selenium.version>4.26.0</selenium.version>
 		
 		<!-- versions of test dependencies -->
 		<junit.version>4.13.2</junit.version>

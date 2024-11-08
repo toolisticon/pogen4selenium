@@ -1,4 +1,4 @@
-package io.toolisticon.pogen4selenium.processor.pageobject.actions;
+package io.toolisticon.pogen4selenium.processor.common.actions;
 
 import java.util.Collections;
 import java.util.Set;
@@ -7,7 +7,6 @@ import javax.lang.model.element.Element;
 
 import io.toolisticon.pogen4selenium.api.ActionMoveToAndClick;
 import io.toolisticon.pogen4selenium.api._By;
-import io.toolisticon.pogen4selenium.processor.pageobject.ActionClickWrapper;
 import io.toolisticon.pogen4selenium.processor.pageobject.ActionMoveToAndClickWrapper;
 import io.toolisticon.spiap.api.SpiService;
 

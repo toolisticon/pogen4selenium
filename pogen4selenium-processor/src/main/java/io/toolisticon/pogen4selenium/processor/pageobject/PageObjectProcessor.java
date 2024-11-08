@@ -25,6 +25,7 @@ import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import io.toolisticon.pogen4selenium.api.PageObject;
 import io.toolisticon.pogen4selenium.api.PageObjectParent;
+import io.toolisticon.pogen4selenium.processor.common.MethodsToImplementHelper;
 import io.toolisticon.spiap.api.SpiService;
 
 /**

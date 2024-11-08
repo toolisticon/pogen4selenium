@@ -20,7 +20,7 @@ import org.openqa.selenium.support.ui.Wait;
 import io.toolisticon.pogen4selenium.api.PageObjectParent;
 
 @SuppressWarnings("unchecked")
-public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<PAGEOBJECT>> implements PageObjectParent<PAGEOBJECT>{
+public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<PAGEOBJECT>> implements PageObjectParent<PAGEOBJECT>, CommonByLocators{
 
 	protected WebDriver driver;
 	
@@ -92,7 +92,8 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 		waitForElementToBeInteractable(By.xpath(xpath));
 	}
 	
-	protected WebElement waitForElementToBeInteractable(By by) {
+	@Override
+	public WebElement waitForElementToBeInteractable(By by) {
 		Wait<WebDriver> wait =
     	        new FluentWait<>(driver)
     	            .withTimeout(Duration.ofSeconds(15))
@@ -120,7 +121,8 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 		waitForElementToBePresent(By.xpath(xpath));
 	}
 	
-	protected WebElement waitForElementToBePresent(By by) {
+	@Override
+	public WebElement waitForElementToBePresent(By by) {
 		Wait<WebDriver> wait =
     	        new FluentWait<>(driver)
     	            .withTimeout(Duration.ofSeconds(15))

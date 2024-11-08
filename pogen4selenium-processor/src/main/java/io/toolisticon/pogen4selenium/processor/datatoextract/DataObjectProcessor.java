@@ -24,6 +24,8 @@ import io.toolisticon.aptk.tools.generators.SimpleJavaWriter;
 import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import io.toolisticon.pogen4selenium.api.DataObject;
+import io.toolisticon.pogen4selenium.processor.common.MethodsToImplementHelper;
+import io.toolisticon.pogen4selenium.processor.common.actions.ActionHelper;
 import io.toolisticon.pogen4selenium.runtime.DataObjectParentImpl;
 import io.toolisticon.spiap.api.SpiService;
 
@@ -130,6 +132,8 @@ public class DataObjectProcessor extends AbstractAnnotationProcessor {
         					e.getEnclosingElement().get()
         				).getQualifiedName().equals(DataObjectParentImpl.class.getCanonicalName()))
     			)
+        		// just keep methods with action annotations
+        		.filter(e -> ActionHelper.hasActions(e))
         		.map(MethodsToImplementHelper::new)
 	    		.collect(Collectors.toSet());
         

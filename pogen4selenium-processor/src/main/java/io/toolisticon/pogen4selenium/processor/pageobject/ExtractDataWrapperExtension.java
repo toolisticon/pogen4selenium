@@ -52,7 +52,7 @@ public class ExtractDataWrapperExtension {
 		
 		if(dataToExtractWrapper.by() == _By.ELEMENT) {
 			
-			String singleValue = "new " + dataToExtractWrapper.getExtractedDataImplName() +"(" + dataToExtractWrapper.value() + "Element)";
+			String singleValue = "new " + dataToExtractWrapper.getExtractedDataImplName() +"(getDriver(), " + dataToExtractWrapper.value() + "Element)";
 			if (isList(dataToExtractWrapper)) {
 				return "java.util.Arrays.asList(" + singleValue + ");";
 			} else {
@@ -62,9 +62,9 @@ public class ExtractDataWrapperExtension {
 		} else {
 			
 			if (isList(dataToExtractWrapper)) {
-				return "getDriver().findElements(By." + dataToExtractWrapper.by().getCorrespondingByMethodName() + "(\""+ dataToExtractWrapper.value() + "\")).stream().map(" + dataToExtractWrapper.getExtractedDataImplName() + "::new).collect(Collectors.toList());";
+				return "getDriver().findElements(By." + dataToExtractWrapper.by().getCorrespondingByMethodName() + "(\""+ dataToExtractWrapper.value() + "\")).stream().map(e -> new " + dataToExtractWrapper.getExtractedDataImplName() + "(getDriver(), e)).collect(Collectors.toList());";
 			} else {
-				return "new " + dataToExtractWrapper.getExtractedDataImplName() +"(getDriver().findElement(By." + dataToExtractWrapper.by().getCorrespondingByMethodName() + "(\"" + dataToExtractWrapper.value() + "\")));";
+				return "new " + dataToExtractWrapper.getExtractedDataImplName() +"(getDriver(), getDriver().findElement(By." + dataToExtractWrapper.by().getCorrespondingByMethodName() + "(\"" + dataToExtractWrapper.value() + "\")));";
 			}
 			
 		}
