@@ -46,6 +46,10 @@ public class GoogleSearchTest {
 			MatcherAssert.assertThat(searchResults.get(0).getLink(), Matchers.is("https://github.com/toolisticon/aptk"));
 			
 		})
+		.execute(e -> {
+			return e.getSearchResults().get(0).clickLink();
+		})
+		.doAssertions(e -> MatcherAssert.assertThat(e.getDriver().getCurrentUrl(), Matchers.is("https://github.com/toolisticon/aptk")))
 		
 		;
 		

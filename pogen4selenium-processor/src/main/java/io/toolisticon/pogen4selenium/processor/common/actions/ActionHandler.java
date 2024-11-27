@@ -1,4 +1,4 @@
-package io.toolisticon.pogen4selenium.processor.pageobject.actions;
+package io.toolisticon.pogen4selenium.processor.common.actions;
 
 import java.util.Set;
 

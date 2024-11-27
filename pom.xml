@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.toolisticon.pogen4selenium</groupId>
 	<artifactId>pogen4selenium</artifactId>
-	<version>0.6.0</version>
+	<version>0.6.1</version>
 	<packaging>pom</packaging>
 	<name>pogen4selenium</name>
 	<description>Please refer to https://github.com/toolisticon/pogen4selenium</description>
@@ -52,7 +52,7 @@
 		<cute.version>1.7.0</cute.version>
 		<spiap.version>0.11.0</spiap.version>
 		<aptk.version>0.26.0</aptk.version>
-		<selenium.version>4.24.0</selenium.version>
+		<selenium.version>4.26.0</selenium.version>
 		
 		<!-- versions of test dependencies -->
 		<junit.version>4.13.2</junit.version>

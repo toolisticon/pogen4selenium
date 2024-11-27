@@ -1,4 +1,4 @@
-package io.toolisticon.pogen4selenium.processor.pageobject;
+package io.toolisticon.pogen4selenium.processor.common;
 
 import java.time.Duration;
 import java.util.HashSet;
@@ -7,18 +7,16 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
-
 import org.openqa.selenium.interactions.Actions;
 
-import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.ExecutableElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
-import io.toolisticon.aptk.tools.wrapper.VariableElementWrapper;
-import io.toolisticon.pogen4selenium.api.Action;
 import io.toolisticon.pogen4selenium.api.PageObject;
-import io.toolisticon.pogen4selenium.processor.pageobject.actions.ActionWrapper;
+import io.toolisticon.pogen4selenium.processor.common.actions.ActionHelper;
+import io.toolisticon.pogen4selenium.processor.common.actions.ActionWrapper;
+import io.toolisticon.pogen4selenium.processor.pageobject.ExtractDataValueWrapper;
+import io.toolisticon.pogen4selenium.processor.pageobject.ExtractDataWrapper;
+import io.toolisticon.pogen4selenium.processor.pageobject.PauseWrapper;
 
 public class MethodsToImplementHelper {
 	
@@ -58,28 +56,9 @@ public class MethodsToImplementHelper {
 	}
 	
 	public List<ActionWrapper> getActions() {
-		
-		// Must get annotations by Meta annotation Action
-		List<ActionWrapper> actions = getActionsForElement(this.executableElementWrapper);
-		
-		List<VariableElementWrapper> annotatedParameters = this.executableElementWrapper.getParameters();
-		
-		for (VariableElementWrapper annotatedParameter : annotatedParameters) {
-			actions.addAll(getActionsForElement(annotatedParameter));
-		}
-		
-		return actions;
+		return ActionHelper.getActions(executableElementWrapper);
 	}
 	
-	private static List<ActionWrapper> getActionsForElement(ElementWrapper<? extends Element> element) {
-		return element.getAnnotations().stream()
-				.filter(e -> e.asElement().hasAnnotation(Action.class))
-				.<ActionWrapper>map(e -> {
-					
-					return new ActionWrapper(TypeElementWrapper.wrap((TypeElement)(e.getAnnotationType().asElement())).getQualifiedName(), element.unwrap());
-				})
-				.collect(Collectors.toList());
-	}
 	
 	public Optional<ExtractDataWrapper> getExtractData() {
 		return Optional.ofNullable(ExtractDataWrapper.wrap(this.executableElementWrapper.unwrap()));
@@ -89,6 +68,7 @@ public class MethodsToImplementHelper {
 		return Optional.ofNullable(ExtractDataValueWrapper.wrap(this.executableElementWrapper.unwrap()));
 	}
 	
+
 	
 	public String getNextImplClassName() {
 		return this.executableElementWrapper.getReturnType().getSimpleName() + "Impl";
