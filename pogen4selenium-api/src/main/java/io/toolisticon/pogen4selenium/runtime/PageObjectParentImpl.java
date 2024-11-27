@@ -81,8 +81,7 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 		Wait<WebDriver> wait =
     	        new FluentWait<>(driver)
     	            .withTimeout(Duration.ofSeconds(25))
-    	            .pollingEvery(Duration.ofMillis(300))
-    	            .ignoring(ElementNotInteractableException.class);
+    	            .pollingEvery(Duration.ofMillis(300));
     	
     	wait.until(ExpectedConditions.urlMatches(urlRegex));
 	}
@@ -98,7 +97,7 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
     	        new FluentWait<>(driver)
     	            .withTimeout(Duration.ofSeconds(15))
     	            .pollingEvery(Duration.ofMillis(300))
-    	            .ignoring(ElementNotInteractableException.class);
+    	            .ignoring(NoSuchElementException.class,ElementNotInteractableException.class);
     	
     	return wait.until(ExpectedConditions.elementToBeClickable(by));
 	}
