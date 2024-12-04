@@ -22,10 +22,10 @@ public class ActionHelper {
 		return !getActions(executableElementWrapper).isEmpty();
 	}
 	
-	public static  List<ActionWrapper> getActions(ExecutableElementWrapper executableElementWrapper) {
+	public static  List<LocateActionHandler> getActions(ExecutableElementWrapper executableElementWrapper) {
 		
 		// Must get annotations by Meta annotation Action
-		List<ActionWrapper> actions = getActionsForElement(executableElementWrapper);
+		List<LocateActionHandler> actions = getActionsForElement(executableElementWrapper);
 		
 		List<VariableElementWrapper> annotatedParameters = executableElementWrapper.getParameters();
 		
@@ -36,12 +36,12 @@ public class ActionHelper {
 		return actions;
 	}
 	
-	private static List<ActionWrapper> getActionsForElement(ElementWrapper<? extends Element> element) {
+	private static List<LocateActionHandler> getActionsForElement(ElementWrapper<? extends Element> element) {
 		return element.getAnnotations().stream()
 				.filter(e -> e.asElement().hasAnnotation(Action.class))
-				.<ActionWrapper>map(e -> {
+				.<LocateActionHandler>map(e -> {
 					
-					return new ActionWrapper(TypeElementWrapper.wrap((TypeElement)(e.getAnnotationType().asElement())).getQualifiedName(), element.unwrap());
+					return new LocateActionHandler(TypeElementWrapper.wrap((TypeElement)(e.getAnnotationType().asElement())).getQualifiedName(), element.unwrap());
 				})
 				.collect(Collectors.toList());
 	}

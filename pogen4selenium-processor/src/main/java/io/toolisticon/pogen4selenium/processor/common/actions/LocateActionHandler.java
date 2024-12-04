@@ -8,7 +8,7 @@ import javax.lang.model.element.Element;
 
 import io.toolisticon.pogen4selenium.processor.pageobject.PageObjectProcessor;
 
-public class ActionWrapper {
+public class LocateActionHandler {
 
 	private final String annotationTypeFqn;
 	private final Element annotatedElement;
@@ -20,7 +20,7 @@ public class ActionWrapper {
 		ActionHandlerServiceLocator.setClassLoaderToUse(PageObjectProcessor.class.getClassLoader());
 	}
 	
-	public ActionWrapper(String annotationTypeFqn, Element annotatedElement) {
+	public LocateActionHandler(String annotationTypeFqn, Element annotatedElement) {
 		super();
 		
 		this.annotationTypeFqn = annotationTypeFqn;

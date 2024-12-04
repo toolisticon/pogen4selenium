@@ -1,12 +1,16 @@
 package io.toolisticon.pogen4selenium.processor.common.actions;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.lang.model.element.Element;
 
+import io.toolisticon.aptk.tools.wrapper.AnnotationMirrorWrapper;
 import io.toolisticon.pogen4selenium.api.ActionWrite;
 import io.toolisticon.pogen4selenium.api._By;
+import io.toolisticon.pogen4selenium.processor.pageobject.ActionClickWrapper;
+import io.toolisticon.pogen4selenium.processor.pageobject.ActionMoveToAndClickWrapper;
+import io.toolisticon.pogen4selenium.processor.pageobject.ActionWrapper;
 import io.toolisticon.pogen4selenium.processor.pageobject.ActionWriteWrapper;
 import io.toolisticon.spiap.api.SpiService;
 
@@ -22,20 +26,27 @@ public class ActionWriteHandler implements ActionHandler {
 	public String generateCode(Element element) {
 		ActionWriteWrapper wrapper = ActionWriteWrapper.wrap(element);
 		
+		ActionWrapper actionWrapper = ActionWrapper.wrap(AnnotationMirrorWrapper.wrap(wrapper._annotationMirror()).asElement().unwrap());
 		
 		if (wrapper.by() == _By.ELEMENT) {
-			return "writeToElement((" + wrapper.value() + "Element), " + element.getSimpleName() + ");";
+			return "new " + actionWrapper.valueAsTypeMirrorWrapper().getSimpleName() + "( getDriver(), new " + wrapper.actionSideConditionAsTypeMirrorWrapper().getSimpleName() + "(), " + element.getSimpleName() + ").executeAction(" + wrapper.value() + "Element);\n";
 		} else {
-			return "writeToElement(waitForElementToBePresent(By." + wrapper.by().getCorrespondingByMethodName() + "(\"" + wrapper.value() + "\")), " + element.getSimpleName() + ");";
+			return "new " + actionWrapper.valueAsTypeMirrorWrapper().getSimpleName() + "( getDriver(), new " + wrapper.actionSideConditionAsTypeMirrorWrapper().getSimpleName() + "(), " + element.getSimpleName() + ").executeAction(By." + wrapper.by().getCorrespondingByMethodName() + "(\"" + wrapper.value() +"\"));\n";
 		}
-		
-		
-		
+		 
 	}
 
 	@Override
 	public Set<String> getImports(Element element) {
-		return Collections.emptySet();
+		ActionWriteWrapper wrapper = ActionWriteWrapper.wrap(element);
+		ActionWrapper actionWrapper = ActionWrapper.wrap(AnnotationMirrorWrapper.wrap(wrapper._annotationMirror()).asElement().unwrap());
+		
+		
+		Set<String> imports =  new HashSet<>();
+		imports.add(wrapper.actionSideConditionAsTypeMirrorWrapper().getQualifiedName());
+		imports.add(actionWrapper.valueAsTypeMirrorWrapper().getQualifiedName());
+		
+		return imports;
 	}
 
 }

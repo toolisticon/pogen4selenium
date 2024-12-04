@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
@@ -102,6 +103,16 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
     	return wait.until(ExpectedConditions.elementToBeClickable(by));
 	}
 	
+	public WebElement waitForElementToBeInteractable(ExpectedCondition<WebElement> expectedCondition) {
+		Wait<WebDriver> wait =
+    	        new FluentWait<>(driver)
+    	            .withTimeout(Duration.ofSeconds(15))
+    	            .pollingEvery(Duration.ofMillis(300))
+    	            .ignoring(NoSuchElementException.class,ElementNotInteractableException.class);
+    	
+    	return wait.until(expectedCondition);
+	}
+	
 	protected WebElement waitForElementToBeInteractable(WebElement element) {
 		if(element == null) {
 			return null;
@@ -131,6 +142,21 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
     	return wait.until(ExpectedConditions.presenceOfElementLocated(by));
     	
 	}
+	
+	public WebElement waitForElementToBePresent(ExpectedCondition<WebElement> expectedCondition) {
+		Wait<WebDriver> wait =
+    	        new FluentWait<>(driver)
+    	            .withTimeout(Duration.ofSeconds(15))
+    	            .pollingEvery(Duration.ofMillis(300))
+    	            .ignoring(NoSuchElementException.class);
+    	
+    	return wait.until(expectedCondition);
+    	
+	}
+	
+	
+	
+	
 	
 	protected void waitForElementToBeAbsent(String xpath) {
 		Wait<WebDriver> wait =
