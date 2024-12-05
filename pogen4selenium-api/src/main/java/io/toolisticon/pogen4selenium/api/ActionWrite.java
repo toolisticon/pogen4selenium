@@ -5,13 +5,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-
-import io.toolisticon.pogen4selenium.runtime.ActionWriteImpl;
-import io.toolisticon.pogen4selenium.runtime.DefaultLocatorStrategy;
 import io.toolisticon.pogen4selenium.runtime.DefaultSideCondition;
 import io.toolisticon.pogen4selenium.runtime.LocatorCondition;
+import io.toolisticon.pogen4selenium.runtime.actions.ActionWriteImpl;
 
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)

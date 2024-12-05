@@ -6,7 +6,7 @@
 # Why you should use this project?
 
 Page Objects are a good way to produce a maintainable and reusable codebase to implement automated ui tests with selenium.
-Nevertheless those page objects can contain a lot of (selenium related) boilerplate code that is mostly reused via copy and paste.
+Nevertheless those page objects can contain a lot of (selenium related) boilerplate code that is mostly reused via copy and paste. (like for example having fluent waits or Actions)
 This project provides processors to generate page object implementations by processing annotations placed on interfaces. 
 By doing that it drastically increases readability of page objects and reduces time for development.
 
@@ -22,7 +22,7 @@ By doing that it drastically increases readability of page objects and reduces t
 
 # Restrictions
 
-The project is still in development, so it currently just supports a few Actions like clicking or writing to input fields. Other Actions will be added in the near future or can be easily integrated via an SPI.
+The project is still in development, so it currently just supports a few Actions like clicking or writing to input fields. Nevertheless it's quite simple to define custom Action annotations and their implementations. 
 
 Please create an issue, if you need specific action to be implemented. Usually it will be included shortly after ;)
 

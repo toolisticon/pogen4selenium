@@ -1,22 +1,20 @@
-package io.toolisticon.pogen4selenium.runtime;
+package io.toolisticon.pogen4selenium.runtime.actions;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class ActionWriteImpl extends BaseAction {
+import io.toolisticon.pogen4selenium.runtime.LocatorCondition;
 
-	
-	private final String toSet;
-	
-	public ActionWriteImpl(WebDriver driver, LocatorCondition sideCondition, String toSet) {
+public class ActionClickImpl extends BaseAction {
+
+	public ActionClickImpl(WebDriver driver, LocatorCondition sideCondition) {
 		super(driver, sideCondition);
 		
-		this.toSet = toSet;
 	}
 
 	@Override
@@ -29,14 +27,10 @@ public class ActionWriteImpl extends BaseAction {
 		return Arrays.asList(NoSuchElementException.class);
 	}
 
+
 	@Override
 	protected void applyAction(WebElement webElement) {
-		
 		webElement.click();
-		webElement.sendKeys(Keys.CONTROL + "a");
-		webElement.sendKeys(Keys.DELETE);
-		webElement.sendKeys(toSet);
-		
 	}
 
 }

@@ -1,4 +1,4 @@
-package io.toolisticon.pogen4selenium.runtime;
+package io.toolisticon.pogen4selenium.runtime.actions;
 
 import java.time.Duration;
 import java.util.Collection;
@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import io.toolisticon.pogen4selenium.api.ActionImpl;
+import io.toolisticon.pogen4selenium.runtime.LocatorCondition;
 
 public abstract class BaseAction  implements LocatorCondition, ActionImpl{
 	

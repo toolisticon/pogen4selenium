@@ -1,18 +1,24 @@
-package io.toolisticon.pogen4selenium.runtime;
+package io.toolisticon.pogen4selenium.runtime.actions;
 
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 
-public class ActionMoveToAndClickImpl extends BaseAction {
+import io.toolisticon.pogen4selenium.runtime.LocatorCondition;
+
+public class ActionWriteImpl extends BaseAction {
 
 	
-	public ActionMoveToAndClickImpl(WebDriver driver, LocatorCondition sideCondition) {
+	private final String toSet;
+	
+	public ActionWriteImpl(WebDriver driver, LocatorCondition sideCondition, String toSet) {
 		super(driver, sideCondition);
+		
+		this.toSet = toSet;
 	}
 
 	@Override
@@ -27,7 +33,12 @@ public class ActionMoveToAndClickImpl extends BaseAction {
 
 	@Override
 	protected void applyAction(WebElement webElement) {
-		new Actions(driver).moveToElement(webElement).pause(300).click().perform();
+		
+		webElement.click();
+		webElement.sendKeys(Keys.CONTROL + "a");
+		webElement.sendKeys(Keys.DELETE);
+		webElement.sendKeys(toSet);
+		
 	}
 
 }
