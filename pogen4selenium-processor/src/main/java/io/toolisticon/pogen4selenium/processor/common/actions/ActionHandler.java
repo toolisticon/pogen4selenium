@@ -10,8 +10,6 @@ import io.toolisticon.spiap.api.Spi;
 /**
  * Service provider interface to bind implementations for actions.
  */
-
-@Spi
 public interface ActionHandler {
 
 	/**

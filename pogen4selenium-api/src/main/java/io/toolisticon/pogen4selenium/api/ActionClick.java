@@ -5,9 +5,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import io.toolisticon.pogen4selenium.runtime.DefaultSideCondition;
+import io.toolisticon.pogen4selenium.runtime.LocatorCondition;
+import io.toolisticon.pogen4selenium.runtime.actions.ActionClickImpl;
+
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Action
+@Action(ActionClickImpl.class)
 public @interface ActionClick {
 	
 	/**
@@ -19,4 +23,10 @@ public @interface ActionClick {
 	/** The locator string to use. */
 	String value();
 	
+	/**
+	 * The locator strategy to use, will just be taken into account if by attribute is not set to ELEMENT.
+	 * @return the Locator strategy, defaults to DefaultLocatorStrategy
+	 */
+	@ActionSideCondition
+	Class<? extends LocatorCondition> actionSideCondition() default DefaultSideCondition.class;
 }

@@ -13,7 +13,7 @@ import io.toolisticon.aptk.tools.wrapper.ExecutableElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import io.toolisticon.pogen4selenium.api.PageObject;
 import io.toolisticon.pogen4selenium.processor.common.actions.ActionHelper;
-import io.toolisticon.pogen4selenium.processor.common.actions.ActionWrapper;
+import io.toolisticon.pogen4selenium.processor.common.actions.LocateActionHandler;
 import io.toolisticon.pogen4selenium.processor.pageobject.ExtractDataValueWrapper;
 import io.toolisticon.pogen4selenium.processor.pageobject.ExtractDataWrapper;
 import io.toolisticon.pogen4selenium.processor.pageobject.PauseWrapper;
@@ -55,7 +55,7 @@ public class MethodsToImplementHelper {
 		return imports;
 	}
 	
-	public List<ActionWrapper> getActions() {
+	public List<LocateActionHandler> getActions() {
 		return ActionHelper.getActions(executableElementWrapper);
 	}
 	
