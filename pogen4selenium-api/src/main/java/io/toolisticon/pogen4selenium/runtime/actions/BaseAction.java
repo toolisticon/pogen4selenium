@@ -2,6 +2,7 @@ package io.toolisticon.pogen4selenium.runtime.actions;
 
 import java.time.Duration;
 import java.util.Collection;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,6 +37,7 @@ public abstract class BaseAction  implements LocatorCondition, ActionImpl{
     	        new FluentWait<>(driver)
     	            .withTimeout(Duration.ofSeconds(15))
     	            .pollingEvery(Duration.ofMillis(300))
+    	            .withMessage("Element based action '" + this.getClass().getCanonicalName() + "' with side condition '" + this.sideCondition.getClass().getCanonicalName() + "'")
     	            .ignoreAll(getExceptionsToIgnore());
     	
     	applyAction(wait.until(new OnElementCondition(webElement)));
@@ -52,10 +54,15 @@ public abstract class BaseAction  implements LocatorCondition, ActionImpl{
     	        new FluentWait<>(driver)
     	            .withTimeout(Duration.ofSeconds(15))
     	            .pollingEvery(Duration.ofMillis(300))
+    	            .withMessage("Locator '" + locator.toString() + "'  based action '" + this.getClass().getCanonicalName() + "' with side condition '" + this.sideCondition.getClass().getCanonicalName() + "'")
     	            .ignoreAll(getExceptionsToIgnore());
     	
     	applyAction(wait.until(new WithLocatorCondition(locator)));
 	
+	}
+	
+	protected String getLocatorMessage() {
+		return "Wasn't able to locate with locator of type '" + this.getClass().getCanonicalName() + "' and side condition '" + this.sideCondition.getClass().getCanonicalName() + "'";
 	}
 	
 	
