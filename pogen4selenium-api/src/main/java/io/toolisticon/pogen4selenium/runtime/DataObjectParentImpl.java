@@ -5,6 +5,7 @@ import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -110,6 +111,13 @@ public class DataObjectParentImpl implements CommonByLocators{
     	
 	}
 	
+	
+	
+	@Override
+	public SearchContext getSearchContext() {
+		return this.relativeParentWebElement;
+	}
+
 	public void pause(Duration duration) {
 		new Actions(driver).pause(duration).perform();
 	}

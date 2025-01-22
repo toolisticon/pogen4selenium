@@ -27,5 +27,5 @@ public @interface Action {
 	 */
 	Class<? extends ActionImpl> value();
 
-	
+	String[] attributeNameToConstructorMapping () default {};
 }

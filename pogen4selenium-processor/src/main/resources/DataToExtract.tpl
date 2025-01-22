@@ -44,9 +44,11 @@ public class ${ toImplementHelper.implementationClassName }  extends DataObjectP
 !{for action : method.actions}
 		${action.generateCode}
 !{/for}
-	
+!{if method.returnsPageObject}	
 		return new ${method.getNextImplClassName}(getDriver()).pause(Duration.ofMillis(${method.afterPause}L));
-
+!{else}
+		return this;	
+!{/if}
 	}
 !{/for}	
 

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -13,8 +14,8 @@ import io.toolisticon.pogen4selenium.runtime.LocatorCondition;
 public class ActionMoveToAndClickImpl extends BaseAction {
 
 	
-	public ActionMoveToAndClickImpl(WebDriver driver, LocatorCondition sideCondition) {
-		super(driver, sideCondition);
+	public ActionMoveToAndClickImpl(WebDriver driver, SearchContext searchContext, LocatorCondition sideCondition) {
+		super(driver, searchContext, sideCondition);
 	}
 
 	@Override

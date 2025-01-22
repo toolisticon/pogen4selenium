@@ -47,8 +47,8 @@ public class TestPageTest {
 				
 				MatcherAssert.assertThat(results.get(0).name(), Matchers.is("Max"));
 				MatcherAssert.assertThat(results.get(0).age(), Matchers.is("9"));
-				MatcherAssert.assertThat(results.get(0).link(), Matchers.is("https://de.wikipedia.org/wiki/Max_und_Moritz"));
-				MatcherAssert.assertThat(results.get(0).linkText(), Matchers.is("Max und Moritz Wikipedia"));
+				MatcherAssert.assertThat(results.get(0).link(), Matchers.is("http://localhost:9090/linkA"));
+				MatcherAssert.assertThat(results.get(0).linkText(), Matchers.is("Link A"));
 				
 
 			})
@@ -68,8 +68,8 @@ public class TestPageTest {
 				
 				MatcherAssert.assertThat(result.name(), Matchers.is("Max"));
 				MatcherAssert.assertThat(result.age(), Matchers.is("9"));
-				MatcherAssert.assertThat(result.link(), Matchers.is("https://de.wikipedia.org/wiki/Max_und_Moritz"));
-				MatcherAssert.assertThat(result.linkText(), Matchers.is("Max und Moritz Wikipedia"));
+				MatcherAssert.assertThat(result.link(), Matchers.is("http://localhost:9090/linkA"));
+				MatcherAssert.assertThat(result.linkText(), Matchers.is("Link A"));
 				
 		
 
@@ -77,7 +77,21 @@ public class TestPageTest {
 			;
 	}
 	
-
+	@Test
+	public void mixedDataObjectWithActionsAndPageObjectTraversialTest() {
+		TestPagePageObject.init(webDriver)
+		.doAssertions(e -> {
+				
+				// Do assertions here
+				TestPageTableEntry result = e.getFirstTableEntry();
+				
+				MatcherAssert.assertThat(result.writeToInputField("TEST!").inputField(), Matchers.is("TEST!"));
+				MatcherAssert.assertThat(result.clickLink().getDriver().getCurrentUrl(),Matchers.is("http://localhost:9090/linkA"));
+		
+				System.out.println("");
+			})
+			;
+	}
 	
 	@Test
 	public void incrementCounterTest() {
