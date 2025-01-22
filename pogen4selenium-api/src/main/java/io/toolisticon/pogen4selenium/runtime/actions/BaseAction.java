@@ -2,12 +2,12 @@ package io.toolisticon.pogen4selenium.runtime.actions;
 
 import java.time.Duration;
 import java.util.Collection;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,10 +22,12 @@ public abstract class BaseAction  implements LocatorCondition, ActionImpl{
 	
 	
 	protected final WebDriver driver;
+	protected final SearchContext searchContext;
 	private final LocatorCondition sideCondition;
 	
-	protected BaseAction(WebDriver driver, LocatorCondition sideCondition) {
+	protected BaseAction(WebDriver driver, SearchContext searchContext, LocatorCondition sideCondition) {
 		this.driver = driver;
+		this.searchContext = searchContext;
 		this.sideCondition = sideCondition;
 	}
 	
@@ -57,7 +59,7 @@ public abstract class BaseAction  implements LocatorCondition, ActionImpl{
     	            .withMessage("Locator '" + locator.toString() + "'  based action '" + this.getClass().getCanonicalName() + "' with side condition '" + this.sideCondition.getClass().getCanonicalName() + "'")
     	            .ignoreAll(getExceptionsToIgnore());
     	
-    	applyAction(wait.until(new WithLocatorCondition(locator)));
+    	applyAction(wait.until(new WithLocatorCondition(this.searchContext, locator)));
 	
 	}
 	
@@ -73,7 +75,7 @@ public abstract class BaseAction  implements LocatorCondition, ActionImpl{
 		private OnElementCondition(
 				WebElement webElement) {
 			
-			this.webElement = webElement;
+				this.webElement = webElement;
 			
 		}
 		
@@ -90,10 +92,12 @@ public abstract class BaseAction  implements LocatorCondition, ActionImpl{
 	
 	class WithLocatorCondition implements ExpectedCondition<WebElement> {
 		
+		private final SearchContext searchContext;
 		private final By locator;
 		
-		private WithLocatorCondition(By locator) {
+		private WithLocatorCondition(SearchContext searchContext, By locator) {
 			
+			this.searchContext = searchContext;
 			this.locator = locator;
 			
 		}
@@ -103,7 +107,7 @@ public abstract class BaseAction  implements LocatorCondition, ActionImpl{
 			
 			try {
 				
-				WebElement element = input.findElement(locator);
+				WebElement element = searchContext.findElement(locator);
 				return new OnElementCondition(element).apply(input);
 				
 			} catch (NoSuchElementException | StaleElementReferenceException e) {

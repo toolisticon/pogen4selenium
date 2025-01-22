@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -155,6 +156,10 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 	}
 	
 	
+	@Override
+	public SearchContext getSearchContext() {
+		return this.driver;
+	}
 	
 	
 	

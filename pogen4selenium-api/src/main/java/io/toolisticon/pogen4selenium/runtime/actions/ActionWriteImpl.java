@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -15,8 +16,8 @@ public class ActionWriteImpl extends BaseAction {
 	
 	private final String toSet;
 	
-	public ActionWriteImpl(WebDriver driver, LocatorCondition sideCondition, String toSet) {
-		super(driver, sideCondition);
+	public ActionWriteImpl(WebDriver driver, SearchContext searchContext, LocatorCondition sideCondition, String toSet) {
+		super(driver, searchContext, sideCondition);
 		
 		this.toSet = toSet;
 	}

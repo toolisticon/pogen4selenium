@@ -7,10 +7,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.lang.model.element.ElementKind;
+
 import org.openqa.selenium.interactions.Actions;
 
+import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.wrapper.ExecutableElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
+import io.toolisticon.pogen4selenium.api.DataObject;
 import io.toolisticon.pogen4selenium.api.PageObject;
 import io.toolisticon.pogen4selenium.processor.common.actions.ActionHelper;
 import io.toolisticon.pogen4selenium.processor.common.actions.LocateActionHandler;
@@ -27,7 +31,12 @@ public class MethodsToImplementHelper {
 		this.executableElementWrapper = executableElementWrapper;
 	}
 	
-
+	public boolean returnsPageObject() {
+		
+		Optional<TypeElementWrapper> returnTypeElement = this.executableElementWrapper.getReturnType().getTypeElement();
+		
+		return returnTypeElement.isPresent() && returnTypeElement.get().hasAnnotation(PageObject.class);
+	}
 	
 	public String getMethodSignature() {
 		return this.executableElementWrapper.getMethodSignature();
@@ -98,6 +107,25 @@ public class MethodsToImplementHelper {
 		if(ExtractDataWrapper.isAnnotated(executableElementWrapper.unwrap())) {
 			validationResult = validationResult & ExtractDataWrapper.wrap(executableElementWrapper.unwrap()).validate();
 		}
+		
+		// TODO: MUST ADD VALID VALIDATOR LOGIC HERE
+		//must validate return values depending if interface is DataObject or PageObject
+		Optional<TypeElementWrapper> enclosingInterface = this.executableElementWrapper.getFirstEnclosingElementWithKind(ElementKind.INTERFACE);
+		TypeMirrorWrapper returnType = this.executableElementWrapper.getReturnType();
+		if  (enclosingInterface.isPresent()) {
+			
+			if (enclosingInterface.get().hasAnnotation(DataObject.class)) {
+				
+				// return type for action must be a PageObject a self reference or a String 
+			
+				
+				
+			} else if (enclosingInterface.get().hasAnnotation(PageObject.class)) {
+				// return type must be either a PageObject, a DataObject or a String
+			}
+			
+		} 
+		// if method contains actions, then the 
 		
 		return validationResult;
 		
