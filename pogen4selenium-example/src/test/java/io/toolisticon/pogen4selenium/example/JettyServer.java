@@ -2,15 +2,16 @@ package io.toolisticon.pogen4selenium.example;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHandler;
 
 public class JettyServer {
 
@@ -22,8 +23,12 @@ public class JettyServer {
         connector.setPort(9090);
         server.setConnectors(new Connector[] {connector});
         
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.setContextPath("/");
+        server.setHandler(context);
+         
         ServletHandler servletHandler = new ServletHandler();
-        server.setHandler(servletHandler);
+        context.setHandler(servletHandler);
         
         servletHandler.addServletWithMapping(TestPage.class, "/start");
         servletHandler.addServletWithMapping(LinkedPageA.class, "/linkA");

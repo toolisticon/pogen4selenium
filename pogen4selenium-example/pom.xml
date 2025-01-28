@@ -50,15 +50,15 @@
 		<dependency>
 		    <groupId>org.eclipse.jetty</groupId>
 		    <artifactId>jetty-server</artifactId>
-		    <version>9.4.3.v20170317</version>
+		    <version>${jetty.version}</version>
 		    <scope>test</scope>
 		</dependency>
 		
 		<dependency>
-		    <groupId>org.eclipse.jetty</groupId>
-		    <artifactId>jetty-servlet</artifactId>
-		    <version>9.4.3.v20170317</version>
-		    <scope>test</scope>
+			<groupId>org.eclipse.jetty.ee10</groupId>
+			<artifactId>jetty-ee10-servlet</artifactId>
+			<version>${jetty.version}</version>
+			<scope>test</scope>
 		</dependency>
 
     </dependencies>

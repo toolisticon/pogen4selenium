@@ -58,6 +58,7 @@
 		<junit.version>4.13.2</junit.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<mockito.version>2.28.2</mockito.version>
+		<jetty.version>12.0.16</jetty.version>
 		
 		<!-- plugin versions -->
 		<animal-sniffer-maven-plugin.version>1.18</animal-sniffer-maven-plugin.version>
