@@ -31,8 +31,8 @@ public class TestPageTest {
 	
 	@After
 	public void cleanup() throws Exception{
-		webDriver.quit();
 		jettyServer.stop();
+		webDriver.quit();
 	}
 	
 	@Test
