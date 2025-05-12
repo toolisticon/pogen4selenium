@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 
 import io.toolisticon.pogen4selenium.example.JettyServer;
@@ -26,7 +27,10 @@ public class TestPageTest {
 		jettyServer = new JettyServer();
 		jettyServer.start();
 		
-		webDriver = new ChromeDriver();
+		ChromeOptions chromeOptions = new ChromeOptions();
+		chromeOptions.addArguments("--headless=new");
+		
+		webDriver = new ChromeDriver(chromeOptions);
 		webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 	}
 	
