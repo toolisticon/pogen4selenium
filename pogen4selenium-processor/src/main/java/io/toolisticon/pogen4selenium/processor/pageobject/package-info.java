@@ -1,7 +1,7 @@
 /**
  * This package contains the seleniumap annotation processor.
  */
-@AnnotationWrapper(value={PageObject.class, PageObjectElement.class, Action.class, ActionClick.class, ActionMoveToAndClick.class, ActionWrite.class, ExtractData.class, ExtractDataValue.class ,Pause.class}
+@AnnotationWrapper(value={PageObject.class, PageObjectElement.class, Action.class, ExtractData.class, ExtractDataValue.class ,Pause.class}
 ,bindCustomCode = {PageObjectWrapperExtension.class, ExtractDataWrapperExtension.class, ExtractDataValueWrapperExtension.class}
 ,usePublicVisibility = true)
 package io.toolisticon.pogen4selenium.processor.pageobject; 

@@ -14,8 +14,8 @@ import io.toolisticon.pogen4selenium.runtime.LocatorCondition;
 public class ActionMoveToAndClickImpl extends BaseAction {
 
 	
-	public ActionMoveToAndClickImpl(WebDriver driver, SearchContext searchContext, LocatorCondition sideCondition) {
-		super(driver, searchContext, sideCondition);
+	public ActionMoveToAndClickImpl(WebDriver driver, SearchContext searchContext, LocatorCondition locatorCondition) {
+		super(driver, searchContext, locatorCondition);
 	}
 
 	@Override

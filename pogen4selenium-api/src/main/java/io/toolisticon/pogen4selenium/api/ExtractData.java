@@ -10,9 +10,13 @@ import java.lang.annotation.Target;
  * This annotation must be used inside a {@link PageObject} annotated interface.
  * Method must have a non void return type annotated with {@link DataObject} annotation or a list of it.
  */
+
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExtractData {
+	@LocatorBy
 	_By by() default _By.XPATH;
+	
+	@LocatorValue
 	String value();
 }

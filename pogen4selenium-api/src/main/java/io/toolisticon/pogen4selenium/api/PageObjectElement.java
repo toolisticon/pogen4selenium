@@ -28,12 +28,14 @@ public @interface PageObjectElement {
 	 * Defines how the element should be located.
 	 * @return The locator method to be used. Defaults to XPATH
 	 */
+	@LocatorBy
 	_By by() default _By.XPATH;
 	
 	/**
 	 * Defines the locator string used by the locator method defined in by.
 	 * @return the locator string
 	 */
+	@LocatorValue
 	String value();
 	
 	/**

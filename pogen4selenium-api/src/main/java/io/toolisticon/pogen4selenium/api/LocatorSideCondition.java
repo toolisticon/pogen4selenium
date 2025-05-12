@@ -5,8 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Marks an annotation attribute as defining a side condition for element location, executing actions or for data extraction. 
+ */
+
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ActionSideCondition {
+public @interface LocatorSideCondition {
 
 }

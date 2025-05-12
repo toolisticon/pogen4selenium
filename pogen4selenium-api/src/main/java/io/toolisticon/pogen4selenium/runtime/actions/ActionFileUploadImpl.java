@@ -15,8 +15,8 @@ public class ActionFileUploadImpl extends BaseAction {
 
 	private final File file;
 	
-	public ActionFileUploadImpl(WebDriver driver, SearchContext searchContext, LocatorCondition sideCondition, File file) {
-		super(driver, searchContext, sideCondition);
+	public ActionFileUploadImpl(WebDriver driver, SearchContext searchContext, LocatorCondition locatorCondition, File file) {
+		super(driver, searchContext, locatorCondition);
 		this.file = file;
 	}
 

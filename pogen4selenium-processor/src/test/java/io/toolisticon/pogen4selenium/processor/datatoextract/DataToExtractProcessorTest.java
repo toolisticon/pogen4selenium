@@ -8,7 +8,6 @@ import org.junit.Test;
 import io.toolisticon.aptk.tools.MessagerUtils;
 import io.toolisticon.cute.Cute;
 import io.toolisticon.cute.CuteApi;
-import io.toolisticon.pogen4selenium.processor.datatoextract.DataObjectProcessor;
 import io.toolisticon.pogen4selenium.processor.pageobject.PageObjectProcessor;
 
 

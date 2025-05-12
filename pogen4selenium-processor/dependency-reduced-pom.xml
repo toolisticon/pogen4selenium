@@ -75,13 +75,13 @@
     <dependency>
       <groupId>io.toolisticon.aptk</groupId>
       <artifactId>aptk-annotationwrapper-api</artifactId>
-      <version>0.30.0</version>
+      <version>0.30.2-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.toolisticon.aptk</groupId>
       <artifactId>aptk-compilermessages-api</artifactId>
-      <version>0.30.0</version>
+      <version>0.30.2-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -117,7 +117,7 @@
     <dependency>
       <groupId>io.toolisticon.aptk</groupId>
       <artifactId>aptk-cute</artifactId>
-      <version>0.30.0</version>
+      <version>0.30.2-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -8,6 +8,9 @@ import javax.lang.model.element.Element;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.wrapper.AnnotationMirrorWrapper;
 import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
+import io.toolisticon.pogen4selenium.api.LocatorBy;
+import io.toolisticon.pogen4selenium.api.LocatorSideCondition;
+import io.toolisticon.pogen4selenium.api.LocatorValue;
 import io.toolisticon.pogen4selenium.api._By;
 import io.toolisticon.pogen4selenium.processor.pageobject.ActionWrapper;
 
@@ -25,9 +28,9 @@ public class UniversalActionHandler implements ActionHandler {
 		ElementWrapper<?> elementWrapper = ElementWrapper.wrap(element);
 		
 		AnnotationMirrorWrapper annotationMirrorWrapper = AnnotationMirrorWrapper.get(element, annotation).get();
-		TypeMirrorWrapper sideConditionTmw = annotationMirrorWrapper.getAttributeWithDefault("actionSideCondition").getClassValue();
-		_By by = annotationMirrorWrapper.getAttributeWithDefault("by").getEnumValue(_By.class);
-		String annotationValue = annotationMirrorWrapper.getAttribute().get().getStringValue();
+		TypeMirrorWrapper sideConditionTmw = annotationMirrorWrapper.getAttributeWithDefaultByAnnotation(LocatorSideCondition.class).getClassValue();
+		_By by = annotationMirrorWrapper.getAttributeWithDefaultByAnnotation(LocatorBy.class).getEnumValue(_By.class);
+		String annotationValue = annotationMirrorWrapper.getAttributeWithDefaultByAnnotation(LocatorValue.class).getStringValue();
 		
 		ActionWrapper actionWrapper = ActionWrapper.wrap(annotationMirrorWrapper.asElement().unwrap());
 		
@@ -44,7 +47,7 @@ public class UniversalActionHandler implements ActionHandler {
 	@Override
 	public Set<String> getImports(Element element) {
 		AnnotationMirrorWrapper annotationMirrorWrapper = AnnotationMirrorWrapper.get(element, annotation).get();
-		TypeMirrorWrapper sideConditionTmw = annotationMirrorWrapper.getAttributeWithDefault("actionSideCondition").getClassValue();
+		TypeMirrorWrapper sideConditionTmw = annotationMirrorWrapper.getAttributeWithDefaultByAnnotation(LocatorSideCondition.class).getClassValue();
 		
 		ActionWrapper actionWrapper = ActionWrapper.wrap(annotationMirrorWrapper.asElement().unwrap());
 		

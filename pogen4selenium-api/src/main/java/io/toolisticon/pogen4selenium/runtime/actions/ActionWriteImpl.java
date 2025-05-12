@@ -16,8 +16,8 @@ public class ActionWriteImpl extends BaseAction {
 	
 	private final String toSet;
 	
-	public ActionWriteImpl(WebDriver driver, SearchContext searchContext, LocatorCondition sideCondition, String toSet) {
-		super(driver, searchContext, sideCondition);
+	public ActionWriteImpl(WebDriver driver, SearchContext searchContext, LocatorCondition locatorCondition, String toSet) {
+		super(driver, searchContext, locatorCondition);
 		
 		this.toSet = toSet;
 	}
