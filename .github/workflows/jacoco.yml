@@ -27,7 +27,7 @@ jobs:
         run: chmod +x ./mvnw
 
       - name: Build
-        run: ./mvnw verify jacoco:report-aggregate -B -q
+        run: ./mvnw verify jacoco:report-aggregate -B -q -DargLine="-Dselenium.headless=true"
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2

@@ -9,11 +9,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
 
 import io.toolisticon.pogen4selenium.example.JettyServer;
+import io.toolisticon.pogen4selenium.runtime.WebDriverProvider;
 
 public class TestPageTest {
 
@@ -27,11 +25,8 @@ public class TestPageTest {
 		jettyServer = new JettyServer();
 		jettyServer.start();
 		
-		ChromeOptions chromeOptions = new ChromeOptions();
-		chromeOptions.addArguments("--headless=new");
+		webDriver = WebDriverProvider.getDriver();
 		
-		webDriver = new ChromeDriver(chromeOptions);
-		webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 	}
 	
 	@After

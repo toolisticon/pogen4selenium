@@ -31,4 +31,4 @@ jobs:
         run: chmod +x ./mvnw
 
       - name: Build
-        run: ./mvnw clean package
+        run: ./mvnw clean package -DargLine="-Dselenium.headless=true"
