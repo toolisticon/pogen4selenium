@@ -8,6 +8,7 @@ import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import io.toolisticon.pogen4selenium.example.JettyServer;
@@ -148,7 +149,7 @@ public class TestPageTest {
 	}
 	
 	@Test
-	public void mixedDataObjectWithActionsAndPageObjectTraversialTest_2ndDataset() {
+	public void mixedDataObjectWithActionsAndPageObjectTraversisalTest_2ndDataset() {
 		TestPagePageObject.init(webDriver)
 		.doAssertions(e -> {
 				
@@ -161,6 +162,22 @@ public class TestPageTest {
 				System.out.println("");
 			})
 			;
+	}
+	
+	@Test
+	public void dragAndDropTest() {
+		TestPagePageObject.init(webDriver)		
+		// Do assertions here
+		.dragDivToTargetArea("drag_div")
+		.doAssertions((po) -> {
+			
+			// Object should be now located in div1
+			po.getDriver().findElement(By.xpath("//div[@id='div1']/div[@id='drag_div']"));
+			
+		});
+				
+			
+			
 	}
 	
 	

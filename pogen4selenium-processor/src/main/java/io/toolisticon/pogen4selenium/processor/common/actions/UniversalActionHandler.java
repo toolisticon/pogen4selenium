@@ -34,12 +34,12 @@ public class UniversalActionHandler implements ActionHandler {
 		
 		ActionWrapper actionWrapper = ActionWrapper.wrap(annotationMirrorWrapper.asElement().unwrap());
 		
-		
-		
+		String attributeString = actionWrapper.getAttributeValuesString(annotationMirrorWrapper);
+				
 		if (by == _By.ELEMENT) {
-			return "new " + actionWrapper.valueAsTypeMirrorWrapper().getSimpleName() + "( getDriver(), getSearchContext(), new " + sideConditionTmw.getSimpleName() + "()" + (elementWrapper.isMethodParameter() ? ", " + element.getSimpleName() : "") + ").executeAction(" + annotationValue + "Element);\n";
+			return "new " + actionWrapper.valueAsTypeMirrorWrapper().getSimpleName() + "( getDriver(), getSearchContext(), new " + sideConditionTmw.getSimpleName() + "()" + (elementWrapper.isMethodParameter() ? ", " + element.getSimpleName() : "") + (attributeString.isEmpty() ? "" : "," + attributeString) +  ").executeAction(" + annotationValue + "Element);\n";
 		} else {
-			return "new " + actionWrapper.valueAsTypeMirrorWrapper().getSimpleName() + "( getDriver(), getSearchContext(), new " + sideConditionTmw.getSimpleName() + "()" + (elementWrapper.isMethodParameter() ? ", " + element.getSimpleName() : "") + ").executeAction(By." + by.getCorrespondingByMethodName() + "(\"" + annotationValue +"\"));\n";
+			return "new " + actionWrapper.valueAsTypeMirrorWrapper().getSimpleName() + "( getDriver(), getSearchContext(), new " + sideConditionTmw.getSimpleName() + "()" + (elementWrapper.isMethodParameter() ? ", " + element.getSimpleName() : "")  + (attributeString.isEmpty() ? "" : "," + attributeString) + ").executeAction(By." + by.getCorrespondingByMethodName() + "(\"" + annotationValue +"\"));\n";
 		}
 		 
 	}

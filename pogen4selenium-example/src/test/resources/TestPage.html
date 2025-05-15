@@ -1,6 +1,31 @@
 	        	<html>
 	        		
-	        		<script type>
+	        		
+	        		<style>
+					#div1 {
+					  width: 350px;
+					  height: 70px;
+					  padding: 10px;
+					  border: 1px solid #aaaaaa;
+					}
+					</style>
+					<script>
+						function dragstartHandler(ev) {
+						  ev.dataTransfer.setData("text", ev.target.id);
+						}
+						
+						function dragoverHandler(ev) {
+						  ev.preventDefault();
+						}
+						
+						function dropHandler(ev) {
+						  ev.preventDefault();
+						  const data = ev.dataTransfer.getData("text");
+						  ev.target.appendChild(document.getElementById(data));
+						}
+					</script>
+	        		
+	        		<script>
 	        			function incrementCounter(){
 	        				var element = document.getElementById('counter');
 	        				var counter = parseInt(element.textContent);
@@ -48,6 +73,13 @@
 		        					<td><input type="text" name="inputField"></td>
 		        				</tr>
 		        			</table>
+	        			</fieldset>
+	        			
+	        			<fieldset>
+	        				<legend>Drag and Drop example</legend>
+	        				 <div id="div1" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+							 <br>
+							 <div id="drag_div"  draggable="true" ondragstart="dragstartHandler(event)" width="336" height="69">DRAG ME!!!!</div>
 	        			</fieldset>
 	        		</body>		
 	        	</html>
