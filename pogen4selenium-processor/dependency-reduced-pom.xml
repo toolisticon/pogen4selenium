@@ -3,7 +3,7 @@
   <parent>
     <artifactId>pogen4selenium</artifactId>
     <groupId>io.toolisticon.pogen4selenium</groupId>
-    <version>0.8.1-SNAPSHOT</version>
+    <version>0.8.2-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>pogen4selenium-processor</artifactId>
@@ -69,19 +69,19 @@
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
-      <version>4.26.0</version>
+      <version>4.27.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.toolisticon.aptk</groupId>
       <artifactId>aptk-annotationwrapper-api</artifactId>
-      <version>0.30.0</version>
+      <version>0.30.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.toolisticon.aptk</groupId>
       <artifactId>aptk-compilermessages-api</artifactId>
-      <version>0.30.0</version>
+      <version>0.30.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -93,7 +93,7 @@
     <dependency>
       <groupId>io.toolisticon.cute</groupId>
       <artifactId>cute</artifactId>
-      <version>1.7.0</version>
+      <version>1.8.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -117,7 +117,7 @@
     <dependency>
       <groupId>io.toolisticon.aptk</groupId>
       <artifactId>aptk-cute</artifactId>
-      <version>0.30.0</version>
+      <version>0.30.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>

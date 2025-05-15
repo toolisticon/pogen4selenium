@@ -1,6 +1,5 @@
 package io.toolisticon.pogen4selenium.example.googlesearch;
 
-import java.time.Duration;
 import java.util.List;
 
 import org.hamcrest.MatcherAssert;
@@ -10,10 +9,10 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.edge.EdgeDriver;
 
 import io.toolisticon.pogen4selenium.example.googleseach.GoogleInitialPage;
 import io.toolisticon.pogen4selenium.example.googleseach.GoogleSearchResult;
+import io.toolisticon.pogen4selenium.runtime.WebDriverProvider;
 
 public class GoogleSearchTest {
 
@@ -21,9 +20,7 @@ public class GoogleSearchTest {
 	
 	@Before
 	public void init() throws Exception{
-		
-		webDriver = new EdgeDriver();
-		webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		webDriver = WebDriverProvider.getDriver();
 	}
 	
 	@After

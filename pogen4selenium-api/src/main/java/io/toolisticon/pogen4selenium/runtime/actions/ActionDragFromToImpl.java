@@ -9,13 +9,22 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import io.toolisticon.pogen4selenium.api._By;
 import io.toolisticon.pogen4selenium.runtime.LocatorCondition;
 
-public class ActionMoveToAndClickImpl extends BaseAction {
+public class ActionDragFromToImpl extends BaseAction {
 
+	private final String dynamicPart;
+	private final _By fromBy;
+	private final String fromValue;
 	
-	public ActionMoveToAndClickImpl(WebDriver driver, SearchContext searchContext, LocatorCondition locatorCondition) {
+	public ActionDragFromToImpl(WebDriver driver, SearchContext searchContext, LocatorCondition locatorCondition, String dynamicPart, _By fromBy, String fromValue) {
 		super(driver, searchContext, locatorCondition);
+		
+		this.dynamicPart = dynamicPart;
+		this.fromBy = fromBy;
+		this.fromValue = fromValue;
+
 	}
 
 	@Override
@@ -30,7 +39,9 @@ public class ActionMoveToAndClickImpl extends BaseAction {
 
 	@Override
 	protected void applyAction(WebElement webElement) {
-		new Actions(driver).moveToElement(webElement).pause(300).click().perform();
+		
+		new Actions(driver).dragAndDrop(locate(fromBy, fromValue.replace("${}", dynamicPart)), webElement).build().perform();
+		
 	}
 
 }

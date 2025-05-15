@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.toolisticon.pogen4selenium</groupId>
 	<artifactId>pogen4selenium</artifactId>
-	<version>0.8.1</version>
+	<version>0.9.0</version>
 	<packaging>pom</packaging>
 	<name>pogen4selenium</name>
 	<description>Please refer to https://github.com/toolisticon/pogen4selenium</description>
@@ -49,15 +49,16 @@
 		<java.compile.target.version>17</java.compile.target.version>
 		
 		<!-- project dependency versions -->
-		<cute.version>1.7.0</cute.version>
+		<cute.version>1.8.0</cute.version>
 		<spiap.version>0.11.0</spiap.version>
-		<aptk.version>0.30.0</aptk.version>
-		<selenium.version>4.26.0</selenium.version>
+		<aptk.version>0.30.2</aptk.version>
+		<selenium.version>4.27.0</selenium.version>
 		
 		<!-- versions of test dependencies -->
 		<junit.version>4.13.2</junit.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<mockito.version>2.28.2</mockito.version>
+		<jetty.version>12.0.16</jetty.version>
 		
 		<!-- plugin versions -->
 		<animal-sniffer-maven-plugin.version>1.18</animal-sniffer-maven-plugin.version>

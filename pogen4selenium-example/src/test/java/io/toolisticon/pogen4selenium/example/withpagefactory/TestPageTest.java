@@ -9,9 +9,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.edge.EdgeDriver;
 
 import io.toolisticon.pogen4selenium.example.JettyServer;
+import io.toolisticon.pogen4selenium.runtime.WebDriverProvider;
 
 public class TestPageTest {
 
@@ -25,14 +25,14 @@ public class TestPageTest {
 		jettyServer = new JettyServer();
 		jettyServer.start();
 		
-		webDriver = new EdgeDriver();
-		webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		webDriver = WebDriverProvider.getDriver();
+		
 	}
 	
 	@After
 	public void cleanup() throws Exception{
-		webDriver.quit();
 		jettyServer.stop();
+		webDriver.quit();
 	}
 	
 	@Test

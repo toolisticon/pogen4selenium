@@ -143,6 +143,7 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
     	return wait.until(ExpectedConditions.presenceOfElementLocated(by));
     	
 	}
+
 	
 	public WebElement waitForElementToBePresent(ExpectedCondition<WebElement> expectedCondition) {
 		Wait<WebDriver> wait =
@@ -154,6 +155,8 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
     	return wait.until(expectedCondition);
     	
 	}
+	
+	
 	
 	
 	@Override

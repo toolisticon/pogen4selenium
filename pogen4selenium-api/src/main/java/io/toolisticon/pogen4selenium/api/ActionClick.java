@@ -18,15 +18,17 @@ public @interface ActionClick {
 	 * The locator type to use. Can be ELEMENT for using a generated element or any kind of locator provided by selenium.
 	 * @return the locator to use.
 	 */
+	@LocatorBy
 	_By by() default _By.ELEMENT;
 	
 	/** The locator string to use. */
+	@LocatorValue
 	String value();
 	
 	/**
 	 * The locator strategy to use, will just be taken into account if by attribute is not set to ELEMENT.
 	 * @return the Locator strategy, defaults to DefaultLocatorStrategy
 	 */
-	@ActionSideCondition
-	Class<? extends LocatorCondition> actionSideCondition() default DefaultSideCondition.class;
+	@LocatorSideCondition
+	Class<? extends LocatorCondition> locatorSideCondition() default DefaultSideCondition.class;
 }
