@@ -104,6 +104,16 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
     	return wait.until(ExpectedConditions.elementToBeClickable(by));
 	}
 	
+	
+	
+	@Override
+	public PAGEOBJECT waitForPageToContainText(String text) {
+		waitForMessage(text);
+		return (PAGEOBJECT) this;
+	}
+
+
+
 	public WebElement waitForElementToBeInteractable(ExpectedCondition<WebElement> expectedCondition) {
 		Wait<WebDriver> wait =
     	        new FluentWait<>(driver)
