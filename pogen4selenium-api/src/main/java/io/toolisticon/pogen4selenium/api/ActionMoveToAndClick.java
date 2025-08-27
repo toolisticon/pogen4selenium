@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import io.toolisticon.pogen4selenium.runtime.DefaultSideCondition;
+import io.toolisticon.pogen4selenium.runtime.ElementClickedInterceptedExceptionCause;
 import io.toolisticon.pogen4selenium.runtime.LocatorCondition;
 import io.toolisticon.pogen4selenium.runtime.actions.ActionMoveToAndClickImpl;
 
@@ -31,4 +32,14 @@ public @interface ActionMoveToAndClick {
 	 */
 	@LocatorSideCondition
 	Class<? extends LocatorCondition> locatorSideCondition() default DefaultSideCondition.class;
+	
+	
+	/*-
+	 * A retry logic to handle things like spinner overlays in a better way than with side conditions
+	 * @return The retry configuration
+	 */
+	/*-
+	@RetryConfig
+	Retry retry() default @Retry(nrOfRetries = 6, retryIntervallInMs = 300, retryCauses = {ElementClickedInterceptedExceptionCause.class});
+	*/
 }

@@ -177,6 +177,7 @@ public abstract class BaseAction  implements LocatorCondition, ActionImpl{
 				
 			} catch (NoSuchElementException | StaleElementReferenceException e) {
 				// can be ignored
+				System.out.println("WTF : " + e.getMessage());
 			}
 			
 			return null;

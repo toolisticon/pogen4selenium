@@ -15,6 +15,9 @@ import io.toolisticon.pogen4selenium.api._By;
 import io.toolisticon.pogen4selenium.api.ExtractDataValue;
 import io.toolisticon.pogen4selenium.runtime.DataObjectParentImpl;
 
+import io.toolisticon.pogen4selenium.runtime.RetryImpl;
+import io.toolisticon.pogen4selenium.runtime.RetryImpl.RetryConfigType;
+
 /**
  * An empty class.
  */
@@ -42,7 +45,9 @@ public class ${ toImplementHelper.implementationClassName }  extends DataObjectP
 		pause(Duration.ofMillis(${method.beforePause}L));
 
 !{for action : method.actions}
+		RetryImpl.prepareRetry(getDriver(),RetryConfigType.${action.retryConfig.retryConfigType}, ${action.retryConfig.nrOfTries}, ${action.retryConfig.intervalInMs} ${action.retryConfig.getRetryCauseClassNames}).execute( () -> {
 		${action.generateCode}
+		});
 !{/for}
 !{if method.returnsPageObject}	
 		return new ${method.getNextImplClassName}(getDriver()).pause(Duration.ofMillis(${method.afterPause}L));

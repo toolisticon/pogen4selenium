@@ -20,4 +20,6 @@ public @interface PageObject {
 	 * @return the url regular expression to verify
 	 */
 	String urlRegularExpressionToVerify() default "";
+	
+	
 }

@@ -180,5 +180,14 @@ public class TestPageTest {
 			
 	}
 	
+	@Test
+	public void handleSpinnerWithRetryTest () {
+		TestPagePageObject.init(webDriver)
+		.clickDisplaySpinnerButton()
+		.pause(Duration.ofMillis(2000))
+		.clickCounterIncrementButton()
+		.pause(Duration.ofMillis(2000));
+	}
+	
 	
 }

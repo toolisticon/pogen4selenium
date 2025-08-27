@@ -53,6 +53,7 @@
 		<spiap.version>0.11.0</spiap.version>
 		<aptk.version>0.30.3</aptk.version>
 		<selenium.version>4.27.0</selenium.version>
+		<slf4j.version>2.0.17</slf4j.version>
 		
 		<!-- versions of test dependencies -->
 		<junit.version>4.13.2</junit.version>
@@ -345,6 +346,7 @@
 										<include>io.toolisticon.pogen4selenium:*</include>
 										<include>io.toolisticon.spiap:*</include>
 										<include>io.toolisticon.aptk:*</include>
+										<include>org.slf4j:slf4j-api</include>
 										<include>*:*:*:*:test:*</include>
 										<include>*:*:*:*:provided:*</include>
 									</includes>
@@ -535,6 +537,11 @@
 			   <artifactId>selenium-api</artifactId>
 			   <version>${selenium.version}</version>
 			   <scope>provided</scope>
+			</dependency>
+			<dependency>
+			    <groupId>org.slf4j</groupId>
+			    <artifactId>slf4j-api</artifactId>
+			    <version>${slf4j.version}</version>
 			</dependency>
 			<!-- Compile only dependencies - for example needed by annotation processors -->
 			<dependency>

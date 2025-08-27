@@ -8,6 +8,38 @@
 					  padding: 10px;
 					  border: 1px solid #aaaaaa;
 					}
+					
+					
+					.spinnerdiv {
+						display:none;
+						position:fixed;
+						top:0px;
+						left:0px;
+						z-index: 10000;
+						width: 100%;
+						height: 100%;
+						background-color: rgba(0, 0, 0, 0.5);
+					}
+					
+					.spinner {
+					  top: 50%;
+					  left: 50%;
+					  width: 100;
+					  height: 100;
+					  border: 5px solid #f3f3f3;
+					  border-top: 5px solid #3498db;
+					  border-radius: 50%;
+					  animation: spin 1s linear infinite;
+					}
+					
+					@keyframes spin {
+					  0% {
+					    transform: rotate(0deg);
+					  }
+					  100% {
+					    transform: rotate(360deg);
+					  }
+					}
 					</style>
 					<script>
 						function dragstartHandler(ev) {
@@ -23,6 +55,28 @@
 						  const data = ev.dataTransfer.getData("text");
 						  ev.target.appendChild(document.getElementById(data));
 						}
+						
+						
+						function triggerSpinner() {
+							setTimeout(showSpinner, 1000);
+						}
+						
+						function showSpinner(){
+							document.getElementById('spinner').style.display='block';
+							
+							document.querySelectorAll('input').forEach(button => {
+								 button.disabled = true;
+							});
+								
+							setTimeout(hideSpinner, 50);
+						}
+						
+						function hideSpinner(){
+							document.getElementById('spinner').style.display='none';
+							document.querySelectorAll('input').forEach(button => {
+								  button.disabled = false;
+								});
+						}
 					</script>
 	        		
 	        		<script>
@@ -36,6 +90,10 @@
 	        		</script>        		
 	        		        		        		        		
 	        		<body>
+	        			<div id="spinner" class="spinnerdiv" onclick="">
+	        				<div class="spinner"></div>
+	        			</div>
+	        			
 	        			<h1>POGEN4SELENIUM TEST PAGE</h1>
 	        			
 	        			
@@ -80,6 +138,11 @@
 	        				 <div id="div1" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
 							 <br>
 							 <div id="drag_div"  draggable="true" ondragstart="dragstartHandler(event)" width="336" height="69">DRAG ME!!!!</div>
+	        			</fieldset>
+	        			
+	        			<fieldset>
+	        				<legend>Spinner/Retry example</legend>
+	        				<input id="spinnerbutton" type="button" value="Display spinner for 5 seconds" onclick="triggerSpinner()" />
 	        			</fieldset>
 	        		</body>		
 	        	</html>

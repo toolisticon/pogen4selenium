@@ -36,6 +36,9 @@ public class LocateActionHandler {
 		return actionHandler.getImports(annotatedElement);
 	}
 	
+	public RetryHandler getRetryConfig() {
+		return actionHandler.getRetryConfig(annotatedElement);
+	}
 	
 	
 }

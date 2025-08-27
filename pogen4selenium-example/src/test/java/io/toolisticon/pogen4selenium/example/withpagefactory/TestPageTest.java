@@ -122,5 +122,12 @@ public class TestPageTest {
 		
 	}
 	
+	@Test
+	public void handleSpinnerWithRetryTest () {
+		TestPagePageObject.init(webDriver)
+		.clickDisplaySpinnerButton()
+		.clickCounterIncrementButton();
+	}
+	
 	
 }

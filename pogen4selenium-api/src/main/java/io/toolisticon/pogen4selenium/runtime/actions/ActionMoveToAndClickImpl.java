@@ -8,6 +8,7 @@ import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import io.toolisticon.pogen4selenium.runtime.LocatorCondition;
 
@@ -20,7 +21,9 @@ public class ActionMoveToAndClickImpl extends BaseAction {
 
 	@Override
 	public boolean checkCondition(WebDriver driver, WebElement element) {
-		return element.isDisplayed() && element.isEnabled();
+		return 
+				// ExpectedConditions.elementToBeClickable(element).apply( driver) != null && 
+				element.isDisplayed() && element.isEnabled();
 	}
 
 	@Override

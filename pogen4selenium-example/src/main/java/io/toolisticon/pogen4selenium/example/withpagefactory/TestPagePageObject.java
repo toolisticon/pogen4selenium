@@ -58,5 +58,9 @@ public interface TestPagePageObject extends PageObjectParent<TestPagePageObject>
 		driver.get("http://localhost:9090/start");
 		return new TestPagePageObjectImpl(driver);
 	}
+	
+	@ActionMoveToAndClick(by = _By.ID, value = "spinnerbutton")
+	TestPagePageObject clickDisplaySpinnerButton();
+	
 
 }

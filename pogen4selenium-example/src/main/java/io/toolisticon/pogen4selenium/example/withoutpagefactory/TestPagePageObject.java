@@ -7,14 +7,13 @@ import org.openqa.selenium.WebDriver;
 import io.toolisticon.pogen4selenium.api.ActionDragFromTo;
 import io.toolisticon.pogen4selenium.api.ActionMoveToAndClick;
 import io.toolisticon.pogen4selenium.api.ActionWrite;
-import io.toolisticon.pogen4selenium.api._By;
 import io.toolisticon.pogen4selenium.api.ExtractData;
 import io.toolisticon.pogen4selenium.api.ExtractDataValue;
 import io.toolisticon.pogen4selenium.api.ExtractDataValue.Kind;
 import io.toolisticon.pogen4selenium.api.PageObject;
-import io.toolisticon.pogen4selenium.api.PageObjectElement;
 import io.toolisticon.pogen4selenium.api.PageObjectParent;
 import io.toolisticon.pogen4selenium.api.Pause;
+import io.toolisticon.pogen4selenium.api._By;
 
 @PageObject
 public interface TestPagePageObject extends PageObjectParent<TestPagePageObject>{
@@ -46,6 +45,10 @@ public interface TestPagePageObject extends PageObjectParent<TestPagePageObject>
 	}
 		
 	TestPagePageObject dragDivToTargetArea(@ActionDragFromTo(fromBy = _By.ID,  toBy = _By.ID, toValue = "div1") String value);	
+	
+	@ActionMoveToAndClick(by = _By.ID, value = "spinnerbutton")
+	TestPagePageObject clickDisplaySpinnerButton();
+	
 	
 	// Custom entry point for starting your tests
 	public static TestPagePageObject init(WebDriver driver) {

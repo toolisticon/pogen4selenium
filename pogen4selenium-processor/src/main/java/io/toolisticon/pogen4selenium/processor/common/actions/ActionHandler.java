@@ -23,7 +23,7 @@ public interface ActionHandler {
 	 * @param element The annotated element
 	 * @return The code that must be added to the annotated method or an empty String(must not be null !!!)
 	 */
-	public String generateCode(Element element);
+	String generateCode(Element element);
 	
 	
 	/**
@@ -31,7 +31,12 @@ public interface ActionHandler {
 	 * @param element the annotated element
 	 * @return a set containing all imports or an empty list (must not be null !!!)
 	 */
-	public Set<String> getImports(Element element);
+	Set<String> getImports(Element element);
 	
+	/**
+	 * Gets the RetryConfig
+	 * @return
+	 */
+	RetryHandler getRetryConfig(Element element);
 	
 }

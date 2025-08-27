@@ -11,6 +11,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import io.toolisticon.pogen4selenium.runtime.RetryImpl;
+import io.toolisticon.pogen4selenium.runtime.RetryImpl.RetryConfigType;
+
 /**
  * An empty class.
  */
@@ -55,7 +58,9 @@ public class ${ toImplementHelper.implementationClassName } ${toImplementHelper.
 		pause(Duration.ofMillis(${method.beforePause}L));
 
 !{for action : method.actions}
+		RetryImpl.prepareRetry(getDriver(),RetryConfigType.${action.retryConfig.retryConfigType}, ${action.retryConfig.nrOfTries}, ${action.retryConfig.intervalInMs} ${action.retryConfig.getRetryCauseClassNames}).execute( () -> {
 		${action.generateCode}
+		});
 !{/for}
 	
 !{if method.getExtractDataValue.isPresent}
