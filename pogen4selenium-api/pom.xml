@@ -9,7 +9,7 @@
     <parent>
         <groupId>io.toolisticon.pogen4selenium</groupId>
         <artifactId>pogen4selenium</artifactId>
-        <version>0.9.0</version>
+        <version>0.9.1</version>
     </parent>
 
     <name>pogen4selenium-api</name>
