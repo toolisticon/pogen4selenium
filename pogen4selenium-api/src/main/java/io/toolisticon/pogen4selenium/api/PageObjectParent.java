@@ -33,6 +33,14 @@ public interface PageObjectParent<PAGEOBJECT extends PageObjectParent<PAGEOBJECT
 	PAGEOBJECT pause(Duration duration);
 
 	/**
+	 * Wait as long as text is displayed
+	 * @param text the text to search
+	 * @return next fluent interface
+	 */
+	PAGEOBJECT waitForPageToContainText(String text);
+	
+	
+	/**
 	 * Allows to do inline assertions done with your favourite test tools without the need to create local variables to keep state.
 	 * @param function a function containing the custom assertions
 	 * @return next fluent interface
