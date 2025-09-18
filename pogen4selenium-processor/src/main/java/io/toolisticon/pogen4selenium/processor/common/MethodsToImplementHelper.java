@@ -80,7 +80,7 @@ public class MethodsToImplementHelper {
 
 	
 	public String getNextImplClassName() {
-		return this.executableElementWrapper.getReturnType().getSimpleName() + "Impl";
+		return this.executableElementWrapper.getReturnType().getSimpleName();
 	}
 	
 	public long getBeforePause() {

@@ -1,6 +1,7 @@
 # pogen4selenium - a page object generator 4 selenium
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.pogen4selenium/pogen4selenium/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.toolisticon.pogen4selenium/pogen4selenium)
+[![Maven Central](https://maven-badges.sml.io/sonatype-central/io.toolisticon.pogen4selenium/pogen4selenium/badge.svg)](https://maven-badges.sml.io/sonatype-central/io.toolisticon.pogen4selenium/pogen4selenium)
 
 
 # Why you should use this project?

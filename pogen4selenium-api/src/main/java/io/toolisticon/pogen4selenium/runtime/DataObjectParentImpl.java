@@ -14,9 +14,10 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import io.toolisticon.pogen4selenium.api._By;
+import io.toolisticon.pogen4selenium.api.CommonParentInterface;
 import io.toolisticon.pogen4selenium.api.ExtractDataValue;
 
-public class DataObjectParentImpl implements CommonByLocators{
+public class DataObjectParentImpl implements CommonByLocators, CommonParentInterface{
 	
 	protected final WebDriver driver;
 	private final WebElement relativeParentWebElement;
@@ -26,6 +27,7 @@ public class DataObjectParentImpl implements CommonByLocators{
 		this.relativeParentWebElement = relativeParentWebElement;
 	}
 
+	@Override
 	public WebDriver getDriver() {
 		return this.driver;
 	}

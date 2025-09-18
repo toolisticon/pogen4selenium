@@ -4,10 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
 
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.wrapper.AnnotationMirrorWrapper;
 import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
+import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import io.toolisticon.pogen4selenium.api.LocatorBy;
 import io.toolisticon.pogen4selenium.api.LocatorSideCondition;
 import io.toolisticon.pogen4selenium.api.LocatorValue;
@@ -32,7 +34,7 @@ public class UniversalActionHandler implements ActionHandler {
 		_By by = annotationMirrorWrapper.getAttributeWithDefaultByAnnotation(LocatorBy.class).getEnumValue(_By.class);
 		String annotationValue = annotationMirrorWrapper.getAttributeWithDefaultByAnnotation(LocatorValue.class).getStringValue();
 		
-		ActionWrapper actionWrapper = ActionWrapper.wrap(annotationMirrorWrapper.asElement().unwrap());
+		ActionWrapper actionWrapper = ActionWrapper.wrap(annotationMirrorWrapper.asElement());
 		
 		String attributeString = actionWrapper.getAttributeValuesString(annotationMirrorWrapper);
 				
@@ -49,7 +51,7 @@ public class UniversalActionHandler implements ActionHandler {
 		AnnotationMirrorWrapper annotationMirrorWrapper = AnnotationMirrorWrapper.get(element, annotation).get();
 		TypeMirrorWrapper sideConditionTmw = annotationMirrorWrapper.getAttributeWithDefaultByAnnotation(LocatorSideCondition.class).getClassValue();
 		
-		ActionWrapper actionWrapper = ActionWrapper.wrap(annotationMirrorWrapper.asElement().unwrap());
+		ActionWrapper actionWrapper = ActionWrapper.wrap(annotationMirrorWrapper.asElement());
 		
 		
 		Set<String> imports =  new HashSet<>();

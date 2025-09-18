@@ -39,7 +39,7 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 		return this.driver;
 	}
 
-	
+
 	@Override
 	public PAGEOBJECT pause(Duration duration) {
 		new Actions(driver).pause(duration).perform();

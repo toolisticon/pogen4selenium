@@ -2,8 +2,6 @@ package io.toolisticon.pogen4selenium.api;
 
 import java.time.Duration;
 
-import org.openqa.selenium.WebDriver;
-
 import io.toolisticon.pogen4selenium.runtime.AssertionInterface;
 import io.toolisticon.pogen4selenium.runtime.ExecuteBlock;
 
@@ -11,19 +9,13 @@ import io.toolisticon.pogen4selenium.runtime.ExecuteBlock;
  * The page object parent interface. Must be extended by all interfaces annotated with {@link PageObject}
  * @param <PAGEOBJECT> The page object type
  */
-public interface PageObjectParent<PAGEOBJECT extends PageObjectParent<PAGEOBJECT>> {
+public interface PageObjectParent<PAGEOBJECT extends PageObjectParent<PAGEOBJECT>> extends CommonParentInterface {
 
 	/**
 	 * Verifies all elements marked via {@link PageObjectElement} annotated fields according to the configuration in the annotation.
 	 * @return The next fluent interface
 	 */
 	PAGEOBJECT verify();
-
-	/**
-	 * Gets the seleium driver.
-	 * @return the selenium driver currently used
-	 */
-	WebDriver getDriver();
 
 	/**
 	 * Applies a fixed time pause.
