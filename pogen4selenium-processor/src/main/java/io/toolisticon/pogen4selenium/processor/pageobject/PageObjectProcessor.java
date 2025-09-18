@@ -23,6 +23,7 @@ import io.toolisticon.aptk.tools.fluentvalidator.FluentElementValidator;
 import io.toolisticon.aptk.tools.generators.SimpleJavaWriter;
 import io.toolisticon.aptk.tools.wrapper.ElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
+import io.toolisticon.pogen4selenium.api.CommonParentInterface;
 import io.toolisticon.pogen4selenium.api.PageObject;
 import io.toolisticon.pogen4selenium.api.PageObjectParent;
 import io.toolisticon.pogen4selenium.processor.common.MethodsToImplementHelper;
@@ -141,6 +142,11 @@ public class PageObjectProcessor extends AbstractAnnotationProcessor {
         		.filter(e -> !(ElementWrapper.toTypeElement(
         					e.getEnclosingElement().get()
         				).getQualifiedName().equals(PageObjectParent.class.getCanonicalName()))
+    			)
+        		// filter out all CommonParentInterface methods
+        		.filter(e -> !(ElementWrapper.toTypeElement(
+        					e.getEnclosingElement().get()
+        				).getQualifiedName().equals(CommonParentInterface.class.getCanonicalName()))
     			)
         		.map(MethodsToImplementHelper::new)
 	    		.collect(Collectors.toSet());
