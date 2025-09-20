@@ -14,6 +14,7 @@ import org.openqa.selenium.support.How;
 import io.toolisticon.pogen4selenium.api._By;
 import io.toolisticon.pogen4selenium.api.ExtractDataValue;
 import io.toolisticon.pogen4selenium.runtime.DataObjectParentImpl;
+import io.toolisticon.pogen4selenium.runtime.PageObjectUtilities;
 
 /**
  * An empty class.

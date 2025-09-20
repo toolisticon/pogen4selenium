@@ -5,6 +5,8 @@ import ${import};
 !{/for}
 import java.util.stream.Collectors;
 
+import io.toolisticon.pogen4selenium.runtime.PageObjectUtilities;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
