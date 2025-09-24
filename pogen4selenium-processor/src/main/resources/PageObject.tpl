@@ -5,6 +5,8 @@ import ${import};
 !{/for}
 import java.util.stream.Collectors;
 
+import io.toolisticon.pogen4selenium.runtime.PageObjectUtilities;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -63,7 +65,7 @@ public class ${ toImplementHelper.implementationClassName } ${toImplementHelper.
 !{elseif method.getExtractData.isPresent}
 		return ${method.getExtractData.get.getFinalMethodCall}
 !{else}
-		return getPageObjectInstance(${method.getNextImplClassName}.class).pause(Duration.ofMillis(${method.afterPause}L));
+		return changePageObjectType(${method.getNextImplClassName}.class).pause(Duration.ofMillis(${method.afterPause}L));
 !{/if}
 	}
 !{/for}	

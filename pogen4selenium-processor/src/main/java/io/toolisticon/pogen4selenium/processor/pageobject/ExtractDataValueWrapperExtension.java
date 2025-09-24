@@ -12,7 +12,7 @@ public class ExtractDataValueWrapperExtension {
 		String command = (
 					extractDataValueWrapper.by() == _By.ELEMENT ? 
 						extractDataValueWrapper.value() + "Element"
-						: "getDriver().findElement(By." + extractDataValueWrapper.by().getCorrespondingByMethodName() + "(\"" + extractDataValueWrapper.value() + "\"))"
+						: "PageObjectUtilities.waitForElementToBePresent(getDriver(), By." + extractDataValueWrapper.by().getCorrespondingByMethodName() + "(\"" + extractDataValueWrapper.value() + "\"))"
 				)
 				+ ".";
 		

@@ -1,9 +1,6 @@
 package io.toolisticon.pogen4selenium.runtime;
 
-import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
@@ -65,50 +62,27 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 		
 		return (OPO) function.execute((PAGEOBJECT)this);
 	}
-		
-	@Override
-	public <APO extends PageObjectParent<APO>> APO changePageObjectType(Class<APO> targetPageObjectType) {
-		try {
-			return targetPageObjectType.getConstructor(WebDriver.class).newInstance(this.getDriver());
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-				| NoSuchMethodException | SecurityException e) {
-			throw new RuntimeException("Unable to instantate the passed page object class : " + targetPageObjectType.getCanonicalName(), e);
-		}
-		
-	}
-
-
-
+			
 	protected void waitUntilUrl(String urlRegex) {
-		Wait<WebDriver> wait =
-    	        new FluentWait<>(driver)
-    	            .withTimeout(Duration.ofSeconds(25))
-    	            .pollingEvery(Duration.ofMillis(300));
-    	
-    	wait.until(ExpectedConditions.urlMatches(urlRegex));
+    	PageObjectUtilities.waitForiPageToHaveMatchingUrl(driver, urlRegex);
 	}
-	
 	
 	protected void waitForElementToBeInteractable(String xpath) {
 		waitForElementToBeInteractable(By.xpath(xpath));
 	}
 	
+	
+	
 	@Override
 	public WebElement waitForElementToBeInteractable(By by) {
-		Wait<WebDriver> wait =
-    	        new FluentWait<>(driver)
-    	            .withTimeout(Duration.ofSeconds(15))
-    	            .pollingEvery(Duration.ofMillis(300))
-    	            .ignoring(NoSuchElementException.class,ElementNotInteractableException.class);
-    	
-    	return wait.until(ExpectedConditions.elementToBeClickable(by));
+    	return PageObjectUtilities.waitForElementToBeInteractable(driver, by);
 	}
 	
 	
 	
 	@Override
 	public PAGEOBJECT waitForPageToContainText(String text) {
-		waitForMessage(text);
+		PageObjectUtilities.waitUntilPageSourceContains(driver, text);
 		return (PAGEOBJECT) this;
 	}
 
@@ -125,22 +99,16 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 	}
 	
 	protected WebElement waitForElementToBeInteractable(WebElement element) {
-		if(element == null) {
-			return null;
-		}
-		
-		Wait<WebDriver> wait =
-    	        new FluentWait<>(driver)
-    	            .withTimeout(Duration.ofSeconds(15))
-    	            .pollingEvery(Duration.ofMillis(300))
-    	            .ignoring(ElementNotInteractableException.class);
-    	
-    	return wait.until(ExpectedConditions.elementToBeClickable(element));
+    	return PageObjectUtilities.waitForElementToBeInteractable(driver, element);
 	}
+	
+	
 	
 	protected void waitForElementToBePresent(String xpath) {
 		waitForElementToBePresent(By.xpath(xpath));
 	}
+	
+	
 	
 	@Override
 	public WebElement waitForElementToBePresent(By by) {
@@ -154,6 +122,7 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
     	
 	}
 
+	/*-
 	
 	public WebElement waitForElementToBePresent(ExpectedCondition<WebElement> expectedCondition) {
 		Wait<WebDriver> wait =
@@ -165,7 +134,7 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
     	return wait.until(expectedCondition);
     	
 	}
-	
+	*/
 	
 	
 	
@@ -175,6 +144,7 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 	}
 	
 	
+	/*-
 	
 	protected void waitForElementToBeAbsent(String xpath) {
 		Wait<WebDriver> wait =
@@ -194,12 +164,13 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
     	
     	wait.until(ExpectedConditions.stalenessOf(element));
 	}
-	
+
 	protected void waitForMessage(String message) {
 		
 		waitForElementToBePresent("//*[text()[contains(.,'" + message+ "')]]");	
 		
 	}
+	
 	
 	protected void waitForMessageToVanish(String ... messages) {
 			
@@ -211,6 +182,7 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 		waitForElementToBeAbsent(element);
 				
 	}
+	*/
 	
 	
 	protected void writeToElement(WebElement webElement, String toSet) {
@@ -224,6 +196,6 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 	protected void doPageRefresh() {
 		driver.navigate().refresh();
 	}
-	
+
 	
 }

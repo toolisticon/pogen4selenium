@@ -64,7 +64,7 @@ public class ExtractDataWrapperExtension {
 			if (isList(dataToExtractWrapper)) {
 				return "getDriver().findElements(By." + dataToExtractWrapper.by().getCorrespondingByMethodName() + "(\""+ dataToExtractWrapper.value() + "\")).stream().map(e -> new " + dataToExtractWrapper.getExtractedDataImplName() + "(getDriver(), e)).collect(Collectors.toList());";
 			} else {
-				return "new " + dataToExtractWrapper.getExtractedDataImplName() +"(getDriver(), getDriver().findElement(By." + dataToExtractWrapper.by().getCorrespondingByMethodName() + "(\"" + dataToExtractWrapper.value() + "\")));";
+				return "new " + dataToExtractWrapper.getExtractedDataImplName() +"(getDriver(), PageObjectUtilities.waitForElementToBePresent(getDriver(), By." + dataToExtractWrapper.by().getCorrespondingByMethodName() + "(\"" + dataToExtractWrapper.value() + "\")));";
 			}
 			
 		}

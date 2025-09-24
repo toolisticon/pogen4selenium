@@ -14,6 +14,7 @@ import org.openqa.selenium.support.How;
 import io.toolisticon.pogen4selenium.api._By;
 import io.toolisticon.pogen4selenium.api.ExtractDataValue;
 import io.toolisticon.pogen4selenium.runtime.DataObjectParentImpl;
+import io.toolisticon.pogen4selenium.runtime.PageObjectUtilities;
 
 /**
  * An empty class.
@@ -45,7 +46,7 @@ public class ${ toImplementHelper.implementationClassName }  extends DataObjectP
 		${action.generateCode}
 !{/for}
 !{if method.returnsPageObject}	
-		return getPageObjectInstance(${method.getNextImplClassName}.class).pause(Duration.ofMillis(${method.afterPause}L));
+		return changePageObjectType(${method.getNextImplClassName}.class).pause(Duration.ofMillis(${method.afterPause}L));
 !{else}
 		return this;	
 !{/if}
