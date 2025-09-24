@@ -48,10 +48,5 @@ public interface PageObjectParent<PAGEOBJECT extends PageObjectParent<PAGEOBJECT
 	 */
 	<OPO extends PageObjectParent<OPO>> OPO execute(ExecuteBlock<PAGEOBJECT, OPO> function);
 	
-	/**
-	 * This method can be used to change the page object type.
-	 * This will be helpful if you encounter expected situations that differ from "happy path" like i.e. having a failing form validation.
-	 * @param <APO> the alternative page object type
-	 */
-	<APO extends PageObjectParent<APO>> APO changePageObjectType(Class<APO> targetPageObjectType);
+	
 }

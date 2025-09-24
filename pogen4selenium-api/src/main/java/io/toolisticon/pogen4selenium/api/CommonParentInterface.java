@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.openqa.selenium.WebDriver;
 
+import io.toolisticon.pogen4selenium.runtime.PageObjectUtilities;
+
 public interface CommonParentInterface {
 	
 	/**
@@ -13,36 +15,18 @@ public interface CommonParentInterface {
 	WebDriver getDriver();
 	
 	/**
-	 * Allows the creation of page object instances while using the fluent interface
-	 * @param <T>
-	 * @param pageObjectInterfaceType
-	 * @return
+	 * This method can be used to change the page object type.
+	 * This will be helpful if you encounter expected situations that differ from "happy path" like i.e. having a failing form validation.
+	 * @param <APO> the alternative page object type
 	 */
-	default <T extends PageObjectParent<T>> T getPageObjectInstance(Class<T> pageObjectInterfaceType) {
+	default <APO extends PageObjectParent<APO>> APO changePageObjectType(Class<APO> targetPageObjectType) {
 		
-		return getPageObjectInstance(pageObjectInterfaceType, getDriver());
+		return PageObjectUtilities.getPageObjectInstance(targetPageObjectType, getDriver());
 		
 	}
 	
-	/**
-	 * Allows the creation of page object instances while using the fluent interface
-	 * @param <T>
-	 * @param pageObjectInterfaceType
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends PageObjectParent<T>> T getPageObjectInstance(Class<T> pageObjectInterfaceType, WebDriver driver) {
-		
-		try {
-			
-			Class<?> clazz = Class.forName(pageObjectInterfaceType.getPackageName() + "." + pageObjectInterfaceType.getSimpleName() + "Impl");
-			return (T) clazz.getConstructor(WebDriver.class).newInstance(driver);
-			
-		} catch (ClassCastException |ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			throw new IllegalArgumentException("Couldn't create instance for PageObject '" + pageObjectInterfaceType.getCanonicalName() + "'", e);
-		}
-		
-	}
+	
+	
 	
 	
 	

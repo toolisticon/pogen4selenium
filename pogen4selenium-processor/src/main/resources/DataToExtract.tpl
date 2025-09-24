@@ -46,7 +46,7 @@ public class ${ toImplementHelper.implementationClassName }  extends DataObjectP
 		${action.generateCode}
 !{/for}
 !{if method.returnsPageObject}	
-		return getPageObjectInstance(${method.getNextImplClassName}.class).pause(Duration.ofMillis(${method.afterPause}L));
+		return changePageObjectType(${method.getNextImplClassName}.class).pause(Duration.ofMillis(${method.afterPause}L));
 !{else}
 		return this;	
 !{/if}

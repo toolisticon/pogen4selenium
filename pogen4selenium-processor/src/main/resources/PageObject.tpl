@@ -65,7 +65,7 @@ public class ${ toImplementHelper.implementationClassName } ${toImplementHelper.
 !{elseif method.getExtractData.isPresent}
 		return ${method.getExtractData.get.getFinalMethodCall}
 !{else}
-		return getPageObjectInstance(${method.getNextImplClassName}.class).pause(Duration.ofMillis(${method.afterPause}L));
+		return changePageObjectType(${method.getNextImplClassName}.class).pause(Duration.ofMillis(${method.afterPause}L));
 !{/if}
 	}
 !{/for}	

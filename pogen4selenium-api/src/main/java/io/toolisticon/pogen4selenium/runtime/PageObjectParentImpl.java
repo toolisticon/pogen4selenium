@@ -1,6 +1,5 @@
 package io.toolisticon.pogen4selenium.runtime;
 
-import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 
 import org.openqa.selenium.By;
@@ -63,19 +62,7 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 		
 		return (OPO) function.execute((PAGEOBJECT)this);
 	}
-		
-	@Override
-	public <APO extends PageObjectParent<APO>> APO changePageObjectType(Class<APO> targetPageObjectType) {
-		try {
-			return targetPageObjectType.getConstructor(WebDriver.class).newInstance(this.getDriver());
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-				| NoSuchMethodException | SecurityException e) {
-			throw new RuntimeException("Unable to instantate the passed page object class : " + targetPageObjectType.getCanonicalName(), e);
-		}
-		
-	}
-
-	
+			
 	protected void waitUntilUrl(String urlRegex) {
     	PageObjectUtilities.waitForiPageToHaveMatchingUrl(driver, urlRegex);
 	}
