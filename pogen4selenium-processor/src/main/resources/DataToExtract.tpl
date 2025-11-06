@@ -38,7 +38,7 @@ public class ${ toImplementHelper.implementationClassName }  extends DataObjectP
 
 !{for method : methodsToImplement}
 	@Override
-	public ${method.methodSignature}{
+	public !{if method.isSynchronized}synchronized!{/if} ${method.methodSignature}{
 	
 		pause(Duration.ofMillis(${method.beforePause}L));
 
