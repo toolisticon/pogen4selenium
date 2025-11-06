@@ -16,6 +16,7 @@ import io.toolisticon.aptk.tools.wrapper.ExecutableElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
 import io.toolisticon.pogen4selenium.api.DataObject;
 import io.toolisticon.pogen4selenium.api.PageObject;
+import io.toolisticon.pogen4selenium.api.Synchronized;
 import io.toolisticon.pogen4selenium.processor.common.actions.ActionHelper;
 import io.toolisticon.pogen4selenium.processor.common.actions.LocateActionHandler;
 import io.toolisticon.pogen4selenium.processor.pageobject.ExtractDataValueWrapper;
@@ -36,6 +37,10 @@ public class MethodsToImplementHelper {
 		Optional<TypeElementWrapper> returnTypeElement = this.executableElementWrapper.getReturnType().getTypeElement();
 		
 		return returnTypeElement.isPresent() && returnTypeElement.get().hasAnnotation(PageObject.class);
+	}
+	
+	public boolean isSynchronized() {
+		return executableElementWrapper.hasAnnotation(Synchronized.class);
 	}
 	
 	public String getMethodSignature() {
