@@ -129,7 +129,7 @@ public class PageObjectUtilities {
 	public static WebElement waitForElementToBePresent(WebDriver driver, By by, Duration timeout) {
 		Wait<WebDriver> wait =
     	        new FluentWait<>(driver)
-    	            .withTimeout(Duration.ofSeconds(15))
+    	            .withTimeout(timeout)
     	            .pollingEvery(Duration.ofMillis(300))
     	            .ignoring(NoSuchElementException.class);
     	
