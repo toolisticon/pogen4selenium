@@ -29,15 +29,24 @@ public class PageObjectUtilities {
 	 * @param driver the web driver
 	 * @param urlRegex the regular expression that the url must match
 	 */
-	public static void waitForiPageToHaveMatchingUrl(WebDriver driver, String urlRegex) {
+	public static void waitForPageToHaveMatchingUrl(WebDriver driver, String urlRegex) {
+		waitForPageToHaveMatchingUrl(driver, urlRegex, Duration.ofSeconds(25));
+	}
+	
+	/**
+	 * Waits for page to have a matching url.
+	 * @param driver the web driver
+	 * @param urlRegex the regular expression that the url must match
+	 * @param timeout the timeout 
+	 */
+	public static void waitForPageToHaveMatchingUrl(WebDriver driver, String urlRegex, Duration timeout) {
 		Wait<WebDriver> wait =
     	        new FluentWait<>(driver)
-    	            .withTimeout(Duration.ofSeconds(25))
+    	            .withTimeout(timeout)
     	            .pollingEvery(Duration.ofMillis(300));
     	
     	wait.until(ExpectedConditions.urlMatches(urlRegex));
 	}
-	
 
 	
 	/**
@@ -47,9 +56,20 @@ public class PageObjectUtilities {
 	 * @return the web element
 	 */
 	public static WebElement waitForElementToBeInteractable(WebDriver driver, By by) {
+ 	
+    	return waitForElementToBeInteractable(driver, by, Duration.ofSeconds(15));
+	}
+	
+	/**
+	 * Wait for an element to exist and to be interactable.	
+	 * @param driver the web driver
+	 * @param by the locator for the element
+	 * @return the web element
+	 */
+	public static WebElement waitForElementToBeInteractable(WebDriver driver, By by, Duration timeout) {
 		Wait<WebDriver> wait =
     	        new FluentWait<>(driver)
-    	            .withTimeout(Duration.ofSeconds(15))
+    	            .withTimeout(timeout)
     	            .pollingEvery(Duration.ofMillis(300))
     	            .ignoring(NoSuchElementException.class,ElementNotInteractableException.class);
     	
@@ -64,13 +84,24 @@ public class PageObjectUtilities {
 	 * @return the web element
 	 */
 	protected static WebElement waitForElementToBeInteractable(WebDriver driver, WebElement element) {
+    	return waitForElementToBeInteractable(driver, element, Duration.ofSeconds(15));
+	}
+	
+	/**
+	 * Wait if passed element is interactable.
+	 * @param driver the web driver
+	 * @param element the element to wait for the condition
+	 * @param timeout the timeout to use
+	 * @return the web element
+	 */
+	protected static WebElement waitForElementToBeInteractable(WebDriver driver, WebElement element, Duration timeout) {
 		if(element == null) {
 			return null;
 		}
 		
 		Wait<WebDriver> wait =
     	        new FluentWait<>(driver)
-    	            .withTimeout(Duration.ofSeconds(15))
+    	            .withTimeout(timeout)
     	            .pollingEvery(Duration.ofMillis(300))
     	            .ignoring(ElementNotInteractableException.class);
     	
@@ -85,6 +116,17 @@ public class PageObjectUtilities {
 	 * @return the web element
 	 */
 	public static WebElement waitForElementToBePresent(WebDriver driver, By by) {
+    	return waitForElementToBePresent(driver, by, Duration.ofSeconds(15));
+	}
+	
+	/**
+	 * Wait for element to be present.
+	 * @param driver web driver
+	 * @param by the locator to use
+	 * @param timeout the timeout to use
+	 * @return the web element
+	 */
+	public static WebElement waitForElementToBePresent(WebDriver driver, By by, Duration timeout) {
 		Wait<WebDriver> wait =
     	        new FluentWait<>(driver)
     	            .withTimeout(Duration.ofSeconds(15))
@@ -94,6 +136,7 @@ public class PageObjectUtilities {
     	return wait.until(ExpectedConditions.presenceOfElementLocated(by));
     	
 	}
+	
 
 	/**
 	 * Wait for element to be absent
@@ -101,9 +144,19 @@ public class PageObjectUtilities {
 	 * @param element the web element to check
 	 */
 	public static void waitForElementToBeAbsent(WebDriver driver, WebElement element) {
+    	waitForElementToBeAbsent(driver, element, Duration.ofSeconds(15));
+	}
+
+	/**
+	 * Wait for element to be absent
+	 * @param driver the web driver
+	 * @param element the web element to check
+	 * @param timeout the timeout to use
+	 */
+	public static void waitForElementToBeAbsent(WebDriver driver, WebElement element, Duration timeout) {
 		Wait<WebDriver> wait =
     	        new FluentWait<>(driver)
-    	            .withTimeout(Duration.ofSeconds(15))
+    	            .withTimeout(timeout)
     	            .pollingEvery(Duration.ofMillis(300));
     	
     	wait.until(ExpectedConditions.stalenessOf(element));
@@ -121,7 +174,17 @@ public class PageObjectUtilities {
 		
 	}
 	
-
+	/**
+	 * Wait until page source contains.
+	 * @param driver the web driver
+	 * @param text the test to search
+	 * @param timeout the timeout to ise
+	 */
+	public static void waitUntilPageSourceContains(WebDriver driver, String text, Duration timeout) {
+		
+		waitForElementToBePresent(driver, By.xpath("//*[text()[contains(.,'" + text + "')]]"), timeout);	
+		
+	}
 
 	
 	public static void doPageRefresh(WebDriver driver) {

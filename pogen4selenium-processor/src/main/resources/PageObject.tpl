@@ -52,8 +52,9 @@ public class ${ toImplementHelper.implementationClassName } ${toImplementHelper.
 	// implement methods
 !{for method : methodsToImplement}
 	@Override
-	public !{if method.isSynchronized}synchronized!{/if} ${method.methodSignature}{
+	public ${method.methodSignature}{
 	
+		!{if method.isSynchronized}synchronized(${ toImplementHelper.implementationClassName }.class){!{/if}
 		pause(Duration.ofMillis(${method.beforePause}L));
 
 !{for action : method.actions}
@@ -67,6 +68,7 @@ public class ${ toImplementHelper.implementationClassName } ${toImplementHelper.
 !{else}
 		return changePageObjectType(${method.getNextImplClassName}.class).pause(Duration.ofMillis(${method.afterPause}L));
 !{/if}
+		!{if method.isSynchronized}}!{/if}
 	}
 !{/for}	
 

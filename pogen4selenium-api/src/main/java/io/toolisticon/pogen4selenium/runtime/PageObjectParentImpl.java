@@ -64,8 +64,9 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 	}
 			
 	protected void waitUntilUrl(String urlRegex) {
-    	PageObjectUtilities.waitForiPageToHaveMatchingUrl(driver, urlRegex);
+    	PageObjectUtilities.waitForPageToHaveMatchingUrl(driver, urlRegex);
 	}
+
 	
 	protected void waitForElementToBeInteractable(String xpath) {
 		waitForElementToBeInteractable(By.xpath(xpath));
@@ -86,7 +87,11 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 		return (PAGEOBJECT) this;
 	}
 
-
+	@Override
+	public PAGEOBJECT waitForPageToContainText(String text, Duration timeout) {
+		PageObjectUtilities.waitUntilPageSourceContains(driver, text, timeout);
+		return (PAGEOBJECT) this;
+	}
 
 	public WebElement waitForElementToBeInteractable(ExpectedCondition<WebElement> expectedCondition) {
 		Wait<WebDriver> wait =
