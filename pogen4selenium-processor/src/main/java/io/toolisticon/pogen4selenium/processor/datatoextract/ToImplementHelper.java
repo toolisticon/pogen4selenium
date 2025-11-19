@@ -41,6 +41,10 @@ public class ToImplementHelper {
 		return this.element.getQualifiedName();
 	}
 	
+	public String getSimpleInterfaceName() {
+		return this.element.getSimpleName();
+	}
+	
 	public String getImplementationClassName() {
 		return element.getSimpleName() + "Impl";
 	}

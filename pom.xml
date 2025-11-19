@@ -53,6 +53,7 @@
 		<spiap.version>0.11.0</spiap.version>
 		<aptk.version>0.30.5</aptk.version>
 		<selenium.version>4.27.0</selenium.version>
+		<slf4j.version>2.0.17</slf4j.version>
 		
 		<!-- versions of test dependencies -->
 		<junit.version>4.13.2</junit.version>
@@ -536,6 +537,12 @@
 			   <version>${selenium.version}</version>
 			   <scope>provided</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+			    <artifactId>slf4j-api</artifactId>
+			    <version>${slf4j.version}</version>
+			    <scope>provided</scope>
+		    </dependency>
 			<!-- Compile only dependencies - for example needed by annotation processors -->
 			<dependency>
 				<groupId>io.toolisticon.aptk</groupId>
@@ -567,6 +574,13 @@
 				<artifactId>aptk-cute</artifactId>
 				<version>${aptk.version}</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>1.5.16</version>
+				<scope>test</scope>
+		
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

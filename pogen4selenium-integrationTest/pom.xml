@@ -93,6 +93,18 @@
             <groupId>io.toolisticon.pogen4selenium</groupId>
             <artifactId>pogen4selenium-processor</artifactId>
         </dependency>
+        
+        <dependency>
+        	<groupId>org.slf4j</groupId>
+        	<artifactId>slf4j-api</artifactId>
+        	<scope>runtime</scope>
+        </dependency>
+        
+        <dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
     </dependencies>
 

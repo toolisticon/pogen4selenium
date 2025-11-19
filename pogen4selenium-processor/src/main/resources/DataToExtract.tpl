@@ -16,10 +16,16 @@ import io.toolisticon.pogen4selenium.api.ExtractDataValue;
 import io.toolisticon.pogen4selenium.runtime.DataObjectParentImpl;
 import io.toolisticon.pogen4selenium.runtime.PageObjectUtilities;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * An empty class.
  */
 public class ${ toImplementHelper.implementationClassName }  extends DataObjectParentImpl implements ${toImplementHelper.interfaceName}{
+	
+	private final static Logger LOGGER = LoggerFactory.getLogger(${toImplementHelper.interfaceName}.class);
+	
 	
 	/** 
 	 * Constructor
@@ -32,13 +38,19 @@ public class ${ toImplementHelper.implementationClassName }  extends DataObjectP
 !{for dataToExtractValue : dataToExtract.value}
 	@Override
 	public String ${dataToExtractValue.methodName}(){
-		return getValue(_By.${dataToExtractValue.by}, "${dataToExtractValue.value}", ExtractDataValue.Kind.${dataToExtractValue.kind}, "${dataToExtractValue.name}");
+		
+		String value = getValue(_By.${dataToExtractValue.by}, "${dataToExtractValue.value}", ExtractDataValue.Kind.${dataToExtractValue.kind}, "${dataToExtractValue.name}");
+		LOGGER.info("${toImplementHelper.simpleInterfaceName}.${dataToExtractValue.methodName}() = '{}'", value);
+		return value;
+	
 	}
 !{/for}	
 
 !{for method : methodsToImplement}
 	@Override
 	public !{if method.isSynchronized}synchronized!{/if} ${method.methodSignature}{
+	
+		LOGGER.info(${method.getMethodLogStatement});
 	
 		pause(Duration.ofMillis(${method.beforePause}L));
 
