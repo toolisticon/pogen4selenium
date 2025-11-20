@@ -76,14 +76,5 @@ public class LocalizationUtilities {
 		}
 	}
 	
-	
-	public static void main(String[] args) {
-		
-		setLocale(Locale.GERMAN);
-		
-		System.out.println(getLocalizedText("${abc.def}"));
-		System.out.println(getLocalizedText("STATIC TEXT"));
-		
-	}
-	
+
 }

@@ -23,7 +23,7 @@ By doing that it drastically increases readability of page objects and reduces t
 
 # Restrictions
 
-The project is still in development, so it currently just supports a few Actions like clicking or writing to input fields. Nevertheless it's quite simple to define custom Action annotations and their implementations. 
+The project is still in development, so it currently just supports a few Actions like clicking or writing to input fields. Nevertheless, it's quite simple to define custom Action annotations and their implementations. 
 
 Please create an issue, if you need specific action to be implemented. Usually it will be included shortly after ;)
 
@@ -38,7 +38,7 @@ The api lib must be bound as a dependency - for example in maven:
 	<dependency>
 	    <groupId>io.toolisticon.pogen4selenium</groupId>
 	    <artifactId>pogen4selenium-api</artifactId>
-	    <version>0.5.0</version>
+	    <version>0.12.0</version>
 	    <scope>provided</scope>
 	</dependency>
  
@@ -57,7 +57,7 @@ Additionally, you need to declare the annotation processor path in your compiler
             <path>
                 <groupId>io.toolisticon.pogen4selenium</groupId>
                 <artifactId>pogen4selenium-processor</artifactId>
-                <version>0.1.0</version>
+                <version>0.12.0</version>
             </path>
         </annotationProcessorPaths>
         
@@ -72,7 +72,7 @@ Additionally, you need to declare the annotation processor path in your compiler
 The page object interfaces must be annotated with the *PageObject* annotation and must extend the *PageObjectParent* interface.
 
 There are basically two ways to reference elements.
-The first is to use element fields in the generated classes that will internally be initialized via Selniums PageFactory.
+The first is to use element fields in the generated classes that will internally be initialized via Seleniums PageFactory.
 
 To achieve that it's necessary to add String constants annotated with the *PageObjectElement* annotation for all web elements which are related with the page object. The constant values must be unique inside the interface and will be used in the generated class as variable names for the corresponding elements. The constant names must have "_ID" as suffix.
 
@@ -153,6 +153,57 @@ public interface TestPageTableEntry {
 }
 ```
 
+### Using Layers Of Page Objects
+Page Objects can also be used to create abstraction layers.
+
+Think about the use case that you have to fill out a form where you have to fill out multiple fields belonging to an address.
+In this case it's likely that you want to create a Page Object that does some aggregations .
+
+First you would create the Page Object that defines all actions 
+
+```java
+
+@PageObject
+public class PersonalDataFormPageObject extends PageObjectParent<TestPagePageObject>{
+
+	PersonalDataFormPageObject writeName(@ActionWrite(by=_By.ID, value="name")String name);
+
+	PersonalDataFormPageObject writeStreet(@ActionWrite(by=_By.ID, value="street")String street);
+
+	PersonalDataFormPageObject writeHouseNumber(@ActionWrite(by=_By.ID, value="housenumber") String houseNumber);
+	
+	PersonalDataFormPageObject writeZipCode(@ActionWrite(by=_By.ID, value="zipCode")String zipCode);
+
+	PersonalDataFormPageObject writeZipCode(@ActionWrite(by=_By.ID, value="city")String city);
+
+}
+
+
+```
+
+Then you could create another page object later used in tests, that does some aggregation:
+
+```java
+
+@PageObject
+public class AggregatedPersonalDataFormPageObject extends PageObjectParent<AggregatedPersonalDataFormPageObject>{
+
+	default AggregatedPersonalDataFormPageObject writeAddress(Address address) {
+		this.changePageObjectType(PersonalDataFormPageObject.class)
+			.writeName(address.getName())
+			.writeStreet(address.getStreet())
+			.writeHouseNumber(address.getHouseNumber())
+			.writeZipCode(address.getZipCode())
+			.writeCity(address.getCity());
+			
+		return this;
+	}
+
+}
+
+```
+
+It's a good practice to use such aggregation page objects to group actions that belong together to make the automation code base more readable.
 
 ### Writing tests
 Writing tests is easy. The fluent api provides a *doAssertions* method that allows you to inline custom assertions done with your favorite unit testing tool.
@@ -250,22 +301,33 @@ public class TestPageTest {
 
 There are some default methods provided by the fluent api:
 
-##### verify
+#### getDriver ()
+Gets the WebDriver in use. This is very useful in doAssertions or execute methods to manually execute selenium related code. 
+
+##### verify ()
 By using the verify methods it's possible to do check state of elements, i.e. if url matches a regular expression or if elements are present or clickable. Expected state is configured in PageObjectElement annotation. If not set explicitly all elements are expected to be present by default.
 
-##### doAssertions
+##### doAssertions (AssertionInterface<PAGEOBJECT> function)
 It's possible to inline assertions done via your favorite testing tools. 
 By providing this method it's not necessary to hassle with local variables anymore.
 
-##### execute
-The execute method allows you to do test steps dynamically, like reading data from the web page and doing things based on the extracted data.
-It can also be used to switch to another page object type. This can be useful if input data is expected to be validated and should stay on the same page and show an error message.
+##### execute (ExecuteBlock<PAGEOBJECT, OPO> function)
+The execute method allows you to execute code dynamically without loosing the context of the fluent api.
+This can be quite useful for reading data from the web page and doing things based on the extracted data.
 
-##### pause
+##### changePageObjectType (Class<APO extends PageObjectParent<APO>> targetPageObjectType)
+Allows changing the page objects type if expected behavior leaves the 'happy path' - for example if you expect to encounter a failing form validation or similar things.
+
+##### pause (Duration duration)
 It's possible to enforce an explicit pause time by using this method
 
-##### changePageObjectType
-Change the page objects type if expected behavior leaves the 'happy path' - for example if you expect to encounter a failing form validation or similar things.
+##### waitForPageToContainText (String text)  or waitForPageToContainText (String text, Duration timeout)
+Wait as long as a specific text is present on page. The text can either be a static text or a localized text if it matches the following pattern '${key}'. Localization will internally provided by a thread local resource bundle.
+The resource bundle can be configured via the LocalizationUtilities class.
+This method is a great help to wait until the expected page is being loaded and is displayed.
+
+##### setLocale (Locale locale)
+It's possible to change the locale via this method
  
 ## Extensibility
 New action annotations can added by providing an action annotation annotated itself with the _Action_ meta annotation. Annotations must either be applicable to methods or method parameters.
