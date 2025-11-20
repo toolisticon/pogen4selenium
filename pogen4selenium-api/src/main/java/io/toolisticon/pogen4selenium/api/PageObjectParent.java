@@ -1,6 +1,7 @@
 package io.toolisticon.pogen4selenium.api;
 
 import java.time.Duration;
+import java.util.Locale;
 
 import io.toolisticon.pogen4selenium.runtime.AssertionInterface;
 import io.toolisticon.pogen4selenium.runtime.ExecuteBlock;
@@ -26,14 +27,14 @@ public interface PageObjectParent<PAGEOBJECT extends PageObjectParent<PAGEOBJECT
 
 	/**
 	 * Wait as long as text is displayed
-	 * @param text the text to search
+	 * @param text the text to search, might be a static string or a localized String referenced by key "${key}"
 	 * @return next fluent interface
 	 */
 	PAGEOBJECT waitForPageToContainText(String text);
 	
 	/**
 	 * Wait as long as text is displayed
-	 * @param text the text to search
+	 * @param text the text to search, might be a static string or a localized String referenced by key "${key}"
 	 * @param timeout the timout to use
 	 * @return next fluent interface
 	 */
@@ -45,6 +46,12 @@ public interface PageObjectParent<PAGEOBJECT extends PageObjectParent<PAGEOBJECT
 	 * @return next fluent interface
 	 */
 	PAGEOBJECT doAssertions(AssertionInterface<PAGEOBJECT> function);
+	
+	/**
+	 * Changes the locale for localized text checks like done in waitForPageToContainText.
+	 * @return next fluent interface
+	 */
+	PAGEOBJECT changeLocale(Locale locale);
 
 	/**
 	 * Allows to do inline execution of custom code. 

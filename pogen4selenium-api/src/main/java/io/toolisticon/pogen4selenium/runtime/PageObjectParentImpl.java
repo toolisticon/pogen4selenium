@@ -1,6 +1,7 @@
 package io.toolisticon.pogen4selenium.runtime;
 
 import java.time.Duration;
+import java.util.Locale;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
@@ -92,6 +93,14 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 		PageObjectUtilities.waitUntilPageSourceContains(driver, text, timeout);
 		return (PAGEOBJECT) this;
 	}
+	
+	@Override
+	public PAGEOBJECT changeLocale(Locale locale) {
+		LocalizationUtilities.setLocale(locale);
+		return (PAGEOBJECT) this;
+	}
+
+
 
 	public WebElement waitForElementToBeInteractable(ExpectedCondition<WebElement> expectedCondition) {
 		Wait<WebDriver> wait =

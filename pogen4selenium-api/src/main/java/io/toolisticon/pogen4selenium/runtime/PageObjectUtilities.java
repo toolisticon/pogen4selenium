@@ -170,7 +170,7 @@ public class PageObjectUtilities {
 	 */
 	public static void waitUntilPageSourceContains(WebDriver driver, String text) {
 		
-		waitForElementToBePresent(driver, By.xpath("//*[text()[contains(.,'" + text + "')]]"));	
+		waitForElementToBePresent(driver, By.xpath("//*[text()[contains(.,'" + LocalizationUtilities.getLocalizedText(text) + "')]]"));	
 		
 	}
 	
@@ -178,11 +178,11 @@ public class PageObjectUtilities {
 	 * Wait until page source contains.
 	 * @param driver the web driver
 	 * @param text the test to search
-	 * @param timeout the timeout to ise
+	 * @param timeout the timeout to use
 	 */
 	public static void waitUntilPageSourceContains(WebDriver driver, String text, Duration timeout) {
 		
-		waitForElementToBePresent(driver, By.xpath("//*[text()[contains(.,'" + text + "')]]"), timeout);	
+		waitForElementToBePresent(driver, By.xpath("//*[text()[contains(.,'" + LocalizationUtilities.getLocalizedText(text) + "')]]"), timeout);	
 		
 	}
 
