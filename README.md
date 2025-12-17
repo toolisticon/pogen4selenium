@@ -332,46 +332,125 @@ It's possible to change the locale via this method
 ## Extensibility
 New action annotations can added by providing an action annotation annotated itself with the _Action_ meta annotation. Annotations must either be applicable to methods or method parameters.
 
-The corresponding code can be provided by implementing the _ActionHandler_ interface:
+Please see the _ActionWrite_ Annotation as an example
+```java
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+@Action(ActionWriteImpl.class)
+public @interface ActionWrite {
+	
+	/**
+	 * The locator type to use. Can be ELEMENT for using a generated element or any kind of locator provided by Selenium.
+	 * @return the locator to use.
+	 */
+	@LocatorBy
+	_By by() default _By.ELEMENT;
+	
+	/** The locator string to use. */
+	@LocatorValue
+	String value();
+	
+	/**
+	 * The locator strategy to use, will just be taken into account if by attribute is not set to ELEMENT.
+	 * @return the Locator strategy, defaults to DefaultLocatorStrategy
+	 */
+	@LocatorSideCondition
+	Class<? extends LocatorCondition> locatorSideCondition() default DefaultSideCondition.class;
+	
+}
+```
+The _Action_ annotation is used to bind an implementation for the action annotation. It's also possible to map annotation attributes to constructor methods.
+
+The action implementation must extend the BaseAction class:
 
 ```java
-/**
- * Service provider interface to bind implementations for actions.
- */
-@Spi
-public interface ActionHandler {
-
-	/**
-	 * The fully qualified name of the related annotation type.
-	 * @return the fqn of the supported annotation type
-	 */
-	String getSupportedActionAnnotationClassFqn();
+public class ActionWriteImpl extends BaseAction {
 	
-	/**
-	 * Method that is called to generate the code necessary to fulfill the action.
-	 * @param element The annotated element
-	 * @return The code that must be added to the annotated method or an empty String(must not be null !!!)
-	 */
-	public String generateCode(Element element);
+	private final String toSet;
 	
-	/**
-	 * Gets all import needed by the generated code to be compiled and executed correctly
-	 * @param element the annotated element
-	 * @return a set containing all imports or an empty list (must not be null !!!)
-	 */
-	public Set<String> getImports(Element element);
+	public ActionWriteImpl(WebDriver driver, SearchContext searchContext, LocatorCondition locatorCondition, String toSet) {
+		super(driver, searchContext, locatorCondition);
 		
+		this.toSet = toSet;
+	}
+
+	@Override
+	public boolean checkCondition(WebDriver driver, WebElement element) {
+		return element.isDisplayed() && element.isEnabled();
+	}
+
+	@Override
+	public Collection<Class<? extends Throwable>> exceptionsToIgnore() {
+		return Arrays.asList(NoSuchElementException.class);
+	}
+
+	@Override
+	protected void applyAction(WebElement webElement) {
+		
+		webElement.click();
+		webElement.sendKeys(Keys.CONTROL + "a");
+		webElement.sendKeys(Keys.DELETE);
+		webElement.sendKeys(toSet);
+		
+	}
+
 }
 ```
 
+It must have a constructor with at least the following parameters:
+
+```
+WebDriver driver, SearchContext searchContext, LocatorCondition locatorCondition
+```
+
+If the action can be applied to a method parameter, it must have an additional parameter:
+
+```
+WebDriver driver, SearchContext searchContext, LocatorCondition locatorCondition, String toSet
+```
+
+Additional annotation attributes can be mapped to constructor parameters call by using the Action annotations _attributeNameToConstructorMapping_ attribute.
+
+```java
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+@Action(value = ActionDragFromToImpl.class, attributeNameToConstructorMapping = {"fromBy", "fromValue"})
+public @interface ActionDragFromTo {
+
+	/**
+	 * The locator type to use. Can be ELEMENT for using a generated element or any kind of locator provided by selenium.
+	 * @return the locator to use.
+	 */	
+	_By fromBy() default _By.XPATH;
+	
+	/** The locator string to use. */	
+	String fromValue() default "${}";
+	
+	@LocatorBy
+	_By toBy() default _By.XPATH;
+	
+	/** The locator string to use. */
+	@LocatorValue
+	String toValue();
+	
+	/**
+	 * The locator strategy to use, will just be taken into account if by attribute is not set to ELEMENT.
+	 * @return the Locator strategy, defaults to DefaultLocatorStrategy
+	 */
+	@LocatorSideCondition
+	Class<? extends LocatorCondition> locatorSideCondition() default DefaultSideCondition.class;
+	
+}
+```
 
 
 ## Best practices
 
 There are a few things you should consider as best practices
 
+- Use a multi layer approach. The lowest layer should provide all actions that can be done on page 
 - Naming convention: Please use specific prefixes for you page object methods. This can be 'do' for all actions and 'get' for reading data.
-- Page objects should define just the happy path. Special cases like failing validations can be handled in the unit tests via the execute method(you can map to another page object type in it).   
+- Page objects should define just the happy path. Special cases like failing validations can be handled in the unit tests via the execute method(you can change the page object type via the changePageObjectType method in it).   
 
 ## Example
 
