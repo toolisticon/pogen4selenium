@@ -13,10 +13,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * An empty class.
  */
 public class ${ toImplementHelper.implementationClassName } ${toImplementHelper.typeVarString} extends ${toImplementHelper.extendsString} implements ${toImplementHelper.interfaceName}${toImplementHelper.getInterfaceTypeVarString}{
+
+	private final static Logger LOGGER = LoggerFactory.getLogger(${toImplementHelper.interfaceName}.class);
+	
 
 	// constants
 !{for element : pageObject.value}
@@ -49,10 +55,21 @@ public class ${ toImplementHelper.implementationClassName } ${toImplementHelper.
 		return !{if toImplementHelper.hasTypeParameters}(PAGEOBJECT)!{/if} this;
 	}
 	
+	// default methods
+!{for defaultMethod : defaultMethods}
+	@Override
+	public ${defaultMethod.methodSignature}{
+		LOGGER.info(${defaultMethod.getMethodLogStatement});
+		return ${toImplementHelper.interfaceName}.super.${defaultMethod.getDefaultMethodCall};
+	}
+!{/for}
+	
 	// implement methods
 !{for method : methodsToImplement}
 	@Override
 	public ${method.methodSignature}{
+	
+		LOGGER.info(${method.getMethodLogStatement});
 	
 		!{if method.isSynchronized}synchronized(${ toImplementHelper.implementationClassName }.class){!{/if}
 		pause(Duration.ofMillis(${method.beforePause}L));
@@ -62,7 +79,9 @@ public class ${ toImplementHelper.implementationClassName } ${toImplementHelper.
 !{/for}
 	
 !{if method.getExtractDataValue.isPresent}
-		return ${method.getExtractDataValue.get.getFinalMethodCall}
+		String value = ${method.getExtractDataValue.get.getFinalMethodCall}
+		LOGGER.info("Extracted Data Value : '{}'", value);
+		return value;
 !{elseif method.getExtractData.isPresent}
 		return ${method.getExtractData.get.getFinalMethodCall}
 !{else}

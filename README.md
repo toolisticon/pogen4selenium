@@ -23,7 +23,7 @@ By doing that it drastically increases readability of page objects and reduces t
 
 # Restrictions
 
-The project is still in development, so it currently just supports a few Actions like clicking or writing to input fields. Nevertheless it's quite simple to define custom Action annotations and their implementations. 
+The project is still in development, so it currently just supports a few Actions like clicking or writing to input fields. Nevertheless, it's quite simple to define custom Action annotations and their implementations. 
 
 Please create an issue, if you need specific action to be implemented. Usually it will be included shortly after ;)
 
@@ -38,7 +38,7 @@ The api lib must be bound as a dependency - for example in maven:
 	<dependency>
 	    <groupId>io.toolisticon.pogen4selenium</groupId>
 	    <artifactId>pogen4selenium-api</artifactId>
-	    <version>0.5.0</version>
+	    <version>0.12.0</version>
 	    <scope>provided</scope>
 	</dependency>
  
@@ -57,7 +57,7 @@ Additionally, you need to declare the annotation processor path in your compiler
             <path>
                 <groupId>io.toolisticon.pogen4selenium</groupId>
                 <artifactId>pogen4selenium-processor</artifactId>
-                <version>0.1.0</version>
+                <version>0.12.0</version>
             </path>
         </annotationProcessorPaths>
         
@@ -72,7 +72,7 @@ Additionally, you need to declare the annotation processor path in your compiler
 The page object interfaces must be annotated with the *PageObject* annotation and must extend the *PageObjectParent* interface.
 
 There are basically two ways to reference elements.
-The first is to use element fields in the generated classes that will internally be initialized via Selniums PageFactory.
+The first is to use element fields in the generated classes that will internally be initialized via Seleniums PageFactory.
 
 To achieve that it's necessary to add String constants annotated with the *PageObjectElement* annotation for all web elements which are related with the page object. The constant values must be unique inside the interface and will be used in the generated class as variable names for the corresponding elements. The constant names must have "_ID" as suffix.
 
@@ -153,6 +153,57 @@ public interface TestPageTableEntry {
 }
 ```
 
+### Using Layers Of Page Objects
+Page Objects can also be used to create abstraction layers.
+
+Think about the use case that you have to fill out a form where you have to fill out multiple fields belonging to an address.
+In this case it's likely that you want to create a Page Object that does some aggregations .
+
+First you would create the Page Object that defines all actions 
+
+```java
+
+@PageObject
+public class PersonalDataFormPageObject extends PageObjectParent<TestPagePageObject>{
+
+	PersonalDataFormPageObject writeName(@ActionWrite(by=_By.ID, value="name")String name);
+
+	PersonalDataFormPageObject writeStreet(@ActionWrite(by=_By.ID, value="street")String street);
+
+	PersonalDataFormPageObject writeHouseNumber(@ActionWrite(by=_By.ID, value="housenumber") String houseNumber);
+	
+	PersonalDataFormPageObject writeZipCode(@ActionWrite(by=_By.ID, value="zipCode")String zipCode);
+
+	PersonalDataFormPageObject writeZipCode(@ActionWrite(by=_By.ID, value="city")String city);
+
+}
+
+
+```
+
+Then you could create another page object later used in tests, that does some aggregation:
+
+```java
+
+@PageObject
+public class AggregatedPersonalDataFormPageObject extends PageObjectParent<AggregatedPersonalDataFormPageObject>{
+
+	default AggregatedPersonalDataFormPageObject writeAddress(Address address) {
+		this.changePageObjectType(PersonalDataFormPageObject.class)
+			.writeName(address.getName())
+			.writeStreet(address.getStreet())
+			.writeHouseNumber(address.getHouseNumber())
+			.writeZipCode(address.getZipCode())
+			.writeCity(address.getCity());
+			
+		return this;
+	}
+
+}
+
+```
+
+It's a good practice to use such aggregation page objects to group actions that belong together to make the automation code base more readable.
 
 ### Writing tests
 Writing tests is easy. The fluent api provides a *doAssertions* method that allows you to inline custom assertions done with your favorite unit testing tool.
@@ -250,66 +301,156 @@ public class TestPageTest {
 
 There are some default methods provided by the fluent api:
 
-##### verify
+#### getDriver ()
+Gets the WebDriver in use. This is very useful in doAssertions or execute methods to manually execute selenium related code. 
+
+##### verify ()
 By using the verify methods it's possible to do check state of elements, i.e. if url matches a regular expression or if elements are present or clickable. Expected state is configured in PageObjectElement annotation. If not set explicitly all elements are expected to be present by default.
 
-##### doAssertions
+##### doAssertions (AssertionInterface<PAGEOBJECT> function)
 It's possible to inline assertions done via your favorite testing tools. 
 By providing this method it's not necessary to hassle with local variables anymore.
 
-##### execute
-The execute method allows you to do test steps dynamically, like reading data from the web page and doing things based on the extracted data.
-It can also be used to switch to another page object type. This can be useful if input data is expected to be validated and should stay on the same page and show an error message.
+##### execute (ExecuteBlock<PAGEOBJECT, OPO> function)
+The execute method allows you to execute code dynamically without loosing the context of the fluent api.
+This can be quite useful for reading data from the web page and doing things based on the extracted data.
 
-##### pause
+##### changePageObjectType (Class<APO extends PageObjectParent<APO>> targetPageObjectType)
+Allows changing the page objects type if expected behavior leaves the 'happy path' - for example if you expect to encounter a failing form validation or similar things.
+
+##### pause (Duration duration)
 It's possible to enforce an explicit pause time by using this method
 
-##### changePageObjectType
-Change the page objects type if expected behavior leaves the 'happy path' - for example if you expect to encounter a failing form validation or similar things.
+##### waitForPageToContainText (String text)  or waitForPageToContainText (String text, Duration timeout)
+Wait as long as a specific text is present on page. The text can either be a static text or a localized text if it matches the following pattern '${key}'. Localization will internally provided by a thread local resource bundle.
+The resource bundle can be configured via the LocalizationUtilities class.
+This method is a great help to wait until the expected page is being loaded and is displayed.
+
+##### setLocale (Locale locale)
+It's possible to change the locale via this method
  
 ## Extensibility
 New action annotations can added by providing an action annotation annotated itself with the _Action_ meta annotation. Annotations must either be applicable to methods or method parameters.
 
-The corresponding code can be provided by implementing the _ActionHandler_ interface:
+Please see the _ActionWrite_ Annotation as an example
+```java
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+@Action(ActionWriteImpl.class)
+public @interface ActionWrite {
+	
+	/**
+	 * The locator type to use. Can be ELEMENT for using a generated element or any kind of locator provided by Selenium.
+	 * @return the locator to use.
+	 */
+	@LocatorBy
+	_By by() default _By.ELEMENT;
+	
+	/** The locator string to use. */
+	@LocatorValue
+	String value();
+	
+	/**
+	 * The locator strategy to use, will just be taken into account if by attribute is not set to ELEMENT.
+	 * @return the Locator strategy, defaults to DefaultLocatorStrategy
+	 */
+	@LocatorSideCondition
+	Class<? extends LocatorCondition> locatorSideCondition() default DefaultSideCondition.class;
+	
+}
+```
+The _Action_ annotation is used to bind an implementation for the action annotation. It's also possible to map annotation attributes to constructor methods.
+
+The action implementation must extend the BaseAction class:
 
 ```java
-/**
- * Service provider interface to bind implementations for actions.
- */
-@Spi
-public interface ActionHandler {
-
-	/**
-	 * The fully qualified name of the related annotation type.
-	 * @return the fqn of the supported annotation type
-	 */
-	String getSupportedActionAnnotationClassFqn();
+public class ActionWriteImpl extends BaseAction {
 	
-	/**
-	 * Method that is called to generate the code necessary to fulfill the action.
-	 * @param element The annotated element
-	 * @return The code that must be added to the annotated method or an empty String(must not be null !!!)
-	 */
-	public String generateCode(Element element);
+	private final String toSet;
 	
-	/**
-	 * Gets all import needed by the generated code to be compiled and executed correctly
-	 * @param element the annotated element
-	 * @return a set containing all imports or an empty list (must not be null !!!)
-	 */
-	public Set<String> getImports(Element element);
+	public ActionWriteImpl(WebDriver driver, SearchContext searchContext, LocatorCondition locatorCondition, String toSet) {
+		super(driver, searchContext, locatorCondition);
 		
+		this.toSet = toSet;
+	}
+
+	@Override
+	public boolean checkCondition(WebDriver driver, WebElement element) {
+		return element.isDisplayed() && element.isEnabled();
+	}
+
+	@Override
+	public Collection<Class<? extends Throwable>> exceptionsToIgnore() {
+		return Arrays.asList(NoSuchElementException.class);
+	}
+
+	@Override
+	protected void applyAction(WebElement webElement) {
+		
+		webElement.click();
+		webElement.sendKeys(Keys.CONTROL + "a");
+		webElement.sendKeys(Keys.DELETE);
+		webElement.sendKeys(toSet);
+		
+	}
+
 }
 ```
 
+It must have a constructor with at least the following parameters:
+
+```
+WebDriver driver, SearchContext searchContext, LocatorCondition locatorCondition
+```
+
+If the action can be applied to a method parameter, it must have an additional parameter:
+
+```
+WebDriver driver, SearchContext searchContext, LocatorCondition locatorCondition, String toSet
+```
+
+Additional annotation attributes can be mapped to constructor parameters call by using the Action annotations _attributeNameToConstructorMapping_ attribute.
+
+```java
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+@Action(value = ActionDragFromToImpl.class, attributeNameToConstructorMapping = {"fromBy", "fromValue"})
+public @interface ActionDragFromTo {
+
+	/**
+	 * The locator type to use. Can be ELEMENT for using a generated element or any kind of locator provided by selenium.
+	 * @return the locator to use.
+	 */	
+	_By fromBy() default _By.XPATH;
+	
+	/** The locator string to use. */	
+	String fromValue() default "${}";
+	
+	@LocatorBy
+	_By toBy() default _By.XPATH;
+	
+	/** The locator string to use. */
+	@LocatorValue
+	String toValue();
+	
+	/**
+	 * The locator strategy to use, will just be taken into account if by attribute is not set to ELEMENT.
+	 * @return the Locator strategy, defaults to DefaultLocatorStrategy
+	 */
+	@LocatorSideCondition
+	Class<? extends LocatorCondition> locatorSideCondition() default DefaultSideCondition.class;
+	
+}
+```
 
 
 ## Best practices
 
 There are a few things you should consider as best practices
 
+- Use a multi layer approach. The lowest layer should provide all actions that can be done on page 
 - Naming convention: Please use specific prefixes for you page object methods. This can be 'do' for all actions and 'get' for reading data.
-- Page objects should define just the happy path. Special cases like failing validations can be handled in the unit tests via the execute method(you can map to another page object type in it).   
+- Page objects should define just the happy path. Special cases like failing validations can be handled in the unit tests via the execute method(you can change the page object type via the changePageObjectType method in it).   
 
 ## Example
 

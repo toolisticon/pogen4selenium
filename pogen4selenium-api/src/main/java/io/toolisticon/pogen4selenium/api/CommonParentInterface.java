@@ -1,7 +1,5 @@
 package io.toolisticon.pogen4selenium.api;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.openqa.selenium.WebDriver;
 
 import io.toolisticon.pogen4selenium.runtime.PageObjectUtilities;

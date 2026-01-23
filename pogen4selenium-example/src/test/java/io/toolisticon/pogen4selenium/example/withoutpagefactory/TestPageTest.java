@@ -116,6 +116,7 @@ public class TestPageTest {
 		.clickCounterIncrementButton()
 		.doAssertions(e -> {
 			MatcherAssert.assertThat(e.getCounter(), Matchers.is("4"));
+			MatcherAssert.assertThat(e.providedGetCounter(), Matchers.is("4"));
 		})
 			;
 	}

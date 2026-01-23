@@ -14,6 +14,7 @@ import org.openqa.selenium.interactions.Actions;
 import io.toolisticon.aptk.tools.TypeMirrorWrapper;
 import io.toolisticon.aptk.tools.wrapper.ExecutableElementWrapper;
 import io.toolisticon.aptk.tools.wrapper.TypeElementWrapper;
+import io.toolisticon.aptk.tools.wrapper.VariableElementWrapper;
 import io.toolisticon.pogen4selenium.api.DataObject;
 import io.toolisticon.pogen4selenium.api.PageObject;
 import io.toolisticon.pogen4selenium.api.Synchronized;
@@ -98,6 +99,64 @@ public class MethodsToImplementHelper {
 	
 	public record ElementsToWrite( String elementVarName,String toWriteParameterName) {};
 	
+	
+	public String getMethodLogStatement() {
+		
+		// output should look like InterfaceName.methodName(param1,param2,param3) parameters should be resolved to real values
+		// "InterfaceName.methodName({},{},{})",param1Name,param2Name,param3Name´
+		
+		// Build String
+		
+		StringBuilder methodLogStatement = new StringBuilder();
+		methodLogStatement.append("\"").append(this.executableElementWrapper.getEnclosingElement().get().getSimpleName())
+			.append(".").append(this.executableElementWrapper.getSimpleName())
+			.append("(")
+			.append(this.executableElementWrapper.getParameters().stream().map(e -> "'{}'").collect(Collectors.joining(", ")))
+			.append(")\"")
+			.append(this.executableElementWrapper.getParameters().size() > 0 ? this.executableElementWrapper.getParameters().stream().map(VariableElementWrapper::getSimpleName).collect(Collectors.joining(", ", ", ", "")):"")
+			
+			;
+		
+		
+		return methodLogStatement.toString();
+		
+	}
+	
+	public String getMethodLogStatementWithReturnValue() {
+		
+		// output should look like InterfaceName.methodName(param1,param2,param3) parameters should be resolved to real values
+		// "InterfaceName.methodName({},{},{}) = {}",param1Name,param2Name,param3Name
+		
+		// Build String
+		
+		StringBuilder methodLogStatement = new StringBuilder();
+		methodLogStatement.append("\"").append(this.executableElementWrapper.getEnclosingElement().get().getSimpleName())
+			.append(".").append(this.executableElementWrapper.getSimpleName())
+			.append("(")
+			.append(this.executableElementWrapper.getParameters().stream().map(e -> "'{}'").collect(Collectors.joining(", ")))
+			.append(") = {}\"")
+			.append(this.executableElementWrapper.getParameters().size() > 0 ? this.executableElementWrapper.getParameters().stream().map(VariableElementWrapper::getSimpleName).collect(Collectors.joining(", ", ", ", "")):"")
+			
+			;
+		
+		
+		return methodLogStatement.toString();
+		
+	}
+	
+	public String getDefaultMethodCall() {
+		
+		StringBuilder defaultMethodCall = new StringBuilder();
+		defaultMethodCall.append(this.executableElementWrapper.getSimpleName())
+			.append("(")
+			.append(this.executableElementWrapper.getParameters().stream().map(VariableElementWrapper::getSimpleName).collect(Collectors.joining(", ")))
+			.append(")")
+			;
+		
+		
+		return defaultMethodCall.toString();
+		
+	}
 	
 	public boolean validate() {
 		

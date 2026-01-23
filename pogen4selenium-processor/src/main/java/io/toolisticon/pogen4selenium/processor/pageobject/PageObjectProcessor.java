@@ -151,9 +151,30 @@ public class PageObjectProcessor extends AbstractAnnotationProcessor {
         		.map(MethodsToImplementHelper::new)
 	    		.collect(Collectors.toSet());
         
+        Set<MethodsToImplementHelper> defaultMethods = InterfaceUtils.getMethodsToImplement(wrappedTypeElement)
+        		.stream()
+        		// filter out all default methods
+        		.filter(e -> e.isDefault())
+        		// Filter out all static  methods
+        		.filter(e -> !e.hasModifiers(Modifier.STATIC))
+        		// filter out all PageObjectParent methods
+        		.filter(e -> !(ElementWrapper.toTypeElement(
+        					e.getEnclosingElement().get()
+        				).getQualifiedName().equals(PageObjectParent.class.getCanonicalName()))
+    			)
+        		// filter out all CommonParentInterface methods
+        		.filter(e -> !(ElementWrapper.toTypeElement(
+        					e.getEnclosingElement().get()
+        				).getQualifiedName().equals(CommonParentInterface.class.getCanonicalName()))
+    			)
+        		.map(MethodsToImplementHelper::new)
+	    		.collect(Collectors.toSet());
+        
 	    Set<String> imports = new HashSet<>();
 	    imports.addAll(toImplementHelper.getImports());
 	    imports.addAll(methodsToImplement.stream().map(MethodsToImplementHelper::getImports)
+	    		.flatMap(set -> set.stream()).collect(Collectors.toSet()));
+	    imports.addAll(defaultMethods.stream().map(MethodsToImplementHelper::getImports)
 	    		.flatMap(set -> set.stream()).collect(Collectors.toSet()));
         
         // Fill Model
@@ -163,6 +184,7 @@ public class PageObjectProcessor extends AbstractAnnotationProcessor {
         model.put("packageName", packageName);
         model.put("pageObject", annotation);
         model.put("methodsToImplement",methodsToImplement);
+        model.put("defaultMethods", defaultMethods);
         
         // create the class
         String filePath = packageName + "." + toImplementHelper.getImplementationClassName();

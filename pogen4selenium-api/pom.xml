@@ -9,7 +9,7 @@
     <parent>
         <groupId>io.toolisticon.pogen4selenium</groupId>
         <artifactId>pogen4selenium</artifactId>
-        <version>0.12.2</version>
+        <version>0.12.3</version>
     </parent>
 
     <name>pogen4selenium-api</name>
@@ -32,8 +32,11 @@
 		   <groupId>org.seleniumhq.selenium</groupId>
 		   <artifactId>selenium-java</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
 	</dependencies>
-
 
 
 </project>

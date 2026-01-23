@@ -168,9 +168,14 @@ public class PageObjectUtilities {
 	 * @param driver the web driver
 	 * @param text the test to search
 	 */
-	public static void waitUntilPageSourceContains(WebDriver driver, String text) {
+	public static void waitUntilTitleIs(WebDriver driver, String text) {
 		
-		waitForElementToBePresent(driver, By.xpath("//*[text()[contains(.,'" + text + "')]]"));	
+		Wait<WebDriver> wait =
+    	        new FluentWait<>(driver)
+    	            .withTimeout(Duration.ofSeconds(15))
+    	            .pollingEvery(Duration.ofMillis(300));
+    	
+    	wait.until(ExpectedConditions.titleIs(text));
 		
 	}
 	
@@ -178,11 +183,22 @@ public class PageObjectUtilities {
 	 * Wait until page source contains.
 	 * @param driver the web driver
 	 * @param text the test to search
-	 * @param timeout the timeout to ise
+	 */
+	public static void waitUntilPageSourceContains(WebDriver driver, String text) {
+		
+		waitForElementToBePresent(driver, By.xpath("//*[text()[contains(.,'" + LocalizationUtilities.getLocalizedText(text) + "')]]"));	
+		
+	}
+	
+	/**
+	 * Wait until page source contains.
+	 * @param driver the web driver
+	 * @param text the test to search
+	 * @param timeout the timeout to use
 	 */
 	public static void waitUntilPageSourceContains(WebDriver driver, String text, Duration timeout) {
 		
-		waitForElementToBePresent(driver, By.xpath("//*[text()[contains(.,'" + text + "')]]"), timeout);	
+		waitForElementToBePresent(driver, By.xpath("//*[text()[contains(.,'" + LocalizationUtilities.getLocalizedText(text) + "')]]"), timeout);	
 		
 	}
 
