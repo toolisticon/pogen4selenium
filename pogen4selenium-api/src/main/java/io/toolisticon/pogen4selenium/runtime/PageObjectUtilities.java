@@ -168,6 +168,22 @@ public class PageObjectUtilities {
 	 * @param driver the web driver
 	 * @param text the test to search
 	 */
+	public static void waitUntilTitleIs(WebDriver driver, String text) {
+		
+		Wait<WebDriver> wait =
+    	        new FluentWait<>(driver)
+    	            .withTimeout(Duration.ofSeconds(15))
+    	            .pollingEvery(Duration.ofMillis(300));
+    	
+    	wait.until(ExpectedConditions.titleIs(text));
+		
+	}
+	
+	/**
+	 * Wait until page source contains.
+	 * @param driver the web driver
+	 * @param text the test to search
+	 */
 	public static void waitUntilPageSourceContains(WebDriver driver, String text) {
 		
 		waitForElementToBePresent(driver, By.xpath("//*[text()[contains(.,'" + LocalizationUtilities.getLocalizedText(text) + "')]]"));	

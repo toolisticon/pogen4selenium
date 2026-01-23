@@ -81,7 +81,6 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 	}
 	
 	
-	
 	@Override
 	public PAGEOBJECT waitForPageToContainText(String text) {
 		PageObjectUtilities.waitUntilPageSourceContains(driver, text);

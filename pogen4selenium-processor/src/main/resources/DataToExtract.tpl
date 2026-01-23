@@ -26,12 +26,27 @@ public class ${ toImplementHelper.implementationClassName }  extends DataObjectP
 	
 	private final static Logger LOGGER = LoggerFactory.getLogger(${toImplementHelper.interfaceName}.class);
 	
+!{for dataToExtractValue : dataToExtract.value}
+	private String _${dataToExtractValue.methodName};
+!{/for}		
 	
 	/** 
 	 * Constructor
 	 */
 	public ${ toImplementHelper.implementationClassName } (WebDriver driver, WebElement relativeContentRoot) {
-		super(driver, relativeContentRoot);    	
+		super(driver, relativeContentRoot); 
+		
+		loadData();
+		   	
+	}
+	
+	/**
+	 * Reload data
+	 */
+	public void loadData() {
+!{for dataToExtractValue : dataToExtract.value}
+        _${dataToExtractValue.methodName} = getValue(_By.${dataToExtractValue.by}, "${dataToExtractValue.value}", ExtractDataValue.Kind.${dataToExtractValue.kind}, "${dataToExtractValue.name}");
+!{/for}		
 	}
 		
 	// implement methods
@@ -39,9 +54,8 @@ public class ${ toImplementHelper.implementationClassName }  extends DataObjectP
 	@Override
 	public String ${dataToExtractValue.methodName}(){
 		
-		String value = getValue(_By.${dataToExtractValue.by}, "${dataToExtractValue.value}", ExtractDataValue.Kind.${dataToExtractValue.kind}, "${dataToExtractValue.name}");
-		LOGGER.info("${toImplementHelper.simpleInterfaceName}.${dataToExtractValue.methodName}() = '{}'", value);
-		return value;
+		LOGGER.info("${toImplementHelper.simpleInterfaceName}.${dataToExtractValue.methodName}() = '{}'", _${dataToExtractValue.methodName});
+		return _${dataToExtractValue.methodName};
 	
 	}
 !{/for}	
@@ -60,6 +74,8 @@ public class ${ toImplementHelper.implementationClassName }  extends DataObjectP
 !{if method.returnsPageObject}	
 		return changePageObjectType(${method.getNextImplClassName}.class).pause(Duration.ofMillis(${method.afterPause}L));
 !{else}
+		// reload data
+		this.loadData();
 		return this;	
 !{/if}
 	}
