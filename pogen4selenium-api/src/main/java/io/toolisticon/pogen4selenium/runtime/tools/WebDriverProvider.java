@@ -1,4 +1,4 @@
-package io.toolisticon.pogen4selenium.runtime;
+package io.toolisticon.pogen4selenium.runtime.tools;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,9 @@ public class WebDriverProvider {
 
 	private final static String PROPERTY_NAME_BROWSER = "selenium.browser";
 	private final static String PROPERTY_NAME_BROWSER_LOCATION = "selenium.browserLocation";
-	private final static String PROPERTY_NAME_HEADLESS = "selenium.headless";
+	final static String PROPERTY_NAME_HEADLESS = "selenium.headless";
+	final static String PROPERTY_NAME_SUPPRESS_AUTO_FOCUS = "selenium.autoFocusWIndows";
+	
 	
 	public enum Browser {
 		EDGE,
@@ -35,6 +37,7 @@ public class WebDriverProvider {
 		String browserLocation = System.getProperty(PROPERTY_NAME_BROWSER_LOCATION);
 		String headless = System.getProperty(PROPERTY_NAME_HEADLESS, "false");
 		
+		WebDriver webDriver = null;
 		switch(browser) {
 		
 			
@@ -68,7 +71,9 @@ public class WebDriverProvider {
 				
 				// de language
 				
-				return new EdgeDriver(options);
+				webDriver = new EdgeDriver(options);
+				
+				break;
 				
 			}
 			
@@ -109,13 +114,18 @@ public class WebDriverProvider {
 				
 				
 				
-				return new ChromeDriver(chromeOptions); 
+				webDriver = new ChromeDriver(chromeOptions); 
 				
+				break;
 			}
 		
 		}
 		
+		ActiveDriverHandler.setCurrentDriver(webDriver);
+		return webDriver;
+		
 	}
+	
 	
 	
 }

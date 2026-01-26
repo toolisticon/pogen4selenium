@@ -1,10 +1,13 @@
-package io.toolisticon.pogen4selenium.runtime;
+package io.toolisticon.pogen4selenium.runtime.tools;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * A simple download file manager to check read for downloaded files.
+ */
 public class DownloadManager {
 
 	private final File downloadFolder;

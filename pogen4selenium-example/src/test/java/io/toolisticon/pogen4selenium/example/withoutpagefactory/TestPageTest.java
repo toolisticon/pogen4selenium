@@ -12,7 +12,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import io.toolisticon.pogen4selenium.example.JettyServer;
-import io.toolisticon.pogen4selenium.runtime.WebDriverProvider;
+import io.toolisticon.pogen4selenium.runtime.tools.ActiveDriverHandler;
+import io.toolisticon.pogen4selenium.runtime.tools.WebDriverProvider;
 
 public class TestPageTest {
 

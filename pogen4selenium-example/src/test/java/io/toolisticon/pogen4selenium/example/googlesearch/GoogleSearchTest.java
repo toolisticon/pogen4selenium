@@ -12,7 +12,7 @@ import org.openqa.selenium.WebDriver;
 
 import io.toolisticon.pogen4selenium.example.googleseach.GoogleInitialPage;
 import io.toolisticon.pogen4selenium.example.googleseach.GoogleSearchResult;
-import io.toolisticon.pogen4selenium.runtime.WebDriverProvider;
+import io.toolisticon.pogen4selenium.runtime.tools.WebDriverProvider;
 
 public class GoogleSearchTest {
 
