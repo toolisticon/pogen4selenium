@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>${artifactId}</artifactId>
+    <packaging>jar</packaging>
+
+    <parent>
+        <groupId>${groupId}</groupId>
+        <artifactId>${rootArtifactId}</artifactId>
+        <version>${version}</version>
+    </parent>
+
+    <name>${artifactId}</name>
+
+    <dependencyManagement>
+
+        <dependencies>
+
+            <dependency>
+                <groupId>${groupId}</groupId>
+                <artifactId>parent</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>io.toolisticon.pogen4selenium</groupId>
+            <artifactId>pogen4selenium-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.toolisticon.pogen4selenium</groupId>
+            <artifactId>pogen4selenium-junit5</artifactId>
+        </dependency>
+        
+        <dependency>
+        	   <groupId>org.seleniumhq.selenium</groupId>
+			   <artifactId>selenium-java</artifactId>
+			   <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+        	   <groupId>org.seleniumhq.selenium</groupId>
+			   <artifactId>selenium-api</artifactId>
+			   <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+        	<groupId>org.slf4j</groupId>
+        	<artifactId>slf4j-api</artifactId>
+        	<scope>compile</scope>
+        </dependency>
+        
+        <dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+    </dependencies>
+
+
+    <build>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration combine.self="append">
+                        <verbose>true</verbose>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>io.toolisticon.pogen4selenium</groupId>
+                                <artifactId>pogen4selenium-processor</artifactId>
+                                <version>${pogen4selenium.version}</version>
+                            </path>
+                            <path>
+                                    
+				        	   <groupId>org.seleniumhq.selenium</groupId>
+							   <artifactId>selenium-java</artifactId>
+							   <version>${selenium.version}</version>
+			
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+            </plugins>
+
+        </pluginManagement>
+
+        <plugins>
+
+            
+
+        </plugins>
+
+
+    </build>
+
+
+</project>

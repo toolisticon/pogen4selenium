@@ -598,5 +598,6 @@
 		<module>pogen4selenium-processor</module>
 		<module>pogen4selenium-example</module>
 		<module>pogen4selenium-junit5</module>
+		<module>pogen4selenium-archetype</module>
 	</modules>
 </project>
