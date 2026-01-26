@@ -29,6 +29,21 @@ Please create an issue, if you need specific action to be implemented. Usually i
 
 # How does it work?
 
+## Maven Archetype
+There is a maven archetype that allows you to create a basic project, that allows ou to start right away.
+
+```bash
+mvn archetype:generate \
+	-DarchetypeGroupId=io.toolisticon.maven.archetypes \
+	-DarchetypeArtifactId=annotationprocessor-archetype \
+	-DarchetypeVersion=0.14.0 \
+	-DgroupId=<your test projects group id> \
+	-DartifactId=<your test projects artifact id> \
+	-Dversion=<your test projects version number> \
+	-Dpackage=<your test projects base package> \
+	-Durl=<the start url to use>
+```
+
 ## Project Setup
 
 The api lib must be bound as a dependency - for example in maven:
@@ -38,7 +53,7 @@ The api lib must be bound as a dependency - for example in maven:
 	<dependency>
 	    <groupId>io.toolisticon.pogen4selenium</groupId>
 	    <artifactId>pogen4selenium-api</artifactId>
-	    <version>0.12.0</version>
+	    <version>0.14.0</version>
 	    <scope>provided</scope>
 	</dependency>
  
@@ -57,7 +72,7 @@ Additionally, you need to declare the annotation processor path in your compiler
             <path>
                 <groupId>io.toolisticon.pogen4selenium</groupId>
                 <artifactId>pogen4selenium-processor</artifactId>
-                <version>0.12.0</version>
+                <version>0.14.0</version>
             </path>
         </annotationProcessorPaths>
         

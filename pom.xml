@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.toolisticon.pogen4selenium</groupId>
 	<artifactId>pogen4selenium</artifactId>
-	<version>0.13.0</version>
+	<version>0.14.0</version>
 	<packaging>pom</packaging>
 	<name>pogen4selenium</name>
 	<description>Please refer to https://github.com/toolisticon/pogen4selenium</description>
@@ -598,5 +598,6 @@
 		<module>pogen4selenium-processor</module>
 		<module>pogen4selenium-example</module>
 		<module>pogen4selenium-junit5</module>
+		<module>pogen4selenium-archetype</module>
 	</modules>
 </project>
