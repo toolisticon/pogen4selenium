@@ -1,9 +1,12 @@
 package io.toolisticon.pogen4selenium.runtime;
 
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.slf4j.LoggerFactory;
 
 /**
  * This tool is used to localize checks for text strings.
@@ -11,13 +14,19 @@ import java.util.regex.Pattern;
  */
 public class LocalizationUtilities {
 
+	private final static org.slf4j.Logger Logger = LoggerFactory.getLogger(LocalizationUtilities.class);
+	
 	private final static Pattern LOCALIZED_TEXT_PATTERN = Pattern.compile("^[$][\\{]([a-zA-Z0-9.]+?)\\}$");
 	
 	private static String resourceName = "po4s";
 	private static final ThreadLocal<ResourceBundle> CURRENT_RB = new ThreadLocal<ResourceBundle>();
 	
 	static {
-		CURRENT_RB.set(ResourceBundle.getBundle(resourceName));
+		try {
+			CURRENT_RB.set(ResourceBundle.getBundle(resourceName));
+		} catch (MissingResourceException e) {
+			Logger.warn("Wasn't able to load resource bundle '{}'", resourceName);
+		}
 	}
 	
 	/**
@@ -56,7 +65,13 @@ public class LocalizationUtilities {
 			// get the key
 			String key = matcher.group(1);
 			
-			return CURRENT_RB.get().getString(key);
+			
+			ResourceBundle rb = CURRENT_RB.get();
+			if (rb != null) {
+				return CURRENT_RB.get().getString(key);
+			} else {
+				throw new IllegalStateException("Tried to localize text but no resource bundle " + resourceName + " is present" );
+			}
 			
 			
 		} else {
@@ -69,10 +84,15 @@ public class LocalizationUtilities {
 	
 	
 	public static void setLocale(Locale locale) {
-		if (locale != null) {
-			CURRENT_RB.set(ResourceBundle.getBundle(resourceName, locale));
-		} else {
-			CURRENT_RB.set(ResourceBundle.getBundle(resourceName));
+		try {
+			if (locale != null) {
+				CURRENT_RB.set(ResourceBundle.getBundle(resourceName, locale));
+			} else {
+				CURRENT_RB.set(ResourceBundle.getBundle(resourceName));
+			}
+		} catch (MissingResourceException e) {
+			Logger.warn("Wasn't able to load resource bundle '{}' with locale {}!", resourceName, locale);
+			CURRENT_RB.remove();
 		}
 	}
 	
