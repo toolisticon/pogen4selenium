@@ -11,7 +11,7 @@ import io.toolisticon.pogen4selenium.runtime.actions.ActionWriteImpl;
 
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-@Action(ActionWriteImpl.class)
+@Action(value= ActionWriteImpl.class, attributeNameToConstructorMapping = {"clickElementBeforeWrite"} )
 public @interface ActionWrite {
 	
 	/**
@@ -32,4 +32,10 @@ public @interface ActionWrite {
 	@LocatorSideCondition
 	Class<? extends LocatorCondition> locatorSideCondition() default DefaultSideCondition.class;
 	
+	/**
+	 * Per default the Action will click the element first. In some cases this click could be intercepted for example by a label.
+	 * So this attribute can be used to suppress the first click
+	 * @return should click the element before write
+	 */
+	boolean clickElementBeforeWrite() default true;
 }

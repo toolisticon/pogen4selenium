@@ -15,11 +15,13 @@ public class ActionWriteImpl extends BaseAction {
 
 	
 	private final String toSet;
+	private final boolean shouldClickBeforeWrite;
 	
-	public ActionWriteImpl(WebDriver driver, SearchContext searchContext, LocatorCondition locatorCondition, String toSet) {
+	public ActionWriteImpl(WebDriver driver, SearchContext searchContext, LocatorCondition locatorCondition, String toSet, boolean shouldClickBeforeWrite) {
 		super(driver, searchContext, locatorCondition);
 		
 		this.toSet = toSet;
+		this.shouldClickBeforeWrite = shouldClickBeforeWrite;
 	}
 
 	@Override
@@ -35,7 +37,9 @@ public class ActionWriteImpl extends BaseAction {
 	@Override
 	protected void applyAction(WebElement webElement) {
 		
-		webElement.click();
+		if (this.shouldClickBeforeWrite) {
+			webElement.click();
+		}
 		webElement.sendKeys(Keys.CONTROL + "a");
 		webElement.sendKeys(Keys.DELETE);
 		webElement.sendKeys(toSet);
