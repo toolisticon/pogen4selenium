@@ -2,7 +2,9 @@ package io.toolisticon.pogen4selenium.runtime.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
@@ -10,15 +12,39 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class WebDriverProvider {
 
+	
 	private final static String PROPERTY_NAME_BROWSER = "selenium.browser";
 	private final static String PROPERTY_NAME_BROWSER_LOCATION = "selenium.browserLocation";
 	final static String PROPERTY_NAME_HEADLESS = "selenium.headless";
 	final static String PROPERTY_NAME_SUPPRESS_AUTO_FOCUS = "selenium.autoFocusWIndows";
 	
+	final static List<WebDriver> createdWebDrivers = new ArrayList<>();
+	
+	static {
+		
+		// init a shutdown hook to ensure that all drivers will be quit automatically
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			System.out.println("[ShutdownHook] JVM is shutting down...");
+            
+            for (WebDriver webDriverToQuit : createdWebDrivers) {
+            	try {
+            		webDriverToQuit.quit();
+            	} catch (RuntimeException e) {
+            		// just ignore everything
+            	}
+            }
+            
+            
+            System.out.println("[ShutdownHook] Final cleanup complete.");
+        }));
+		
+	}
 	
 	public enum Browser {
 		EDGE,
@@ -122,6 +148,11 @@ public class WebDriverProvider {
 		}
 		
 		ActiveDriverHandler.setCurrentDriver(webDriver);
+		
+		if (webDriver != null) {
+			createdWebDrivers.add(webDriver);
+		}
+		
 		return webDriver;
 		
 	}
