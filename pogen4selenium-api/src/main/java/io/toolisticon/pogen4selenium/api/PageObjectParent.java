@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import io.toolisticon.pogen4selenium.runtime.AssertionInterface;
 import io.toolisticon.pogen4selenium.runtime.ExecuteBlock;
+import io.toolisticon.pogen4selenium.runtime.tools.WebDriverProvider;
 
 /**
  * The page object parent interface. Must be extended by all interfaces annotated with {@link PageObject}
@@ -61,6 +62,20 @@ public interface PageObjectParent<PAGEOBJECT extends PageObjectParent<PAGEOBJECT
 	 * @return the next fluent interface
 	 */
 	<OPO extends PageObjectParent<OPO>> OPO execute(ExecuteBlock<PAGEOBJECT, OPO> function);
+	
+	
+	/**
+	 * Immediately quits browser and frees it's resources. 
+	 * Nevertheless, there will always be a shutdown hook that tries to kill all open browser when the program stops regularly, but only if those browsers are opened via {@link Pogen4Selenium} or {@link WebDriverProvider}.
+	 * Unfortunately, there might be a resource leak - open web driver and browser processes - if JVM is terminated by force.
+	 */
+	void closeBrowser();
+	
+	/**
+	 * Put focus back on the browser/driver used by this page object. This must be done to be able 
+	 * @return next fluent interface
+	 */
+	PAGEOBJECT focusBrowser();
 	
 	
 }

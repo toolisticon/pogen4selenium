@@ -12,8 +12,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class WebDriverProvider {
@@ -32,14 +30,7 @@ public class WebDriverProvider {
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			System.out.println("[ShutdownHook] JVM is shutting down...");
             
-            for (WebDriver webDriverToQuit : createdWebDrivers) {
-            	try {
-            		webDriverToQuit.quit();
-            	} catch (RuntimeException e) {
-            		// just ignore everything
-            	}
-            }
-            
+            killAllBrowsers();
             
             System.out.println("[ShutdownHook] Final cleanup complete.");
         }));
@@ -157,6 +148,18 @@ public class WebDriverProvider {
 		
 	}
 	
+	
+	public static void killAllBrowsers() {
+		for (WebDriver webDriverToQuit : createdWebDrivers) {
+        	try {
+        		if(!ActiveDriverHandler.hasQuit(webDriverToQuit)) {
+        			webDriverToQuit.quit();
+        		}
+        	} catch (RuntimeException e) {
+        		// just ignore everything
+        	}
+        }
+	}
 	
 	
 }

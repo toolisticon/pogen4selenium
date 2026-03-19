@@ -11,14 +11,15 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import io.toolisticon.pogen4selenium.api.Pogen4Selenium;
 import io.toolisticon.pogen4selenium.example.JettyServer;
 import io.toolisticon.pogen4selenium.runtime.tools.ActiveDriverHandler;
 import io.toolisticon.pogen4selenium.runtime.tools.WebDriverProvider;
 
 public class TestPageTest {
 
+	private final static String URL = "http://localhost:9090/start";
 
-	private WebDriver webDriver;
 	private JettyServer jettyServer;
 	
 	@Before
@@ -27,21 +28,18 @@ public class TestPageTest {
 		jettyServer = new JettyServer();
 		jettyServer.start();
 	
-		webDriver = WebDriverProvider.getDriver();
-		//webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-	
 	}
 	
 	@After
 	public void cleanup() throws Exception{
 		jettyServer.stop();
-		webDriver.quit();
+		WebDriverProvider.killAllBrowsers();
 	}
 	
 	@Test
 	public void extractDatasetsTest() {
-		TestPagePageObject.init(webDriver)
-		.doAssertions(e -> {
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
+			.doAssertions(e -> {
 				
 				// Do assertions here
 				List<TestPageTableEntry> results = e.getTableEntries();
@@ -61,12 +59,13 @@ public class TestPageTest {
 				
 
 			})
+			.closeBrowser()
 			;
 	}
 	
 	@Test
 	public void extractFirstDatasetTest() {
-		TestPagePageObject.init(webDriver)
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
 		.doAssertions(e -> {
 				
 				// Do assertions here
@@ -81,13 +80,14 @@ public class TestPageTest {
 		
 
 			})
-			;
+		.closeBrowser()
+		;
 	}
 	
 	@Test
 	public void extractFirstDatasetFromElementTest() {
-		TestPagePageObject.init(webDriver)
-		.doAssertions(e -> {
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
+			.doAssertions(e -> {
 				
 				// Do assertions here
 				TestPageTableEntry result = e.getFirstTableEntry();
@@ -101,44 +101,47 @@ public class TestPageTest {
 		
 
 			})
+			.closeBrowser()
 			;
 	}
 	
 	@Test
 	public void incrementCounterTest() {
-		TestPagePageObject.init(webDriver)
-		.doAssertions(e -> {
-				MatcherAssert.assertThat(e.getCounter(), Matchers.is("1"));
-			}).clickCounterIncrementButton()
-		.doAssertions(e -> {
-			MatcherAssert.assertThat(e.getCounter(), Matchers.is("2"));
-		})
-		.clickCounterIncrementButton()
-		.clickCounterIncrementButton()
-		.doAssertions(e -> {
-			MatcherAssert.assertThat(e.getCounter(), Matchers.is("4"));
-			MatcherAssert.assertThat(e.providedGetCounter(), Matchers.is("4"));
-		})
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
+			.doAssertions(e -> {
+					MatcherAssert.assertThat(e.getCounter(), Matchers.is("1"));
+				}).clickCounterIncrementButton()
+			.doAssertions(e -> {
+				MatcherAssert.assertThat(e.getCounter(), Matchers.is("2"));
+			})
+			.clickCounterIncrementButton()
+			.clickCounterIncrementButton()
+			.doAssertions(e -> {
+				MatcherAssert.assertThat(e.getCounter(), Matchers.is("4"));
+				MatcherAssert.assertThat(e.providedGetCounter(), Matchers.is("4"));
+			})
+			.closeBrowser()
 			;
 	}
 	
 	@Test
 	public void writeToAndReadFromInputField() {
 		
-		TestPagePageObject.init(webDriver)
-		.writeToInputField("TEST!!!")
-		.pause(Duration.ofMillis(200L))
-		.doAssertions(e -> {
-			MatcherAssert.assertThat(e.readInputFieldValue(), Matchers.is("TEST!!!"));
-		});
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
+			.writeToInputField("TEST!!!")
+			.pause(Duration.ofMillis(200L))
+			.doAssertions(e -> {
+				MatcherAssert.assertThat(e.readInputFieldValue(), Matchers.is("TEST!!!"));
+			})
+			.closeBrowser();
 		
 	}
 	
 	@Test
 	public void mixedDataObjectWithActionsAndPageObjectTraversialTest() {
-		TestPagePageObject.init(webDriver)
-		.doAssertions(e -> {
-				
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
+			.doAssertions(e -> {
+					
 				// Do assertions here
 				TestPageTableEntry result = e.getFirstTableEntry();
 				
@@ -147,14 +150,15 @@ public class TestPageTest {
 		
 				System.out.println("");
 			})
-			;
+			.closeBrowser()
+		;
 	}
 	
 	@Test
 	public void mixedDataObjectWithActionsAndPageObjectTraversisalTest_2ndDataset() {
-		TestPagePageObject.init(webDriver)
-		.doAssertions(e -> {
-				
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
+			.doAssertions(e -> {
+					
 				// Do assertions here
 				TestPageTableEntry result = e.getTableEntries().get(1);
 				
@@ -163,20 +167,22 @@ public class TestPageTest {
 		
 				System.out.println("");
 			})
+			.closeBrowser()
 			;
 	}
 	
 	@Test
 	public void dragAndDropTest() {
-		TestPagePageObject.init(webDriver)		
-		// Do assertions here
-		.dragDivToTargetArea("drag_div")
-		.doAssertions((po) -> {
-			
-			// Object should be now located in div1
-			po.getDriver().findElement(By.xpath("//div[@id='div1']/div[@id='drag_div']"));
-			
-		});
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)	
+			// Do assertions here
+			.dragDivToTargetArea("drag_div")
+			.doAssertions((po) -> {
+				
+				// Object should be now located in div1
+				po.getDriver().findElement(By.xpath("//div[@id='div1']/div[@id='drag_div']"));
+				
+			})
+			.closeBrowser();
 				
 			
 			

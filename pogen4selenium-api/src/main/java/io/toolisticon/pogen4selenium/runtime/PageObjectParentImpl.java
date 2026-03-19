@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import io.toolisticon.pogen4selenium.api.PageObjectParent;
+import io.toolisticon.pogen4selenium.runtime.tools.ActiveDriverHandler;
 
 @SuppressWarnings("unchecked")
 public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<PAGEOBJECT>> implements PageObjectParent<PAGEOBJECT>, CommonByLocators{
@@ -157,6 +158,7 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 	}
 	
 	
+	
 	/*-
 	
 	protected void waitForElementToBeAbsent(String xpath) {
@@ -198,6 +200,25 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 	*/
 	
 	
+	@Override
+	public void closeBrowser() {
+		
+		if (!ActiveDriverHandler.hasQuit(getDriver())) {
+			this.getDriver().quit();
+		}
+		
+	}
+
+
+
+	@Override
+	public PAGEOBJECT focusBrowser() {
+		ActiveDriverHandler.setCurrentDriver(getDriver());
+		return (PAGEOBJECT) this;
+	}
+
+
+
 	protected void writeToElement(WebElement webElement, String toSet) {
 		webElement.click();
 		webElement.sendKeys(Keys.CONTROL + "a");
@@ -210,5 +231,6 @@ public abstract class PageObjectParentImpl <PAGEOBJECT extends PageObjectParent<
 		driver.navigate().refresh();
 	}
 
+	
 	
 }
