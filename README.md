@@ -131,11 +131,6 @@ public interface TestPagePageObject extends PageObjectParent<TestPagePageObject>
 		return getDriver().findElement(org.openqa.selenium.By.xpath("//fieldset[@name='counter']/span[@id='counter']")).getText();
 	}
 	
-	// Custom entry point for starting your tests
-	public static TestPagePageObject init(WebDriver driver) {
-		driver.get("http://localhost:9090/start");
-		return new TestPagePageObjectImpl(driver);
-	}
 
 }
 ```
@@ -226,8 +221,8 @@ Writing tests is easy. The fluent api provides a *doAssertions* method that allo
 ```java
 public class TestPageTest {
 
+	private final static String URL = "http://localhost:9090/start";
 
-	private WebDriver webDriver;
 	private JettyServer jettyServer;
 	
 	@Before
@@ -236,63 +231,65 @@ public class TestPageTest {
 		jettyServer = new JettyServer();
 		jettyServer.start();
 		
-		webDriver = new EdgeDriver();
-		webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 	}
 	
 	@After
 	public void cleanup() throws Exception{
-		webDriver.quit();
+	
+		// closes all browsers opened via Pogen4Selenium and WebDriverProvider
+		WebDriverProvider.killAllBrowsers();
 		jettyServer.stop();
 	}
 	
 	@Test
 	public void extractDatasetsTest() {
-		TestPagePageObject.init(webDriver)
-		.doAssertions(e -> {
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
+			.doAssertions(e -> {
+					
+				// Do assertions here
+				List<TestPageTableEntry> results = e.getTableEntries();
 				
-			// Do assertions here
-			List<TestPageTableEntry> results = e.getTableEntries();
-			
-			MatcherAssert.assertThat(results, Matchers.hasSize(2));
-			
-			MatcherAssert.assertThat(results.getFirst().name(), Matchers.is("Max"));
-			MatcherAssert.assertThat(results.getFirst().age(), Matchers.is("9"));
-			MatcherAssert.assertThat(results.getFirst().link(), Matchers.is("https://de.wikipedia.org/wiki/Max_und_Moritz"));
-			MatcherAssert.assertThat(results.getFirst().linkText(), Matchers.is("Max und Moritz Wikipedia"));
-			
-			
-			MatcherAssert.assertThat(results.get(1).name(), Matchers.is("Moritz"));
-			MatcherAssert.assertThat(results.get(1).age(), Matchers.is("10"));
-			MatcherAssert.assertThat(results.get(1).link(), Matchers.is("https://de.wikipedia.org/wiki/Wilhelm_Busch"));
-			MatcherAssert.assertThat(results.get(1).linkText(), Matchers.is("Wilhelm Busch Wikipedia"));
+				MatcherAssert.assertThat(results, Matchers.hasSize(2));
 				
-
-			});
+				MatcherAssert.assertThat(results.getFirst().name(), Matchers.is("Max"));
+				MatcherAssert.assertThat(results.getFirst().age(), Matchers.is("9"));
+				MatcherAssert.assertThat(results.getFirst().link(), Matchers.is("https://de.wikipedia.org/wiki/Max_und_Moritz"));
+				MatcherAssert.assertThat(results.getFirst().linkText(), Matchers.is("Max und Moritz Wikipedia"));
+				
+				
+				MatcherAssert.assertThat(results.get(1).name(), Matchers.is("Moritz"));
+				MatcherAssert.assertThat(results.get(1).age(), Matchers.is("10"));
+				MatcherAssert.assertThat(results.get(1).link(), Matchers.is("https://de.wikipedia.org/wiki/Wilhelm_Busch"));
+				MatcherAssert.assertThat(results.get(1).linkText(), Matchers.is("Wilhelm Busch Wikipedia"));
+					
+	
+			})
+			.closeBrowser();
 	}
 	
 	@Test
 	public void extractFirstDatasetTest() {
-		TestPagePageObject.init(webDriver)
-		.doAssertions(e -> {
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
+			.doAssertions(e -> {
+					
+				// Do assertions here
+				TestPageTableEntry result = e.getFirstTableEntry();
 				
-			// Do assertions here
-			TestPageTableEntry result = e.getFirstTableEntry();
-			
-			
-			MatcherAssert.assertThat(result.name(), Matchers.is("Max"));
-			MatcherAssert.assertThat(result.age(), Matchers.is("9"));
-			MatcherAssert.assertThat(result.link(), Matchers.is("https://de.wikipedia.org/wiki/Max_und_Moritz"));
-			MatcherAssert.assertThat(result.linkText(), Matchers.is("Max und Moritz Wikipedia"));
-			
+				
+				MatcherAssert.assertThat(result.name(), Matchers.is("Max"));
+				MatcherAssert.assertThat(result.age(), Matchers.is("9"));
+				MatcherAssert.assertThat(result.link(), Matchers.is("https://de.wikipedia.org/wiki/Max_und_Moritz"));
+				MatcherAssert.assertThat(result.linkText(), Matchers.is("Max und Moritz Wikipedia"));
+				
+		
 	
-
-		});
+			})
+			.closeBrowser();
 	}
 	
 	@Test
 	public void incrementCounterTest() {
-		TestPagePageObject.init(webDriver)
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
 			.doAssertions(e -> {
 					MatcherAssert.assertThat(e.getCounter(), Matchers.is("1"));
 				})
@@ -304,7 +301,8 @@ public class TestPageTest {
 			.clickCounterIncrementButton()
 			.doAssertions(e -> {
 				MatcherAssert.assertThat(e.getCounter(), Matchers.is("4"));
-			});
+			})
+			.closeBrowser();
 	}
 	
 	
@@ -343,6 +341,12 @@ This method is a great help to wait until the expected page is being loaded and 
 
 ##### setLocale (Locale locale)
 It's possible to change the locale via this method
+
+##### focusBrowser()
+Focuses the browser used by this page object and moves it to front. This is for example used to take screenshots if a test error occurs.
+
+##### closeBrowser()
+Immediately closes the browser used by the page object and frees it's resources
  
 ## Extensibility
 New action annotations can added by providing an action annotation annotated itself with the _Action_ meta annotation. Annotations must either be applicable to methods or method parameters.

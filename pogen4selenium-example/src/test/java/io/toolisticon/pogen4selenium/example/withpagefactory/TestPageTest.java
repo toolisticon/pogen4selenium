@@ -8,15 +8,16 @@ import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 
+import io.toolisticon.pogen4selenium.api.Pogen4Selenium;
 import io.toolisticon.pogen4selenium.example.JettyServer;
 import io.toolisticon.pogen4selenium.runtime.tools.WebDriverProvider;
 
 public class TestPageTest {
 
 
-	private WebDriver webDriver;
+	private final static String URL = "http://localhost:9090/start";
+	
 	private JettyServer jettyServer;
 	
 	@Before
@@ -25,19 +26,18 @@ public class TestPageTest {
 		jettyServer = new JettyServer();
 		jettyServer.start();
 		
-		webDriver = WebDriverProvider.getDriver();
 		
 	}
 	
 	@After
 	public void cleanup() throws Exception{
 		jettyServer.stop();
-		webDriver.quit();
+		WebDriverProvider.killAllBrowsers();
 	}
 	
 	@Test
 	public void extractDatasetsTest() {
-		TestPagePageObject.init(webDriver)
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
 		.doAssertions(e -> {
 				
 				// Do assertions here
@@ -52,15 +52,15 @@ public class TestPageTest {
 				
 
 			})
-			;
+		.closeBrowser();
 	}
 	
 
 	
 	@Test
 	public void extractFirstDatasetTest() {
-		TestPagePageObject.init(webDriver)
-		.doAssertions(e -> {
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
+			.doAssertions(e -> {
 				
 				// Do assertions here
 				TestPageTableEntry result = e.getFirstTableEntry();
@@ -74,13 +74,13 @@ public class TestPageTest {
 		
 
 			})
-			;
+			.closeBrowser();
 	}
 	
 	@Test
 	public void mixedDataObjectWithActionsAndPageObjectTraversialTest() {
-		TestPagePageObject.init(webDriver)
-		.doAssertions(e -> {
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
+			.doAssertions(e -> {
 				
 				// Do assertions here
 				TestPageTableEntry result = e.getFirstTableEntry();
@@ -90,35 +90,36 @@ public class TestPageTest {
 		
 				System.out.println("");
 			})
-			;
+			.closeBrowser();
 	}
 	
 	@Test
 	public void incrementCounterTest() {
-		TestPagePageObject.init(webDriver)
-		.doAssertions(e -> {
-				MatcherAssert.assertThat(e.getCounter(), Matchers.is("1"));
-			}).clickCounterIncrementButton()
-		.doAssertions(e -> {
-			MatcherAssert.assertThat(e.getCounter(), Matchers.is("2"));
-		})
-		.clickCounterIncrementButton()
-		.clickCounterIncrementButton()
-		.doAssertions(e -> {
-			MatcherAssert.assertThat(e.getCounter(), Matchers.is("4"));
-		})
-			;
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
+			.doAssertions(e -> {
+					MatcherAssert.assertThat(e.getCounter(), Matchers.is("1"));
+				}).clickCounterIncrementButton()
+			.doAssertions(e -> {
+				MatcherAssert.assertThat(e.getCounter(), Matchers.is("2"));
+			})
+			.clickCounterIncrementButton()
+			.clickCounterIncrementButton()
+			.doAssertions(e -> {
+				MatcherAssert.assertThat(e.getCounter(), Matchers.is("4"));
+			})
+			.closeBrowser();
 	}
 	
 	@Test
 	public void writeToAndReadFromInputField() {
 		
-		TestPagePageObject.init(webDriver)
-		.writeToInputField("TEST!!!")
-		.pause(Duration.ofMillis(200L))
-		.doAssertions(e -> {
-			MatcherAssert.assertThat(e.readInputFieldValue(), Matchers.is("TEST!!!"));
-		});
+		Pogen4Selenium.openUrl(TestPagePageObject.class, URL)
+			.writeToInputField("TEST!!!")
+			.pause(Duration.ofMillis(200L))
+			.doAssertions(e -> {
+				MatcherAssert.assertThat(e.readInputFieldValue(), Matchers.is("TEST!!!"));
+			})
+			.closeBrowser();
 		
 	}
 	

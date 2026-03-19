@@ -47,10 +47,4 @@ public interface TestPagePageObject extends PageObjectParent<TestPagePageObject>
 		
 	TestPagePageObject dragDivToTargetArea(@ActionDragFromTo(fromBy = _By.ID,  toBy = _By.ID, toValue = "div1") String value);	
 	
-	// Custom entry point for starting your tests
-	public static TestPagePageObject init(WebDriver driver) {
-		driver.get("http://localhost:9090/start");
-		return new TestPagePageObjectImpl(driver);
-	}
-
 }
