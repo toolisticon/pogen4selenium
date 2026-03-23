@@ -32,8 +32,9 @@ public class TestPageTest {
 	
 	@After
 	public void cleanup() throws Exception{
+		WebDriverProvider.quitAllBrowsersOfCurrentThread();
 		jettyServer.stop();
-		WebDriverProvider.killAllBrowsers();
+		
 	}
 	
 	@Test

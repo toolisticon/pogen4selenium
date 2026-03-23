@@ -22,7 +22,7 @@ public class WebDriverProvider {
 	final static String PROPERTY_NAME_HEADLESS = "selenium.headless";
 	final static String PROPERTY_NAME_SUPPRESS_AUTO_FOCUS = "selenium.autoFocusWIndows";
 	
-	final static List<WebDriver> createdWebDrivers = new ArrayList<>();
+	final static Map<Long, ArrayList<WebDriver>> createdWebDrivers = new HashMap<>();
 	
 	static {
 		
@@ -141,7 +141,8 @@ public class WebDriverProvider {
 		ActiveDriverHandler.setCurrentDriver(webDriver);
 		
 		if (webDriver != null) {
-			createdWebDrivers.add(webDriver);
+			ArrayList<WebDriver> webDriversOfThread = createdWebDrivers.computeIfAbsent(Thread.currentThread().threadId(), tid -> {return new ArrayList<WebDriver>();});
+			webDriversOfThread.add( webDriver);
 		}
 		
 		return webDriver;
@@ -167,16 +168,35 @@ public class WebDriverProvider {
 	
 	
 	public static void killAllBrowsers() {
-		for (WebDriver webDriverToQuit : createdWebDrivers) {
-        	try {
-        		if(!ActiveDriverHandler.hasQuit(webDriverToQuit)) {
-        			webDriverToQuit.quit();
-        		}
-        	} catch (RuntimeException e) {
-        		// just ignore everything
-        	}
-        }
+		for (ArrayList<WebDriver> webDriversToQuit : createdWebDrivers.values()) {
+			for (WebDriver webDriverToQuit : webDriversToQuit) {
+	        	try {
+	        		if(!ActiveDriverHandler.hasQuit(webDriverToQuit)) {
+	        			webDriverToQuit.quit();
+	        		}
+	        	} catch (RuntimeException e) {
+	        		// just ignore everything
+	        	}
+	        }
+		}
+		createdWebDrivers.clear();
 	}
 	
+	public static void quitAllBrowsersOfCurrentThread() {
+		if (createdWebDrivers.containsKey(Thread.currentThread().threadId())) {
+			for (WebDriver webDriverToQuit : createdWebDrivers.get(Thread.currentThread().threadId())) {
+	        	try {
+	        		if(!ActiveDriverHandler.hasQuit(webDriverToQuit)) {
+	        			webDriverToQuit.quit();
+	        		}
+	        	} catch (RuntimeException e) {
+	        		// just ignore everything
+	        	}
+	        }
+			
+			// clear thread based
+			createdWebDrivers.get(Thread.currentThread().threadId()).clear();
+		}
+	}
 	
 }
