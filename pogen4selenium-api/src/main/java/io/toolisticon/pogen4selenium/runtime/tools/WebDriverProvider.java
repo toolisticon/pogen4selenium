@@ -148,6 +148,23 @@ public class WebDriverProvider {
 		
 	}
 	
+	public static WebDriver getDriverWithExtension(WebDriverProviderExtension webDriverProviderExtension, String ... additionalArguments) {
+		return getDriverWithExtension(webDriverProviderExtension, null, additionalArguments);
+	}
+	
+	public static WebDriver getDriverWithExtension(WebDriverProviderExtension webDriverProviderExtension, File tempDir, String ... additionalArguments) {
+		
+		WebDriver webDriver = getDriver(tempDir, additionalArguments);
+		
+		if (webDriverProviderExtension != null) {
+			webDriverProviderExtension.extendDriver(webDriver);
+		}
+		
+		return webDriver;
+		
+		
+	}
+	
 	
 	public static void killAllBrowsers() {
 		for (WebDriver webDriverToQuit : createdWebDrivers) {
