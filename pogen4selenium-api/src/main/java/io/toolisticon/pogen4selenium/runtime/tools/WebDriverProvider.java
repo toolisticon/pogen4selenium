@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
@@ -13,7 +12,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
-
+@SuppressWarnings("deprecation")
 public class WebDriverProvider {
 
 	
@@ -141,7 +140,7 @@ public class WebDriverProvider {
 		ActiveDriverHandler.setCurrentDriver(webDriver);
 		
 		if (webDriver != null) {
-			ArrayList<WebDriver> webDriversOfThread = createdWebDrivers.computeIfAbsent(Thread.currentThread().threadId(), tid -> {return new ArrayList<WebDriver>();});
+			ArrayList<WebDriver> webDriversOfThread = createdWebDrivers.computeIfAbsent(Thread.currentThread().getId(), tid -> {return new ArrayList<WebDriver>();});
 			webDriversOfThread.add( webDriver);
 		}
 		
@@ -182,9 +181,10 @@ public class WebDriverProvider {
 		createdWebDrivers.clear();
 	}
 	
+
 	public static void quitAllBrowsersOfCurrentThread() {
-		if (createdWebDrivers.containsKey(Thread.currentThread().threadId())) {
-			for (WebDriver webDriverToQuit : createdWebDrivers.get(Thread.currentThread().threadId())) {
+		if (createdWebDrivers.containsKey(Thread.currentThread().getId())) {
+			for (WebDriver webDriverToQuit : createdWebDrivers.get(Thread.currentThread().getId())) {
 	        	try {
 	        		if(!ActiveDriverHandler.hasQuit(webDriverToQuit)) {
 	        			webDriverToQuit.quit();
@@ -195,7 +195,7 @@ public class WebDriverProvider {
 	        }
 			
 			// clear thread based
-			createdWebDrivers.get(Thread.currentThread().threadId()).clear();
+			createdWebDrivers.get(Thread.currentThread().getId()).clear();
 		}
 	}
 	
